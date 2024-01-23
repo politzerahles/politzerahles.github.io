@@ -1,0 +1,227 @@
+# Run this to make sure you have the latest version of R and all the packages we'll use:
+if( !( "installr" %in% installed.packages()[,"Package"] ) ){ install.packages("installr") } 
+library(installr); updateR()
+pkgs <- c( "lme4", "languageR", "devtools", "vioplot", "lmerTest", "car", "multcomp", "e1071" )
+pkgs <- pkgs[ !(pkgs %in% installed.packages()[,"Package"]) ]
+if( length(pkgs)>0 ){ install.packages( pkgs[ !(pkgs %in% installed.packages()[,"Package"]) ] ) }
+if( !( "yarrr" %in% installed.packages()[,"Package"] ) ){ library(devtools); install_github("ndphillips/yarrr") }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#######################
+### LOGISTIC MODELS ###
+#######################
+
+### A plot illustrating the problem with converting categorical data into percentage
+
+# make some fake subject accuracy data
+subj_percentages <- rnorm( n=24, mean=70, sd=20 )
+subj_percentages <- ifelse( subj_percentages>100, 100, ifelse( subj_percentages<0, 0, subj_percentages ) )
+
+# make some fake proficiency data correlated with it
+correlatedValue = function(x, r){
+  r2 = r**2
+  ve = 1-r2
+  SD = sqrt(ve)
+  e  = rnorm(length(x), mean=0, sd=SD)
+  y  = r*x + e
+  return(y)
+}
+proficiency <- correlatedValue( subj_percentages, .05 )
+
+# make a plot to show that linear regression predicts Y-values below 0 and above 100%
+plot( proficiency, subj_percentages, xlim=c( min(proficiency)-.5*(range(proficiency)[2]-range(proficiency)[1]), max(proficiency)+.5*(range(proficiency)[2]-range(proficiency)[1]) ), ylim=c(-50, 150), xlab="proficiency", ylab="accuracy" )
+abline( lm(subj_percentages~proficiency), col="red", lwd=2 )
+abline( 100, 0 )
+abline( 0, 0 )
+
+
+### Make a plot to show the relationship between proportions and log odds, i.e., that proportions
+###	are bounded between 1 and 0 but log odds are continuous
+
+par( mfrow=c(1,2) )
+
+# A range of log odds values
+lo <- -8:8
+
+# Plots the corresponding proportions
+plot( lo, exp(lo) / (1+exp(lo)), xlab="log odds", ylab="proportion" ) 
+
+# Same idea, the other way around
+props <- seq(.01,.99,by=.01)
+plot( props, log(1/(1/props-1)), xlab="proportion", ylab="log odds" )
+
+
+
+
+### Do a model
+
+# Load some data
+
+# load sample dataset
+load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/File_S2.RData" ) )
+
+# clean up data
+resp <- Respdata[ Respdata$Quantifier != "filler", ]
+resp$Item <- factor( resp$Item )
+resp$Quantifier <- factor( resp$Quantifier )
+resp$Boundedness <- factor( resp$Boundedness )
+
+# Deviation-coded model, so the intercept represents the grand mean and we can see if people were better than chance overall
+summary( model <- glmer( Accuracy ~ Quantifier*Boundedness + (1|Subject) + (1|Item), resp, family="binomial", contrasts=list( Quantifier=contr.sum(2)/2, Boundedness=contr.sum(2)/2 ) ) )
+
+# We know that the z-statistic for the intercept is comparing the intercept vs. 0. Let's run this (plugging a hypothetical
+#	zero intercept into the formula we know for converting odds to proportions) to demonstrate that odds of 0 means 50%:
+exp(0) / (1 + exp(0) )
+
+# now let's see what our intercept corresponds to in percent accuracy terms
+exp( 3.1936 ) / ( 1 + exp(3.1936) )
+
+# Let's try comparing this coefficient against a hypothetical chance level of 25% instead of 50%
+proportion_chance <- .25
+logodds_chance <- log( 1 / ( (1/proportion_chance) - 1 ) )
+coefficients <- summary(model)$coefficients
+b <- coefficients["(Intercept)","Estimate"]
+SE <- coefficients["(Intercept)","Std. Error"]
+(z <- (b - logodds_chance)/SE)
+( p <- 2 * (1 - pnorm(z)) )
+
+# Dummy-coded model so we can compare specific pairs of conditions
+summary( model <- glmer( Accuracy ~ Quantifier*Boundedness + (1|Subject) + (1|Item), resp, family="binomial" ) )
+
+# getting the proportion for the baseline condition
+logodds_baseline <- fixef(model)["(Intercept)"]
+( proportion_baseline <- exp(logodds_baseline) / ( 1 + exp(logodds_baseline) ) )
+
+# getting the proportion for the simple effect of Quantifier at this level of Boundendess
+logodds_comparison <- fixef(model)["(Intercept)"] + fixef(model)["Quantifiersome of them"]
+( proportion_comparison <- exp(logodds_comparison) / ( 1 + exp(logodds_comparison) ) )
+
+# There we saw that the comparison condition is about .5% less accurate than the baseline condition. Note that the conversion
+#	from log odds to proportion requires the actual predicted value, not just the coefficient. As we see below, just
+#	converting the coefficient would give us the wrong value
+( incorrectly_calculated_proportion_difference <- exp(fixef(model)["Quantifiersome of them"]) / ( 1 + exp(fixef(model)["Quantifiersome of them"]) ) )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###################
+### ORDINAL IVs ###
+###################
+
+# load implicit priming data
+load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/implicitpriming.RData" ) )
+
+# show the effect of itemrepetitionnumber
+tapply( trim$RT, trim$ItemRepetitionNumber, mean )
+tapply( trim$RT, trim$ItemRepetitionNumber, sd )
+xtabs( ~ ItemRepetitionNumber, trim )
+
+# show that the ordinal model doesn't capture the effect very well when our ordinal data aren't nicely distributed
+summary( lmer( RT ~ ItemRepetitionNumber + (ItemRepetitionNumber|Subject) + (ItemRepetitionNumber|Item), trim ) )
+
+# It gets a little better if we exclude the cell with only one datapoint, but still not great (note that it's saying the
+#	linear component is 100ms, which is bigger than what we saw in the cell means)
+summary( lmer( RT ~ ItemRepetitionNumber + (ItemRepetitionNumber|Subject) + (ItemRepetitionNumber|Item), trim[ trim$ItemRepetitionNumber<3, ] ) ) 
+
+# Does the best if we just recode this variable as binary
+summary( lmer( RT ~ Repeated + (Repeated|Subject) + (Repeated|Item), trim ) )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###################
+### ORDINAL DVs ###
+###################
+
+# example with built-in data
+library(ordinal)
+summary( clmm( rating ~ temp + (temp|judge) + (temp|bottle), wine ) )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+######################
+### Reshaping data ###
+######################
+
+
+# load wide-format EEG data
+load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/eegdata.RData" ) )
+
+# show it
+( eegdata_wide <- eegdata )
+
+# convert to long format
+library(reshape2)
+eegdata <- melt(eegdata_wide)
+
+# But we only have a column indicating condition, not columns indicating the various factors...
+head( eegdata )
+
+# Here I use the condition names (e.g. "T2T3_A") and split them along the underscores to create two columns, one for each within-subjects ANOVA factor
+spl <- strsplit( as.character(eegdata$variable), "_" )
+eegdata$Contrast <- factor( unlist( lapply( spl, function(x){x[[1]]} ) ) )
+eegdata$Direction <- factor( unlist( lapply( spl, function(x){x[[2]]} ) ) )
+
+
+
+
+dcast( eegdata, Subject+Group ~ Contrast+Direction, value.var="value", mean )

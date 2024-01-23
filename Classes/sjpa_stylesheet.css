@@ -1,0 +1,183 @@
+body {background-color:#FFFBFF}
+a {text-decoration:none}
+h1 {text-align:center}
+h2 {text-align:center}
+h3 {text-align:center}
+h2.centercol
+{
+	width:55%;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:left
+}
+h3.centercol
+{
+	width:55%;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:left
+}
+h3:target
+{
+	color: white;
+	background: #f60;
+	width:55%;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:left
+}
+h4.centercol
+{
+	width:55%;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:left
+}
+h4.centercolindent
+{
+	width:55%;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:left;
+	padding-left:3em
+}
+h5.centercolindent
+{
+	width:55%;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:left;
+	padding-left:3em
+}
+p.center
+{
+	width:55%;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center
+}
+ul.center
+{
+	width:50%;
+	margin-left:auto;
+	margin-right:auto; 
+}
+ul.center li
+{
+	margin-bottom:0.5em;
+}
+ol.center
+{
+	width:50%;
+	margin-left:auto;
+	margin-right:auto;
+}
+p.centercol
+{
+	width:55%;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:left;
+	background-image: url("noapple.png");
+	background-repeat: no-repeat;
+	background-position: -10000px -10000px
+}
+p.footnote
+{
+	width:50%;
+	font-size:85%;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:left;
+	background-image: url("noapple.png");
+	background-repeat: no-repeat;
+	background-position: -10000px -10000px
+}
+blockquote.centercol
+{
+	width:50%;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:left;
+}
+
+p.mini {font-size:70%}
+dl.mini {font-size:70%}
+td.left {padding-right:10px}
+td.right {padding-left:10px}
+div.arabic
+{
+	direction:rtl;
+	font-family:"Microsoft Uighur embedded", "Microsoft Uighur", Code200, "Arabic Typesetting", Arabic;
+	font-size:1.4em
+}
+.chinese { font-family:"SimSun", Chinese; }
+.underlinedchinese{ font-family:"SimSun", Chinese; border-bottom: 1px double #000; }
+@font-face {
+font-family: "Microsoft Uighur embedded";
+font-style:  normal;
+font-weight: normal;
+src: url(/cgi-bin/MICROSO0.eot); }
+div.floatingbox {
+	background-color:#FFF8DC;
+	float:right;
+	border:2px solid #708090;
+	width:20%;
+	padding-left:1%; }
+
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 66%;
+  border: 1;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  width: 62%;
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  text-align: left;
+  background-color: #CCCCCC;
+}
+
+
+#vert_tabs ul {
+	list-style: none;
+	padding:0;
+	background: #A9A8A6;
+	
+}
+
+#vert_tabs li {
+	font-size: 18px;
+	padding: 0;
+}
+
+#vert_tabs a {
+	display: block;
+	padding: 1em 1.5em 1em 2em;	
+}
+
+#vert_tabs a {
+	text-decoration: none;
+}
+
+#vert_tabs li:hover {
+	background-color: #6D6968;
+}
+
+#vert_tabs #selected {
+	background: white;
+}

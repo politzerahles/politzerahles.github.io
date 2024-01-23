@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>Importing VoiceSauce acoustic data into R</title>
+	<link rel="stylesheet" type="text/css" href="stevetools_stylesheet.css" />
+</head>
+
+<body>
+       
+	<h2 class="center">Importing VoiceSauce acoustic data into R</h2>
+	<p class="centercol"><a href="http://www.ee.ucla.edu/~spapl/voicesauce/">VoiceSauce</a> is a set of MATLAB tools
+		that calculates millisecond-by-millisecond acoustic measurements from audio files. Its output is a matrix
+		where each row is a sample, and each column is a measurement (or filename/label information) for that sample
+		(or, to be specific: a measurement for a 25-ms window centered on that sample).
+	</p>
+	<p class="centercol">Since segments of an audio recording may have different lengths (e.g., different words/segments are
+		longer than others, and productions by different speakers are longer than others), in order to make direct
+		statistical comparisons across items and speakers, many researchers choose to time-normalize the data in some way. One
+		way to do so is to divide each recorded segment into windows based on proportions of the duration (e.g., the
+		first 20% of a segment, the next 20%, the third 20%, etc.) and average over samples within each of those
+		windows.
+	</p>
+	<p class="centercol">The R code described in this page imports acoustic measurements from VoiceSauce output files (.txt
+		format) into <a href="http://www.r-project.org/">R</a> and implements that normalization procedure described
+		above.
+	</p>
+	<p class="centercol">This code is only meant as an example; it is very likely that you will have to make some adjustments
+		to it to fit your own data. For example, this code only imports a single file per speaker, but it is possible
+		that you have multiple recordings per speaker (from different recording sessions, different conditions, etc.)
+		that all need to be imported and combined. It is also possible that you have extra preprocessing to do to the
+		data (such as combining or removing certain segments) before averaging samples in windows. You are welcome to modify the code
+		as you see fit for your own purposes.
+	</p>
+
+        <hr>
+	<h3 class="centercol">The code</h3>
+	<p class="centercol">You may download the code <strong><a href="load voicesauce data.txt">here</a></strong>. Lines
+		that will need to be modified to run the code on your own computer are gathered near the beginning of the script and
+		are indicated with comments off to the right.</p>
+	<ol class="center">
+				<li><strong>pathtodata</strong> should be the path to a folder where all your VoiceSauce output files are stored.</li>
+				<li><strong>subjectlist</strong> should be a list of the names of the VoiceSauce output files you will import.</li>
+				<li><strong>measures</strong> should be a list of the names of the measures (which you can see from the column names
+					of the VoiceSauce output) that you want to import and process.</li>
+				<li><strong>numtocut</strong> is the number of samples you would like to "trim" off the beginning and end of each
+					segment before dividing it into windows. Since VoiceSauce's spectral measures are computed based on
+					a 25-millisecond window (i.e., &#x00B1;12 ms relative to the sample), this means that the the acoustic
+					measures for the first and last 12&nbsp;ms of a segment may be contaminated by the neighboring segments
+					(of course there is often coarticulation from neighboring segments, but in this case I am not referring to
+					coarticulation&mdash;the measures for these samples actually include measures from samples in other segments).
+					Therefore, trimming the first and last 12&nbsp;ms of every segment may be desirable.<br />However, if your
+					data include segments that are very short, this may cause an error. If any segment is fewer than 29&nbsp;ms
+					( <code>numtocut * 2 + 5</code> ) long, then after trimming the beginning and end of the segment there
+					will be fewer than 5 samples left, and the script will crash when trying to collapse fewer than 5 segments
+					into 5 windows. Therefore, if your data include very short segments, you should either set <strong>numtocut</strong>
+					to something lower (setting it to 0 will make nothing be trimmed at all), or modify the code to remove
+					short segments before the section of the code that performs the averaging, or modify the code to lengthen
+					the middle 5 ms of extremely short segments by resampling (e.g. with the <code>signal::resample()</code> function).</li>
+				<li><strong>n_windows</strong> is the number of windows that each segment will be divided into.</li>
+	</ol>
+	<p class="centercol">Those changes are all that is needed to run the basic script on simple data. For other tasks you may need to adjust
+		other parts of the code. Once the code is ready, you can run it by simply pasting it into R, or using an IDE like <a
+		href="http://www.rstudio.com/ide/">RStudio</a>. The output of this script is an R data frame (called <strong>windowdata</strong>)
+		where each observation (row) is one window from one word from one speaker, and each column holds dependent measures or independent
+		data (speaker, word, etc.) associated with that observation.</p>
+
+
+        <hr>
+        <p class="mini">By <a href=".">Stephen Politzer-Ahles</a>. For questions, contact me by e-mail.</p>
+
+    </body>
+</html>

@@ -1,0 +1,147 @@
+# Run this to make sure you have the latest version of R and all the packages we'll use:
+if( !( "installr" %in% installed.packages()[,"Package"] ) ){ install.packages("installr") } 
+library(installr); updateR()
+pkgs <- c( "lme4", "languageR", "devtools", "vioplot", "lmerTest", "car", "multcomp", "e1071" )
+pkgs <- pkgs[ !(pkgs %in% installed.packages()[,"Package"]) ]
+if( length(pkgs)>0 ){ install.packages( pkgs[ !(pkgs %in% installed.packages()[,"Package"]) ] ) }
+if( !( "yarrr" %in% installed.packages()[,"Package"] ) ){ library(devtools); install_github("ndphillips/yarrr") }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+####################################
+### MOTIVATION FOR RANDOM SLOPES ###
+####################################
+
+
+# load libraries
+library(lme4)
+library(languageR)
+
+# Get subject means like we would for ANOVA
+subjmeans <- data.frame( tapply( lexdec$RT, lexdec[,c("Subject","Class")], mean ) )
+
+# Show that each subject has a different effect
+subjmeans$diff <- subjmeans$animal - subjmeans$plant
+
+# Show and plot the variation
+subjmeans
+plot( density( subjmeans$diff ), main="Within-subject effects" )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############################
+### CONVERGENCE PROBLEMS ###
+############################
+
+# load sample dataset
+load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/enrich.RData" ) )
+
+e <- enrich[ enrich$Region==3, ]
+
+# run a model that fails to converge
+summary( non_convergent_model <- lmer( GoPastTime ~ nountype*verbtype + (nountype*verbtype|Subject) + (nountype*verbtype|Item), e ) )
+
+
+
+
+
+# Example of random effects structure not justified by design
+summary( lmer( weight ~ Diet/Time + (Diet/Time|Chick), ChickWeight ) )$coefficients
+
+# Example of random effects structure justified by design
+summary( lmer( weight ~ Diet/Time + (Time|Chick), ChickWeight ) )$coefficients
+
+
+# Equivalent ways to remove random correlations for a continuous variable
+summary( lmer( weight ~ Diet/Time + (1|Chick) + (0+Time|Chick), ChickWeight ) )
+summary( lmer( weight ~ Diet/Time + (Time||Chick), ChickWeight ) )
+
+# but it doesn't work for categorical variables:
+summary( lmer( GoPastTime ~ verbtype + (verbtype||Subject) + (verbtype||Item), enrich[ enrich$Region==3, ] ) )
+
+
+
+
+
+
+# Example of removing random effect correlations
+n1 <- model.matrix( non_convergent_model )[,2]
+v1 <- model.matrix( non_convergent_model )[,3]
+v2 <- model.matrix( non_convergent_model )[,4]
+summary( convergent_model <- lmer( GoPastTime ~ nountype*verbtype + (n1*(v1+v2)||Subject) + (n1*(v1+v2)||Item), enrich[ enrich$Region==3, ], contrasts=list( nountype=contr.sum(2), verbtype=contr.sum(3) ) ) )$coefficients
+
+
+
+
+# Example of intercept-less random slopes
+summary( lmer( weight ~ Diet/Time + (0+Time|Chick), ChickWeight ) )
+
+
+
+
+### Example of removing higher-order interactions from the random effects structure
+
+# Load the data
+load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/File S2.RData" ) )
+
+# Pull out just the critical (non-filler) conditions from the critical region
+crit <- RTdata[ RTdata$RegionNum==8 & RTdata$Quantifier!="filler", ]
+
+# Clean up factors (remove empty levels)
+crit$Quantifier <- factor( crit$Quantifier )
+crit$Boundedness <- factor( crit$Boundedness )
+crit$Item <- factor( crit$Item )
+
+# model with all interactions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1000 @@
+34	Kowloon
+22	Kowloon
+27	Kowloon
+32	Kowloon
+27	Kowloon
+23	Kowloon
+21	Kowloon
+46	Kowloon
+27	Kowloon
+25	Kowloon
+35	Kowloon
+33	Kowloon
+44	Kowloon
+23	Kowloon
+20	Kowloon
+33	Kowloon
+24	Kowloon
+24	Kowloon
+21	Kowloon
+28	Kowloon
+28	Kowloon
+25	Kowloon
+34	Kowloon
+31	Kowloon
+41	Kowloon
+22	Kowloon
+27	Kowloon
+23	Kowloon
+25	Kowloon
+25	Kowloon
+29	Kowloon
+34	Kowloon
+28	Kowloon
+22	Kowloon
+28	Kowloon
+24	Kowloon
+25	Kowloon
+23	Kowloon
+27	Kowloon
+23	Kowloon
+21	Kowloon
+20	Kowloon
+32	Kowloon
+18	Kowloon
+28	Kowloon
+24	Kowloon
+21	Kowloon
+28	Kowloon
+44	Kowloon
+36	Kowloon
+31	Kowloon
+25	Kowloon
+23	Kowloon
+29	Kowloon
+24	Kowloon
+22	Kowloon
+22	Kowloon
+29	Kowloon
+22	Kowloon
+31	Kowloon
+25	Kowloon
+23	Kowloon
+23	Kowloon
+25	Kowloon
+37	Kowloon
+26	Kowloon
+27	Kowloon
+36	Kowloon
+34	Kowloon
+25	Kowloon
+23	Kowloon
+29	Kowloon
+23	Kowloon
+21	Kowloon
+20	Kowloon
+17	Kowloon
+31	Kowloon
+23	Kowloon
+33	Kowloon
+40	Kowloon
+29	Kowloon
+25	Kowloon
+33	Kowloon
+29	Kowloon
+30	Kowloon
+25	Kowloon
+31	Kowloon
+30	Kowloon
+26	Kowloon
+26	Kowloon
+27	Kowloon
+25	Kowloon
+30	Kowloon
+26	Kowloon
+29	Kowloon
+38	Kowloon
+27	Kowloon
+35	Kowloon
+27	Kowloon
+46	Kowloon
+25	Kowloon
+22	Kowloon
+31	Kowloon
+33	Kowloon
+26	Kowloon
+28	Kowloon
+23	Kowloon
+26	Kowloon
+28	Kowloon
+23	Kowloon
+31	Kowloon
+31	Kowloon
+27	Kowloon
+27	Kowloon
+26	Kowloon
+41	Kowloon
+25	Kowloon
+24	Kowloon
+30	Kowloon
+34	Kowloon
+53	Kowloon
+28	Kowloon
+25	Kowloon
+22	Kowloon
+38	Kowloon
+24	Kowloon
+24	Kowloon
+20	Kowloon
+30	Kowloon
+20	Kowloon
+26	Kowloon
+17	Kowloon
+22	Kowloon
+33	Kowloon
+23	Kowloon
+40	Kowloon
+20	Kowloon
+54	Kowloon
+25	Kowloon
+21	Kowloon
+24	Kowloon
+24	Kowloon
+26	Kowloon
+23	Kowloon
+25	Kowloon
+21	Kowloon
+26	Kowloon
+23	Kowloon
+33	Kowloon
+22	Kowloon
+29	Kowloon
+31	Kowloon
+28	Kowloon
+21	Kowloon
+33	Kowloon
+25	Kowloon
+20	Kowloon
+21	Kowloon
+22	Kowloon
+18	Kowloon
+32	Kowloon
+28	Kowloon
+25	Kowloon
+26	Kowloon
+22	Kowloon
+27	Kowloon
+24	Kowloon
+21	Kowloon
+21	Kowloon
+32	Kowloon
+24	Kowloon
+29	Kowloon
+27	Kowloon
+29	Kowloon
+25	Kowloon
+32	Kowloon
+30	Kowloon
+20	Kowloon
+30	Kowloon
+23	Kowloon
+33	Kowloon
+31	Kowloon
+31	Kowloon
+35	Kowloon
+24	Kowloon
+27	Kowloon
+43	Kowloon
+30	Kowloon
+19	Kowloon
+30	Kowloon
+21	Kowloon
+50	Kowloon
+21	Kowloon
+25	Kowloon
+28	Kowloon
+26	Kowloon
+27	Kowloon
+27	Kowloon
+22	Kowloon
+38	Kowloon
+34	Kowloon
+31	Kowloon
+40	Kowloon
+27	Kowloon
+20	Kowloon
+28	Kowloon
+28	Kowloon
+35	Kowloon
+30	Kowloon
+25	Kowloon
+29	Kowloon
+25	Kowloon
+32	Kowloon
+23	Kowloon
+24	Kowloon
+29	Kowloon
+25	Kowloon
+30	Kowloon
+27	Kowloon
+36	Kowloon
+24	Kowloon
+26	Kowloon
+26	Kowloon
+26	Kowloon
+28	Kowloon
+25	Kowloon
+28	Kowloon
+30	Kowloon
+25	Kowloon
+28	Kowloon
+29	Kowloon
+29	Kowloon
+23	Kowloon
+33	Kowloon
+34	Kowloon
+23	Kowloon
+25	Kowloon
+27	Kowloon
+32	Kowloon
+22	Kowloon
+25	Kowloon
+34	Kowloon
+24	Kowloon
+21	Kowloon
+27	Kowloon
+26	Kowloon
+32	Kowloon
+18	Kowloon
+24	Kowloon
+32	Kowloon
+23	Kowloon
+40	Kowloon
+29	Kowloon
+24	Kowloon
+30	Kowloon
+28	Kowloon
+30	Kowloon
+21	Kowloon
+26	Kowloon
+28	Kowloon
+21	Kowloon
+28	Kowloon
+21	Kowloon
+19	Kowloon
+30	Kowloon
+29	Kowloon
+32	Kowloon
+35	Kowloon
+34	Kowloon
+26	Kowloon
+25	Kowloon
+26	Kowloon
+22	Kowloon
+39	Kowloon
+43	Kowloon
+22	Kowloon
+25	Kowloon
+20	Kowloon
+26	Kowloon
+31	Kowloon
+22	Kowloon
+19	Kowloon
+29	Kowloon
+21	Kowloon
+27	Kowloon
+23	Kowloon
+24	Kowloon
+44	Kowloon
+24	Kowloon
+22	Kowloon
+29	Kowloon
+17	Kowloon
+29	Kowloon
+28	Kowloon
+21	Kowloon
+26	Kowloon
+31	Kowloon
+20	Kowloon
+24	Kowloon
+27	Kowloon
+27	Kowloon
+32	Kowloon
+22	Kowloon
+30	Kowloon
+25	Kowloon
+24	Kowloon
+31	Kowloon
+27	Kowloon
+25	Kowloon
+36	Kowloon
+37	Kowloon
+32	Kowloon
+23	Kowloon
+27	Kowloon
+19	Kowloon
+25	Kowloon
+24	Kowloon
+26	Kowloon
+24	Kowloon
+28	Kowloon
+27	Kowloon
+27	Kowloon
+19	Kowloon
+20	Kowloon
+20	Kowloon
+34	Kowloon
+26	Kowloon
+23	Kowloon
+30	Kowloon
+27	Kowloon
+28	Kowloon
+29	Kowloon
+37	Kowloon
+28	Kowloon
+40	Kowloon
+24	Kowloon
+25	Kowloon
+32	Kowloon
+36	Kowloon
+27	Kowloon
+25	Kowloon
+26	Kowloon
+29	Kowloon
+28	Kowloon
+23	Kowloon
+20	Kowloon
+27	Kowloon
+25	Kowloon
+28	Kowloon
+22	Kowloon
+24	Kowloon
+28	Kowloon
+26	Kowloon
+23	Kowloon
+25	Kowloon
+25	Kowloon
+22	Kowloon
+46	Kowloon
+24	Kowloon
+26	Kowloon
+25	Kowloon
+26	Kowloon
+25	Kowloon
+20	Kowloon
+27	Kowloon
+27	Kowloon
+24	Kowloon
+23	Kowloon
+27	Kowloon
+30	Kowloon
+32	Kowloon
+23	Kowloon
+23	Kowloon
+38	Kowloon
+32	Kowloon
+21	Kowloon
+28	Kowloon
+26	Kowloon
+36	Kowloon
+39	Kowloon
+26	Kowloon
+23	Kowloon
+22	Kowloon
+26	Kowloon
+37	Kowloon
+25	Kowloon
+24	Kowloon
+35	Kowloon
+33	Kowloon
+22	Kowloon
+30	Kowloon
+27	Kowloon
+23	Kowloon
+36	Kowloon
+23	Kowloon
+26	Kowloon
+23	Kowloon
+30	Kowloon
+23	Kowloon
+36	Kowloon
+24	Kowloon
+33	Kowloon
+22	Kowloon
+23	Kowloon
+37	Kowloon
+23	Kowloon
+27	Kowloon
+27	Kowloon
+30	Kowloon
+21	Kowloon
+28	Kowloon
+27	Kowloon
+26	Kowloon
+30	Kowloon
+27	Kowloon
+33	Kowloon
+17	Kowloon
+23	Kowloon
+25	Kowloon
+40	Kowloon
+25	Kowloon
+26	Kowloon
+22	Kowloon
+19	Kowloon
+35	Kowloon
+21	Kowloon
+44	Kowloon
+21	Kowloon
+50	Kowloon
+26	Kowloon
+34	Kowloon
+26	Kowloon
+23	Kowloon
+22	Kowloon
+23	Kowloon
+28	Kowloon
+20	Kowloon
+33	Kowloon
+23	Kowloon
+24	Kowloon
+21	Kowloon
+31	Kowloon
+26	Kowloon
+35	Kowloon
+27	Kowloon
+21	Kowloon
+20	Kowloon
+49	Kowloon
+22	Kowloon
+26	Kowloon
+25	Kowloon
+30	Kowloon
+27	Kowloon
+27	Kowloon
+28	Kowloon
+28	Kowloon
+22	Kowloon
+29	Kowloon
+32	Kowloon
+33	Kowloon
+29	Kowloon
+23	Kowloon
+20	Kowloon
+26	Kowloon
+24	Kowloon
+24	Kowloon
+30	Kowloon
+26	Kowloon
+20	Kowloon
+27	Kowloon
+20	Kowloon
+31	Kowloon
+22	Kowloon
+41	Kowloon
+21	Kowloon
+29	Kowloon
+18	Kowloon
+26	Kowloon
+34	Kowloon
+28	Kowloon
+34	Kowloon
+21	Kowloon
+41	Kowloon
+21	Kowloon
+31	Kowloon
+24	Kowloon
+27	Kowloon
+28	Kowloon
+22	Kowloon
+28	Kowloon
+24	Kowloon
+28	Kowloon
+25	Kowloon
+21	Kowloon
+25	Kowloon
+22	Kowloon
+31	Kowloon
+22	Kowloon
+26	Kowloon
+29	Kowloon
+20	HK Island
+29	HK Island
+19	HK Island
+29	HK Island
+23	HK Island
+25	HK Island
+21	HK Island
+24	HK Island
+31	HK Island
+21	HK Island
+18	HK Island
+28	HK Island
+26	HK Island
+19	HK Island
+30	HK Island
+22	HK Island
+25	HK Island
+26	HK Island
+37	HK Island
+45	HK Island
+43	HK Island
+31	HK Island
+28	HK Island
+21	HK Island
+23	HK Island
+19	HK Island
+24	HK Island
+22	HK Island
+30	HK Island
+26	HK Island
+47	HK Island
+41	HK Island
+16	HK Island
+20	HK Island
+24	HK Island
+23	HK Island
+21	HK Island
+26	HK Island
+22	HK Island
+36	HK Island
+23	HK Island
+29	HK Island
+28	HK Island
+25	HK Island
+27	HK Island
+26	HK Island
+22	HK Island
+25	HK Island
+24	HK Island
+25	HK Island
+24	HK Island
+30	HK Island
+40	HK Island
+23	HK Island
+24	HK Island
+34	HK Island
+27	HK Island
+23	HK Island
+20	HK Island
+26	HK Island
+30	HK Island
+21	HK Island
+25	HK Island
+26	HK Island
+18	HK Island
+26	HK Island
+26	HK Island
+21	HK Island
+28	HK Island
+36	HK Island
+27	HK Island
+29	HK Island
+26	HK Island
+25	HK Island
+27	HK Island
+38	HK Island
+27	HK Island
+23	HK Island
+19	HK Island
+26	HK Island
+30	HK Island
+22	HK Island
+27	HK Island
+21	HK Island
+22	HK Island
+18	HK Island
+44	HK Island
+18	HK Island
+25	HK Island
+20	HK Island
+21	HK Island
+22	HK Island
+20	HK Island
+15	HK Island
+19	HK Island
+17	HK Island
+25	HK Island
+25	HK Island
+21	HK Island
+24	HK Island
+31	HK Island
+25	HK Island
+20	HK Island
+26	HK Island
+24	HK Island
+23	HK Island
+20	HK Island
+23	HK Island
+33	HK Island
+23	HK Island
+26	HK Island
+24	HK Island
+21	HK Island
+38	HK Island
+23	HK Island
+20	HK Island
+21	HK Island
+28	HK Island
+36	HK Island
+31	HK Island
+40	HK Island
+21	HK Island
+25	HK Island
+27	HK Island
+20	HK Island
+33	HK Island
+30	HK Island
+30	HK Island
+37	HK Island
+25	HK Island
+30	HK Island
+36	HK Island
+23	HK Island
+22	HK Island
+23	HK Island
+23	HK Island
+25	HK Island
+25	HK Island
+20	HK Island
+42	HK Island
+32	HK Island
+19	HK Island
+22	HK Island
+22	HK Island
+28	HK Island
+23	HK Island
+33	HK Island
+24	HK Island
+21	HK Island
+18	HK Island
+25	HK Island
+28	HK Island
+17	HK Island
+23	HK Island
+32	HK Island
+22	HK Island
+20	HK Island
+25	HK Island
+24	HK Island
+18	HK Island
+21	HK Island
+19	HK Island
+24	HK Island
+25	HK Island
+26	HK Island
+19	HK Island
+19	HK Island
+28	HK Island
+19	HK Island
+18	HK Island
+22	HK Island
+25	HK Island
+21	HK Island
+24	HK Island
+20	HK Island
+26	HK Island
+20	HK Island
+25	HK Island
+23	HK Island
+22	HK Island
+29	HK Island
+36	HK Island
+20	HK Island
+22	HK Island
+24	HK Island
+23	HK Island
+21	HK Island
+28	HK Island
+20	HK Island
+31	HK Island
+20	HK Island
+34	HK Island
+19	HK Island
+31	HK Island
+22	HK Island
+24	HK Island
+25	HK Island
+26	HK Island
+19	HK Island
+23	HK Island
+27	HK Island
+20	HK Island
+27	HK Island
+26	HK Island
+23	HK Island
+29	HK Island
+30	HK Island
+23	HK Island
+26	HK Island
+28	HK Island
+27	HK Island
+30	HK Island
+26	HK Island
+20	HK Island
+26	HK Island
+26	HK Island
+18	HK Island
+27	HK Island
+21	HK Island
+19	HK Island
+25	HK Island
+18	HK Island
+29	HK Island
+24	HK Island
+29	HK Island
+24	HK Island
+21	HK Island
+22	HK Island
+39	HK Island
+22	HK Island
+20	HK Island
+42	HK Island
+23	HK Island
+21	HK Island
+22	HK Island
+26	HK Island
+25	HK Island
+20	HK Island
+20	HK Island
+35	HK Island
+25	HK Island
+21	HK Island
+23	HK Island
+24	HK Island
+25	HK Island
+26	HK Island
+24	HK Island
+24	HK Island
+17	HK Island
+28	HK Island
+35	HK Island
+24	HK Island
+25	HK Island
+24	HK Island
+19	HK Island
+23	HK Island
+31	HK Island
+21	HK Island
+22	HK Island
+19	HK Island
+18	HK Island
+20	HK Island
+16	HK Island
+25	HK Island
+26	HK Island
+24	HK Island
+39	HK Island
+22	HK Island
+29	HK Island
+34	HK Island
+24	HK Island
+32	HK Island
+27	HK Island
+26	HK Island
+22	HK Island
+18	HK Island
+30	HK Island
+23	HK Island
+24	HK Island
+20	HK Island
+26	HK Island
+35	HK Island
+26	HK Island
+23	HK Island
+24	HK Island
+25	HK Island
+19	HK Island
+17	HK Island
+40	HK Island
+36	HK Island
+29	HK Island
+26	HK Island
+26	HK Island
+20	HK Island
+20	HK Island
+25	HK Island
+33	HK Island
+31	HK Island
+32	HK Island
+18	HK Island
+21	HK Island
+25	HK Island
+20	HK Island
+22	HK Island
+26	HK Island
+24	HK Island
+24	HK Island
+26	HK Island
+26	HK Island
+21	HK Island
+24	HK Island
+28	HK Island
+23	HK Island
+22	HK Island
+17	HK Island
+22	HK Island
+38	HK Island
+24	HK Island
+29	HK Island
+29	HK Island
+25	HK Island
+27	HK Island
+21	HK Island
+27	HK Island
+24	HK Island
+27	HK Island
+24	HK Island
+21	HK Island
+32	HK Island
+31	HK Island
+17	HK Island
+19	HK Island
+32	HK Island
+19	HK Island
+21	HK Island
+23	HK Island
+24	HK Island
+26	HK Island
+19	HK Island
+24	HK Island
+20	HK Island
+26	HK Island
+30	HK Island
+22	HK Island
+23	HK Island
+29	HK Island
+20	HK Island
+20	HK Island
+22	HK Island
+29	HK Island
+26	HK Island
+21	HK Island
+17	HK Island
+25	HK Island
+24	HK Island
+23	HK Island
+27	HK Island
+30	HK Island
+26	HK Island
+20	HK Island
+20	HK Island
+19	HK Island
+23	HK Island
+24	HK Island
+19	HK Island
+26	HK Island
+29	HK Island
+25	HK Island
+27	HK Island
+20	HK Island
+24	HK Island
+22	HK Island
+20	HK Island
+22	HK Island
+21	HK Island
+31	HK Island
+21	HK Island
+18	HK Island
+23	HK Island
+24	HK Island
+21	HK Island
+39	HK Island
+22	HK Island
+22	HK Island
+24	HK Island
+19	HK Island
+41	HK Island
+24	HK Island
+27	HK Island
+24	HK Island
+24	HK Island
+19	HK Island
+26	HK Island
+23	HK Island
+20	HK Island
+30	HK Island
+20	HK Island
+22	HK Island
+22	HK Island
+25	HK Island
+26	HK Island
+20	HK Island
+18	HK Island
+27	HK Island
+22	HK Island
+22	HK Island
+27	HK Island
+20	HK Island
+21	HK Island
+29	HK Island
+35	HK Island
+25	HK Island
+48	HK Island
+24	HK Island
+26	HK Island
+25	HK Island
+29	HK Island
+24	HK Island
+39	HK Island
+24	HK Island
+29	HK Island
+21	HK Island
+23	HK Island
+22	HK Island
+15	HK Island
+32	HK Island
+22	HK Island
+23	HK Island
+29	HK Island
+28	HK Island
+16	HK Island
+29	HK Island
+31	HK Island
+24	HK Island
+16	HK Island
+21	HK Island
+21	HK Island
+31	HK Island
+24	HK Island
+19	HK Island
+22	HK Island
+29	HK Island
+20	HK Island
+17	HK Island
+19	HK Island
+26	HK Island
+30	HK Island
+33	HK Island
+26	HK Island
+24	HK Island
+19	HK Island
+20	HK Island
+21	HK Island
+22	HK Island
+20	HK Island
+21	HK Island
+21	HK Island
+30	HK Island
+23	HK Island
+23	HK Island
+23	HK Island
+24	HK Island
+22	HK Island
+27	HK Island
+22	HK Island
+35	HK Island
+21	HK Island
+41	HK Island
+26	HK Island
+22	HK Island
+20	HK Island
+24	HK Island
+19	HK Island
+26	HK Island
+21	HK Island
+20	HK Island
+29	HK Island
+27	HK Island
+20	HK Island
+29	HK Island
+17	HK Island
+27	HK Island
+29	HK Island
+20	HK Island
+21	HK Island
+19	HK Island
+22	HK Island
+24	HK Island
+23	HK Island
+25	HK Island
+21	HK Island
+24	HK Island
+22	HK Island
+35	HK Island
+19	HK Island
+24	HK Island
+24	HK Island
+21	HK Island
+30	HK Island
+38	HK Island

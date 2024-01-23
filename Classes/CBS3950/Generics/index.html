@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+
+
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Generics</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body>
+
+
+
+		<h2>Generics</h2>
+
+		<p class="centercol"><a href="../index.html">&#x21B5; Back to class homepage</a></p>
+
+
+		<p class="centercol">Figuring out the truth-conditions for statements about specific
+			people or things is relatively simple. (<em>Relatively</em>... if you take a
+			class on semantics you will learn lots more complications I'm ignoring here.)
+			For example, <em>Haile is a doctor</em> is true if and only if the person
+			named Haile in the relevant discourse context is a doctor. (As we saw in
+			<a href="../Presupposition/">the previous module</a>, there are also presuppositions
+			associated with this sentence, e.g. the presupposition that there <em>is</em>
+			someone named Haile, and that there is only one person named Haile in the
+			context of our conversation. But it's not clear that those are part of the
+			truth-conditions of this utterance.)</p>
+		<p class="centercol">But what about a statement like "<em>Boys are good at
+			STEM</em>"? What conditions are necessary for this statement to be true?
+			Is it true if only three boys in the whole world are good at STEM? Is it
+			only true if every boy in the world is good at STEM? Or what?</p>
+		<p class="centercol">Statements like these are called <em>generic statements</em>,
+			or <em>generics</em> for short. Rather than stating something about a
+			specific entity (a person, thing, etc.), they instead describe a generalization
+			about some whole category of entities. And it's not actually clear what
+			these statements <em>mean</em>. We know this both from anecdotal experience
+			(there are many real-world examples of different people interpreting a
+			generic statement in different ways), and from controlled experiments,
+			such as one by <a href="https://onlinelibrary.wiley.com/doi/10.1111/j.1551-6709.2010.01126.x">Cimpian
+			and colleagues (2010)</a>, the paper from which most of the information and
+			concepts in this module come from.</p>
+
+		<h3 class="centercol">An example of a generic statement interpreted in different ways</h3>
+		<p class="centercol">We can find a nice example of this in <a href="https://languagelog.ldc.upenn.edu/nll/?p=478">a
+			discussion of putative Eastern/Western cultural differences</a> on <em>Language Log</em>.
+			The article which this blog post is critiquing contains a generic statement,
+			"<em>Americans usually see individuals; Chinese and other Asians see contexts.</em>"</p>
+		<p class="centercol">The statement "<em>Americans usually see individuals</em>" is extra-complicated
+			here because the word <em>usually</em> makes it ambiguous: does it mean that
+			<em>each</em> American usually [but not always] sees individuals, or does it
+			mean that <em>most</em> [but not all] Americans see individuals? The "not all"
+			and "not always" bits are themselves quantity implicatures, not necessarily 
+			part of the literal meaning of the statement. The "each" and "most" bits are
+			the parts that are related to the generic statement. But since this statement
+			is complicated by the ambiguity, let's instead focus on the second statement,
+			"<em>Chinese people see contexts</em>". (Note that I have paraphrased this a
+			bit from the original, but I think this is justifiable; "<em>Chinese and other
+			Asians see contexts</em>" semantically entails "<em>Chinese see contexts</em>",
+			and it's clear that <em>Chinese</em> here means Chinese people.)</p>
+		<p class="centercol">In the context of this discussion, "seeing context" is a certain
+			way of behaving in a particular sort of psychology experiment. In the experiments
+			that the writer of this statement is describing (and that the rest of the blog
+			post is criticizing), people see a video of fish swimming around in a tank, where
+			one fish is more salient (bigger, or a different color, or whatever) than the
+			others, and the person watching the video is asked to describe the scene. Some people describe
+			what the salient fish is doing; other people describe other aspects of the video,
+			like the background or this other fish. This latter group of people are the ones
+			who supposedly "see context", according to this experiment.</p>
+		<p class="centercol">The big question for us, though, is: what does "<em>Chinese
+			people see context</em>" mean? Does it mean all Chinese people see context?
+			Most Chinese people see context? Chinese people see context more than
+			some other group of people does? Seeing context is an important and defining
+			feature of being a Chinese person? Or what?</p>
+		<p class="centercol">It is on the basis of statements like this that people make
+			further generalizations like "Westerners are individualist and Asians are
+			collectivist" (or "Western <em>societies</em> are individualist and Asian
+			<em>societies</em> are collectivist"). It is certainly questionable whether
+			the results of that fish-describing experiment license these more general
+			conclusions (let's not mince words, it's more than just "questionable"; it's 
+			obviously false). But that's not the relevant point here. The important
+			point here is, those generic statements raise the same kinds of questions:
+			does "<em>Westerners are individualist</em>" mean all of them are, most
+			of them are, or what?</p>
+		<p class="centercol">Further down in the comments on this same blog post, the
+			author of the blog post writes, "<em>The question is whether it's in some
+			sense scientifically established that <strong>all</strong> Asians are
+			collectivist and <strong>all</strong> Westerners are individualist</em>"
+			(my emphasis added). But <em>is</em> that the question? If you ask this
+			question (and if you go on to say, e.g., "I have proved that it's not
+			true that 'Asians are collectivist', because here I found an example of
+			an Asian who is not collectivist"), you are interpreting the generic
+			statement "<em>Asians are collectivist</em>" as meaning "<strong>All</strong>
+			Asians are collectivist</em>.</p>
+		<p class="centercol">We can find many examples, though, of generic statements
+			that people consider "true" even though a corresponding "<em>all</em>"
+			statement is certainly not true. For example: "<em>Ducks lay eggs</em>".
+			People widely consider this to be true. But it certainly is not the case
+			that <em>all</em> ducks lay eggs. Male ducks don't lay eggs; baby ducks
+			don't lay eggs; ducks that are too sick, old, or injured to lay eggs
+			don't lay eggs. So, most ducks <em>don't</em> lay eggs. Similarly,
+			Cimpian and colleagues point out that people usually judge the sentence
+			"<em>Mosquitos carry the West Nile virus</em>" as true, even though only
+			about 1% of mosquitos actually carry it.</p>
+		<p class="centercol">The same applies for the present example. It is likely
+			that many people would judge sentences like "<em>Chinese people see
+			context</em>" or "<em>Asians are collectivist</em>" as true, even
+			based on just a few supporting examples. But on the other hand,
+			people might then take those same sentences to mean that <em>all</em>
+			Chinese people see context or that <em>all</em> Asians are collectivist.</p>
+
+		<h3 class="centercol">The "asymmetry" of generics</h3>
+		<p class="centercol">This example demonstrates a common "asymmetry" in how
+			generics are interpreted: we don't need much evidence to accept a
+			generic as true, but when we have to actually interpret it we think
+			it refers to nearly all of the things in the category. Hence the title
+			of Cimpian and colleagues' paper:
+			"Generic statements require little evidence for acceptance but have
+			powerful implications".</p>
+		<p class="centercol">In their research, they gave people generic
+			statements about made-up things, like "<em>Lorches have purple
+			feathers</em>" (there's no such thing as a lorch!). Along with those
+			statements, they provided statistical information, such as "30%
+			of lorches have purple feathers", and then asked them if the generic
+			statement ("<em>Lorches have purple feathers</em>") was true. They
+			found that people tend to accept these statements as true even
+			when the actual percentage of lorches with purple feathers is not
+			very high, e.g. around 50%. (And people were even more willing to
+			accept these if the feature being described is dangerous, distinctive,
+			or otherwise striking and attention-grabbing; recall that, as we
+			saw above, people believe "<em>Mosquitos carry West Nile virus</em>"
+			is true even though only 1% of mosquitos do!) Thus the first half
+			of this asymmetry: "generic statements require little evidence
+			for acceptance". We are often willing to accept a generic statement
+			(like "Boys are good at STEM", "Asians are collectivist", or "Lorches
+			have purple feathers") based on only a few examples.</p>
+		<p class="centercol">In this same experiment, the researchers also had
+			people interpret what they think the generic sentence means&mdash;i.e.,
+			they asked, "What percentage of lorches do you think have purple
+			feathers?" People reliably estimated a much higher percentage than
+			what they needed to accept the statement as true. For example,
+			people might accept the statement "<em>Lorches have purple feathers</em>"
+			as true when just 70% of lorches have purple feathers; but if you tell
+			people "<em>Lorches have purple feathers</em>" and then ask them
+			what percentage of lorches they think have purple feathers, they will
+			guess that 95% do! Thus the second half of this asymmetry: "generic
+			statements have powerful implications". When we hear a generic
+			statement like "Boys are good at STEM", "Asians are collectivist",
+			or "Lorches have purple feathers", we often interpret it as saying
+			something about <em>almost all</em> boys/Asians/lorches.</p>
+
+		<h3 class="centercol">Real-world disagreements over generic statements</h3>
+		<p class="centercol">These properties of generic statements make them a
+			common source of controversy, especially in political discourse.
+			They can be used to suggest very broad generalizations, but they
+			don't require very much evidence, and thus they can be pretty easily
+			defended if someone criticizes them. Like we saw in our initial
+			example above: if someone interprets "<em>Asians are collectivist</em>"
+			as meaning that all Asians are collectivist and then brings up some
+			compelling evidence that <em>not</em> all Asians are collectivist,
+			someone else could respond by saying "Well, I never said that <em>all</em>
+			of them are!"</p>
+		<p class="centercol">For example, in debates over responses to the COVID-19
+			pandemic, we have all heard many statements along the lines of
+			"Travel restrictions are an effective way to stop the spread of
+			the virus" or "Vaccines work!" Generic statements like these are
+			difficult to argue against because the meaning of generics is
+			fuzzy. (I am not raising this example to suggest that vaccines are
+			bad&mdash;I myself am vaccinated and I encourage everyone to get
+			vaccinated if they are able&mdash;but merely to point out that
+			generic statements come from everywhere on the political
+			spectrum and not just from the people we think are manipulative
+			bad actors. It's easy to use pragmatics concepts to criticize
+			the language of people we don't like or don't agree with, but
+			it's important to apply the same scrutiny to our own "team" as
+			well.)</p>
+		<p class="centercol">For another example, let's consider one of the 
+			first and most-remembered of many controversies in Donald Trump's
+			2015-2016 United States presidential campaign. Describing people
+			who immigrate from Mexico to the US (it's not clear to me if he
+			was talking about all Mexican immigrants or just undocumented
+			Mexican immigrants), Trump said, "<a href="https://www.washingtonpost.com/news/the-fix/wp/2017/06/16/theyre-rapists-presidents-trump-campaign-launch-speech-two-years-later-annotated/"><em>They're
+			bringing drugs. They're bringing crime. They're rapists. And some,
+			I assume, are good people.</em></a>" These remarks were widely
+			criticized, as they should be, but also prompted widespread
+			debate over what they actually meant. Many people incorrectly
+			claimed that Trump said all undocumented Mexican immigrants
+			(or even "<a href="https://www.politifact.com/factchecks/2016/aug/08/tim-kaine/tim-kaine-falsely-says-trump-said-all-mexicans-are/">all
+			Mexicans</a>") are rapists. But he didn't actually say that;
+			he said a generic statement. Thus, in response to those
+			criticisms, Trump supporters often replied, "He didn't say
+			they <em>all</em> are!". And in fact they were right; the
+			last little bit of the quote makes that explicit (as long
+			as we adopt the extra assumption that "good people" are
+			not rapists; this seems like a very reasonable assumption to me).
+			My point here is not that what Trump said was good; it certainly
+			was not, for other reasons (e.g., due to the Gricean principle
+			of relevance, the fact that these characteristics are the ones
+			he thought important to highlight certainly says something, and
+			there is no doubt that these and similar remarks incited lots
+			of anti-Latinx and anti-immigrant sentiment and hate crimes
+			throughout the country). My point, rather, is that many
+			of the arguments about generic statements end up missing
+			these other points, because people interpret these statements
+			in different ways and end up talking around one another.</p>
+		<p class="centercol">The ability to make a strong statement
+			while leaving yourself some wiggle room and ability to back
+			out of that statement is one of the things that makes
+			generic statements so powerful (and so dangerous). In fact,
+			this characteristic is not unique to generic statements; as
+			we will see in the "<a href="../Benefits/">Benefits of indirect
+			utterances</a>" module near the end of class, this ability is
+			one of the main reasons language has pragmatics at all.</p>
+
+		<h3 class="centercol">Video summary</h3>
+		<center><iframe width="560" height="315" src="https://www.youtube.com/embed/OPv5RIeHiWQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
+
+
+		<h3 class="centercol">In-class activities</h3>
+
+		<center>
+
+		<button class="collapsible">Generics and "striking" features</button>
+		<div class="content">
+			<p>As we noted above, people are even more willing to accept a
+				generic statement as true with little evidence if the statement
+				is about a feature that is dangerous, distinctive, or "striking".
+				In other words, people might normally accept "<em>Morseths have silver
+				fur</em>" (this is another example from Cimpian et al., 2010)
+				as true if actually 70% of morseths have silver fur; but if they are
+				first told that morseth's silver fur is dangerous because it sheds
+				air particles that can cause breathing difficulty, then they might
+				accept "<em>Morseths have silver fur</em>" as true even if just 30%
+				or even just 10% of morseths have silver fur! <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2019.01971/full">Lazaridou-Chatzigoga
+				and colleagues (2019)</a> further showed that even young children
+				show this bias: children are more likely to make generalizations
+				based on generic statements about "striking" features than on
+				generic statements about "neutral" features.</p>
+			<p>Why do you think this happens? What communicative purpose do you think
+				it serves? And how could this make generic statements extra dangerous
+				(or, at least, extra prone to misinterpretation)?</p>
+		</div>
+
+
+		</center>
+
+
+		
+
+		
+	<hr>
+	<div style="width: 55%; margin-left: auto; margin-right: auto;">
+		<div style="float: left;"><a href="../Presupposition/">&#x27f5; Presupposition</a></div>
+		<div style="text-align: right;"><a href="../Nonrestrictive/">Non-restrictive modification &#x27f6;</a></div>
+	</div>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-11-12. CC-BY-4.0.</p>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+    </body>
+</html>

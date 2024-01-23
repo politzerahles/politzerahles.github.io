@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>What ANOVA is</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>What ANOVA is (2 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">(<strong>I recommend you complete the "Introduction to inferential statistics and t-tests" module before
+	attempting this module.</strong>)</p>
+<p class="centercol">Analysis of variance (ANOVA) is a sort of weird technique. I actually have not done an ANOVA in many years, because the things that
+	ANOVA does can be accomplished with other methods and I prefer those other methods. Nevertheless, learning about ANOVA is useful
+	because it will introduce you to some concepts that are important for other statistical techniques as well: particularly, the
+	concept of a <em>factorial design</em> (including main effects, simple effects, and interactions), and the concept of <em>multiple
+	comparisons</em>. Therefore, let's learn the basics of what ANOVA is, because that will allow you to learn about those other
+	concepts, and those concepts will continue to be relevant even if you never run an ANOVA again in your life.</p>
+<p class="centercol">Complete the activities below to get familiar with what ANOVA does and how it works.</p>
+
+
+		<center>
+
+
+		<button class="collapsible">What ANOVA does</button>
+		<div class="content">
+			<p>By now you should know that <em>t</em>-test tests whether the means of two groups of data are different (this might be
+				two independent groups, such as native speakers vs. L2ers, or it might be two dependent/paired groups, such as
+				people's pretest scores and those same people's post-test scores). ANOVA tests whether the means of <em>two
+				<span style="text-decoration: underline;">or more</span> groups</em> are different. If you do ANOVA with two groups
+				of data, it's equivalent to a <em>t-</em>test. But if you have more than two groups, ANOVA tests whether there is a
+				significant difference <em>anywhere</em> within that set of groups. For example, imagine you compare speakers of
+				three languages (English, Mandarin, and Cantonese) on some measure. There are three pairwise comparisons you could
+				make here: English vs. Mandarin, English vs. Cantonese, or Mandarin vs. Cantonese. (And that's not even starting to
+				think about more complex comparisons, like "English vs. the average of Mandarin and Cantonese".) You could analyze
+				this by doing three separate <em>t</em>-tests. Or, you could first do an ANOVA, which will tell you whether
+				<em>any</em> of these comparisons shows a significant difference. If your ANOVA suggests that there are no
+				significant differences among these groups, then you don't need to bother doing the three <em>t</em>-tests; the ANOVA
+				already told you there's nothing to find here. On the other hand, if your ANOVA suggests that there is a significant
+				difference among these groups, then you will need to go ahead and do <em>t</em>-test to figure out exactly which
+				pair of groups (or which complex difference) shows the difference.</p>
+			<p>The reason I rarely do this is because I don't do research like this. Think about the module on research questions and
+				hypotheses: "there is some difference somewhere within these three groups I measured" is a crappy hypothesis. Usually
+				if I bothered to collect data from three groups, then I already have some specific hypotheses (e.g., "I think
+				Cantonese will be significantly higher than English but not significantly higher than Mandarin") and I just directly
+				go to those <em>t</em>-tests. However, there may be some limited situations where this kind of ANOVA is useful. For
+				example, if you truly do have a ton of data from a ton of groups and you don't have predictions about it, then doing
+				an ANOVA (rather than a ton of <em>t</em>-tests) can at least tell you whether it's worthwhile to look into the
+				comparisons in more detail. If the ANOVA doesn't come out significant, then you know you have no justification to
+				look into more specific comparisons.</p>
+			<p><em>Describe a situation relevant to your own research in which you might use ANOVA. Also describe an alternative way
+				you could analyze the same data with one or more </em>t<em>-tests.</em></p>
+		</div>
+
+		<button class="collapsible">How ANOVA works</button>
+		<div class="content">
+			<p>Remember that <em>t</em>-tests work by comparing the mean of one condition to the mean of another condition (review the
+				"Introduction to inferential statistics and t-tests" module to review the specific formula for this). How does ANOVA
+				work? Let's first think about how ANOVA works for an analysis with only two conditions (groups), and then generalize
+				that to analyses with more conditions. We won't get into the specific math or formulae here (you can find that in any
+				statistics textbook or many websites and online tutorials), but just the general logic.</p>
+			<p>As its name implies, ANOVA works by analyzing the variance in your dataset. In a dataset with two groups, there are two
+				kinds of variance: <em>within-group</em> variance and <em>between-groups</em> variance. Between-groups variance is
+				how much different one group is from the other. Within-group variance is how much the data (e.g. the people) within
+				the same group are different from each other. ANOVA essentially takes a ratio between the two:</p>
+			<center><big>\(\frac{between}{within}\)</big></center>
+			<p>If the between-groups variance is much bigger than the within-group variance, that means that two people from different
+				groups tend to be much more different than two people from the same group&mdash;in other words, the group difference
+				is pretty big. In this situation, this ratio will be higher than 1, and the ANOVA will be likely to be significant.</p>
+			<p>On the other hand, if the between-groups variance is smaller than the within-group variance, that means there is very
+				little difference between the groups. In this situation, this ratio will be lower than 1, and the ANOVA will not be
+				significant.</p>
+			<p>For example, imagine if we took a group of 2-year-old babies and a group of adult NBA basketball players and measured
+				their heights. 2-year-old babies are pretty short, and NBA basketball players are pretty tall, so the between-groups
+				variation is very big. Likewise, there's not a lot of variation in height among two-year-old babies (they're all
+				small), and not a lot of variation among NBA basketball players (they're all tall), so within-groups variation is
+				very small. The between/within ratio will be very big, and the ANOVA will surely come out significant.</p>
+			<p>Alternatively, imagine if we took a group of PhD students from PolyU and a group of PhD students from HKU. I don't have
+				any particular reason to believe that PolyU students tend to be taller or shorter than HKU students; the
+				between-groups difference is probably pretty small. But there's a lot of variation within groups; even in our own
+				class we probably have some short students and some tall students. (Thinking about CBS professors, who used to be
+				PhD students, there are some short ones like me and Yao, and some tall ones like Prof. Huang.) So the within-groups
+				variation is big. The between/within ratio in this case will be small (probably below 1), and the ANOVA will surely
+				not be significant.</p>
+			<p>This stuff all works the same for an ANOVA with more than two groups. It's still examining how much variation there is
+				between the groups (in this case, several groups), vs. how much variation there is within each group.</p>
+			<p>From this discussion, you should realize there are at least four possible combinations of variances (here I'm ignoring
+				more complicated situations where one group has a lot of within-group variance and another group doesn't):</p>
+			<ul>
+				<li>between is high, within is low</li>
+				<li>between is low, within is high</li>
+				<li>between is high, within is high</li>
+				<li>between is low, within is low</li>
+			</ul>
+			<p>For this question, choose <span style="text-decoration: underline;"><em>at least <strong>three</strong></em></span>
+				of the above combinations, and for each one prepare the following stuff:</p>
+			<ul>
+				<li>A graph showing what the data for this combination should look like. You can use a scatterplot like the example
+					shown below. Unlike this example, your graph should have meaningful labels for the y-axis and the group names
+					(i.e., you should think of a realistic scenario in which you might see this data pattern, similar to what I did
+					above for the NBA and PolyU/HKU examples). If you aren't comfortable using software like Excel/R/etc. to make a
+					graph, feel free to just draw by hand and take a photo of your drawing.</li>
+				<li>A statement of which combination this is (e.g. between-high within-low; between-low within-low; etc.)</li>
+				<li>A statement of whether you think this dataset would likely show a significant ANOVA effect or not</li>
+			</ul>
+			<center><img src="anova1.png" alt="A pair of univariate scatterplots (strip charts), showing the data distributions for two fake groups." width=50% /></center>
+		</div>
+
+
+		</center>
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			"<a href="factorial-designs.html">Factorial designs</a>".</p>
+
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-15. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+
+

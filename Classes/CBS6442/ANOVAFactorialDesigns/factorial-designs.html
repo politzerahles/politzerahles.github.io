@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Factorial designs</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Factorial designs (4 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+		<p class="centercol">What we discussed in the previous task was technically a <em>one-way</em> (also called <em>one-factor</em>)
+			ANOVA. It's an analysis where you have one dependent variable (e.g., height) and one independent variable (e.g., group;
+			this independent variable might have two levels [babies vs. NBA players] or it might have many levels [English speakers
+			vs. Mandarin speakers vs. French speakers vs. Bantu speakers]).</p>
+		<p class="centercol">Things get more interesting, and ANOVA gets more useful, when we consider designs with more than one
+			independent variable. If the variables are completely crossed (i.e., all combinations of each variable do actually occur in
+			the design), that's called a <em>factorial design</em>. For example, imagine you measure the height of basketball players
+			vs. jockeys, and you do that in both Hong Kong and Canada. Then you've got a factorial design:</p>
+<center>
+<table border="0">
+<tr>
+	<td>&nbsp;</td>
+	<td><strong>Canada</strong></td>
+	<td><strong>Hong Kong</strong></td>
+</tr>
+<tr>
+	<td><strong>Basketball players</strong></td>
+	<td>Canadian basketball players</td>
+	<td>HK basketball players</td>
+</tr>
+<tr>
+	<td><strong>Jockeys</strong></td>
+	<td>Canadian jockeys</td>
+	<td>HK jockeys</td>
+</tr>
+</table>
+</center>
+<p class="centercol">This is the sweet spot. This is a good way to design research. In a factorial design like this, you can examine not
+	only the boring pairwise comparisons between specific groups (e.g. Canadian jockeys vs. HK basketball players), but also more
+	complicated comparisons, like "basketball players overall vs. jockeys overall", "is the difference between basketball players and
+	jockeys in Canada bigger than the difference between basketball players and jockeys in HK", etc. This opens you up to test more
+	meaningful and interesting hypotheses.</p>
+<p class="centercol">In a factorial design like this, there are multiple different kinds of effects we can examine, including main
+	effects, interactions, and simple effects. Read <span style="text-decoration: underline;"><em>at least two</em></span> of the below
+	readings to get familiar with what these kinds of effects are. (If you're already pretty confident that you get the idea, you might
+	just need to read the shorter ones, like Politzer-Ahles or Gelman. If you think you need more detailed and wordy explanation before
+	you fully get it, make sure to read at least one of the longer ones, like or Krantz.) When you're done, continue on to the questions
+	to test your understanding.</p>
+<ul class="center">
+	<li><a href="ANOVA_effects.pdf">Politzer-Ahles - ANOVA effects</a></li>
+	<li><a href="https://psych.hanover.edu/classes/ResearchMethods/Readings/Main_effects_and_interactions.pdf">Main effects and interactions by John Krantz</a> (from <a href="https://psych.hanover.edu/classes/ResearchMethods/">Hanover College PSY220</a>)</li>
+	<li><a href="https://statmodeling.stat.columbia.edu/2016/05/25/the-difference-between-significant-and-not-significant-is-not-itself-statistically-significant-education-edition/">The difference between "significant" and "not significant" is not itself statistically significant: Education edition</a> (Gelman)</li>
+	<li>Pretty much any intro statistics textbook will have a chapter on two-way ANOVA which will discuss these effects</li>
+</ul>
+
+
+		<center>
+
+
+		<button class="collapsible">Brainstorm example patterns of effects</button>
+		<div class="content">
+			<p>If you understand what the various effects are, you should be able to draw what they look like. For example, the below
+				drawing shows a situation in which there is a main effect of Test (pretest vs. posttest), no main effect of Group
+				(Mandarin vs. Cantonese) and no interaction:</p>
+			<center><img src="anova2.png" alt="A 2x2 barplot showing the following situation: Mandarin pretest = 5, Cantonese pretest = 5, Mandarin posttest = 7, Cantonese posttest = 7" width=60% /></center>
+			<p>This is just one possible situation that could occur in a factorial ANOVA. There are many others (main effects in both
+				factors, but no interaction; main effect in one factor, an interaction, but no main effect in the other factor; no
+				main effects, but an interaction; no main effects and no interaction; etc.). In situations where there is an
+				interaction, there are a lot of possible kinds of interactions that can appear (the simple effect of pre-post for
+				Mandarin speakers might be bigger than it is for Cantonese speakers, or might be smaller, or might even be in the
+				opposite direction).</p>
+			<p>Draw <em><span style="text-decoration: underline;"><strong>at least three</strong></span></em> possible patterns of
+				effects, like what I drew above. Make sure your graphs have labels (you can use the same labels as mine, or you can
+				make up another set of factors that is more related to your own research). If you aren't confident using software
+				like R/Excel/etc., it's ok to just draw your graphs by hand and take photos of them. For each graph, you should put a
+				title or caption describing what situation it is (e.g., my graph above would be captioned "Main effect of Test, no
+				main effect of Group, and no interaction").</p>
+		</div>
+
+		<button class="collapsible">Hacking a factorial ANOVA with a bunch of <em>t</em>tests</button>
+		<div class="content">
+			<p>Remember that in the first task of this module, I said that I almost never use ANOVA, because I can accomplish the same
+				things with other tests. That also applies to factorial ANOVA. If I'm interested in looking at a main effect, or an
+				interaction, or whatever, there are other ways to do it.</p>
+			<p>But this also depends on the nature of the data; it will work differently if I have <em>independent</em> data or
+				<em>paired</em> (dependent, repeated measures) data. (Review the "Introduction to inferential statistics and t-tests
+				module" if you don't remember what these terms mean.)</p>
+			<p>Imagine that I have a factorial study design with four groups (conditions), and they're all paired. In other words, the
+				four measurements from the four conditions come from the same person; I have no independent groups. For example,
+				maybe I gave people a syntax pretest and posttest, and also a phonetics pretest and posttest, so each person took
+				four tests. Here's some fake data from a situation like this:</p>
+			<table border="0">
+				<tr>
+					<td><strong>Participant</strong></td>
+					<td><strong>Syntax pretest</strong></td>
+					<td><strong>Syntax posttest</strong></td>
+					<td><strong>Phonetics pretest</strong></td>
+					<td><strong>Phonetics posttest</strong></td>
+				</tr>
+				<tr><td>ptp001</td><td>70</td><td>85</td><td>82</td><td>79</td></tr>
+				<tr><td>ptp002</td><td>53</td><td>80</td><td>37</td><td>50</td></tr>
+				<tr><td>ptp003</td><td>91</td><td>94</td><td>78</td><td>77</td></tr>
+				<tr><td>ptp004</td><td>60</td><td>58</td><td>61</td><td>42</td></tr>
+				<tr><td>ptp005</td><td>69</td><td>81</td><td>55</td><td>62</td></tr>
+			</table>
+			<p>If I wanted to, I could test these in an ANOVA. (Technically I'd need a <em>repeated-measures ANOVA</em>. Just like t-tests include
+				independent t-tests and dependent t-tests, ANOVA has different versions&mdash;normal ANOVA vs. repeated-measures ANOVA&mdash;depending
+				on whether your data come from independent groups or paired groups.)</p>
+			<p>But I find it easier to use <em>t</em>-tests. Recall that a design like this includes two main effects, an interaction, and a bunch of
+				simple effects. Imagine I want to see the main effect of test (i.e., compare the overall posttest scores to the overall pretest
+				scores). That just means I want to see if the <em>average</em> of the syntax and phonetics post-tests is higher than the
+				<em>average</em> of the syntax and phonetics pre-tests. Person #1 got 85 points on their syntax post-test and 79 points on their
+				phonetics post-test, so their <em>average</em> post-test score is 82 (halfway between 85 and 79). I could calculate the average
+				scores for each person's post-test and each person's pre-test, to get a table like the following:</p>
+			<table border="0">
+				<tr>
+					<td><strong>Participant</strong></td>
+					<td><strong>Pretest</strong></td>
+					<td><strong>Posttest</strong></td>
+				</tr>
+				<tr><td>ptp001</td><td>76</td><td>82</td></tr>
+				<tr><td>ptp002</td><td>45</td><td>65</td></tr>
+				<tr><td>ptp003</td><td>84.5</td><td>85.5</td></tr>
+				<tr><td>ptp004</td><td>60.5</td><td>50</td></tr>
+				<tr><td>ptp005</td><td>62</td><td>71.5</td></tr>
+			</table>
+			<p>Now that it's two columns of data, it would be easy to do as a <em>t</em>-test. And the result you get for this
+				<em>t</em>-test will be mathematically equivalent to what you get for the main effect of pre vs. post in a
+				repeated-measures ANOVA.</p>
+			<p>Likewise, you can do the exact same thing to examine the syntax vs. phonetics scores: I can calculate each person's average
+				syntax score (the average of their syntax pre-test and their syntax post-test) and average phonetics score, and compare them in a t-test. I won't write out the table here, but you should be able to figure it out.</p>
+			<p>Finally, I can also test interactions like this. In this kind of design an interaction would just mean that the
+				pre-vs.-post difference for syntax is not the same as the pre-vs.-post difference for phonetics. (Or, alternatively,
+				the syntax-phonetics difference at the pretest is not the same as the syntax-phonetics difference at the posttest;
+				these are different but mathematically equivalent ways of expressing the same interaction.) So, again, I can turn
+				this into a <em>t</em>-test. For each person, I can calculate their syntax improvement score (syntax post-test minus
+				syntax pre-test, i.e., how much they improved on syntax) and their phonetics improvement score. Participant #1 went
+				from a syntax pre-test of 70 to a syntax post-test of 85, i.e., this participant's syntax score improved by 15
+				points. Following this logic, we can make a table like this:</p>
+			<table border="0">
+				<tr>
+					<td><strong>Participant</strong></td>
+					<td><strong>Syntax improvement</strong></td>
+					<td><strong>Phonetics improvement</strong></td>
+				</tr>
+				<tr><td>ptp001</td><td>15</td><td>-3</td></tr>
+				<tr><td>ptp002</td><td>27</td><td>13</td></tr>
+				<tr><td>ptp003</td><td>3</td><td>-1</td></tr>
+				<tr><td>ptp004</td><td>-2</td><td>-19</td></tr>
+				<tr><td>ptp005</td><td>12</td><td>7</td></tr>
+			</table>
+			<p>Once again, I can do a simple <em>t</em>-test to see if people improved in syntax more than they improved in phonetics.
+				If their improvement in syntax is different from their improvement in phonetics, that's an interaction. (A rule of
+				thumb to keep in mind: something that can be explained by just referring to one variable is a main effect, and
+				something that can only be explained by referring to both variables is an interaction. "People scored higher on the
+				post-test than the pre-test" is a main effect, because I only mentioned the pre-vs.-post variable. "The amount that
+				people improved from pretest to posttest was bigger for syntax than it was for phonetics" is an interaction, because
+				I had to mention both the pre-vs.-post variable <em>and</em> the syntax-vs.-phonetics variable.)</p>
+			<hr />
+			<p>All the above discussion was illustrating how I could turn an ANOVA into simpler <em>t</em>-tests
+				<span style="text-decoration: underline;"><strong>if the conditions are all paired/dependent/repeated-measure</strong></span>
+				(i.e., if the measurements come from the same person).</p>
+			<p>This strategy is not possible if I have independent groups (e.g., HK jockeys vs. Canadian jockeys vs. HK basketball
+				players vs. Canadian basketball players; these are four separate groups of people [assuming that there's no
+				multitalented person in the sample who's both a basketball player and a jockey). It's still true that I can analyze
+				this without an ANOVA (I could do it using regression, which is a more complicated method which will be discussed in
+				another module), but I can't turn it into <em>t</em>-tests.</p>
+			<p><span style="text-decoration: underline;">Why not?</span></p>
+		</div>
+
+
+		</center>
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			"<a href="multiple-comparisons.html">Multiple comparisons</a>".</p>
+
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-15. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+
+

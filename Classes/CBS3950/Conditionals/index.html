@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+
+
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Conditionals</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body>
+
+
+<!--
+		<h2>Conditionals</h2>
+
+		<p class="centercol"><a href="../index.html">&#x21B5; Back to class homepage</a></p>
+
+		<p class="centercol">Conditionals are sentences with "<em>if</em>". They are
+			interesting testing grounds for lots of pragmatic issues.</p>
+
+		<h3 class="centercol">Logical <em>if</em></h3>
+		<p class="centercol">In formal logic (e.g. the way it's used in math, philosophy,
+			and computer science), "<em>if</em>" has a specific meaning. The best way
+			to illustrate it is with a <em>truth table</em>: a table showing what
+			the truth value of an expression like "<em>if P, then Q</em>" will be
+			in different situations. Here's a truth table for a simple conditional:</p>
+
+		<center>
+		<table border="1" width=33% style="text-align: center;">
+		<tr><td width=30%><strong><em>P</em></strong></td><td width=30%><strong><em>Q</em></strong></td><td width=40%><strong>"<em>if <em>P</em>, then <em>Q</em>"</strong></td></tr>
+		<tr><td>T</td><td>T</td><td style="text-align: center">T</td></tr>
+		<tr><td>T</td><td>F</td><td style="text-align: center">F</td></tr>
+		<tr><td>F</td><td>T</td><td style="text-align: center">T</td></tr>
+		<tr><td>F</td><td>F</td><td style="text-align: center">T</td></tr>
+		</table>
+		</center>
+
+		<p class="centercol">In other words, "<em>if P, then Q</em>" means: if <em>P</em> is true
+			then <em>Q</em> must be true, and if <em>P</em> is false then <em>Q</em> could be true or not true.
+			We can see this from the truth table: the only way for "<em>if P, then Q</em>"
+			to be false is the second row, where <em>P</em> is true but <em>Q</em> is false.</p>		
+
+		<h3 class="centercol"><em>if</em> and downward entailment</h3>
+		<p class="centercol">The <em>antecedent</em> of a conditional (i.e., the <em>P</em> part
+			in all the examples above) is a downward-entailing environment. In other words, 
+			if an <em>if</em> statement with a bigger set in its antecedent is true, then
+			a corresponding one with a smaller set in its antecedent must also be true:</p>
+		<ul class="center">
+			<li><em>If you like <strong>cats</strong>, we will be friends.</em></li>
+			<li><strong>entails:</strong> <em>If you like <strong>black cats</strong>, we will be friends.</em></li>
+		</ul>
+		<p class="centercol">This property makes <em>if</em> statements interact with quantity
+			implicatures in interesting ways. As we saw in <a href="../StrongerAlternatives/">the
+			module on alternatives</a>, an expression that would be a stronger alternative
+			becomes weaker if it's in a downward-entailing context. For example, <em>all</em>
+			normally entails <em>some</em>, and thus an utterance like "<em>I finished some
+			of the readings</em>" often implies that I did not finish all of the readings.
+			But if we put the <em>some</em> expression into the antecedent of a conditional,
+			the pattern changes.</p>
+		<p class="centercol">Imagine I tell you, "<em>If you finish some of the readings,
+			you'll get an A</em>". Does this imply "If you finish some-but-not-all of the
+			readings, you'll get an A?" It does not seem to. (Imagine how you would
+			feel if you finish all of the readings and I give you an F and say, "I
+			didn't promise to give you an A if you finish <em>all</em> of the readings,
+			only if you finish <em>some</em> of them." You would probably feel like
+			I'm being pretty unfair!)</p>
+		<p class="centercol">To see this formally, we can look at truth tables for
+			the statement under each interpretation. The below table shows
+			six possible scenarios, and shows whether the statement "<em>If
+			you finish some of the readings, you'll get an A</em>" is true
+			or false under each scenario. The middle column shows the
+			truth or falsity of the statement when <em>some</em> is interpreted
+			logically (as "more than zero, up to and including all"), and
+			the right-hand column shows the truth or falsity when <em>some</em>
+			is interpreted as meaning "some but not all".</p>
+		
+		<center>
+		<table border="1" width=33% style="text-align: center;">
+		<tr><td><strong>Situation</strong></td><td><strong><em>some</em>-existential</strong></td><td><strong><em>some</em> but not all</strong></td></tr>
+		<tr><td>Read all and get an A</td><td>T</td><td>T</tr>
+		<tr><td>Read half and get an A</td><td>T</td><td>T</tr>
+		<tr><td>Read none and get an A</td><td>T</td><td>T</tr>
+		<tr><td>Read all and not get an A</td><td>F</td><td>T</tr>
+		<tr><td>Read half and not get an A</td><td>F</td><td>F</tr>
+		<tr><td>Read none and not get an A</td><td>T</td><td>T</tr>
+		</table>
+		</center>
+
+		<p class="centercol">What we can see from this table is that interpreting
+			<em>some</em> literally (as "more than zero, up to and including
+			all") makes the conditional stronger (more informative) because
+			it makes the conditional true in fewer situations. The situations
+			in which this interpretation of the conditional is true (the
+			middle column) are a subset of the situations in which the
+			conditional with a "some-but-not-all" interpretation (the
+			right column). That may explain why <em>some</em> does not
+			get interpreted as "some but not all" in this context:
+			that interpretation would yield a weaker alternative rather
+			than a stronger one.</p>
+	
+		<h3 class="centercol">Complications</h3>
+		<p class="centercol">There is a complication, though. In actual
+			language use, people don't seem to use <em>if</em> to mean
+			what a logical conditional means.</p>
+		<p class="centercol">For example, imagine that there are two
+			ways to get from your house to your school. One way is to
+			walk on the main street, and it generally takes about 10
+			minutes. Another way is to cut through a park, and it
+			generally takes about 5 minutes. Someone might tell you,
+			"<em>If you cut through the park, you can get to school in
+			five minutes.</em>"
+		<p class="centercol">This is not literally true if we interpret
+			<em>if</em> logically. Logically, this statement would mean
+			that if you cut through the park you are <em>guaranteed</em>
+			to be able to get to school in five minutes. But you can
+			probably imagine situations where this does not hold. For
+			example, if you cut through the park but there is
+			construction blocking the entrance to the school, you might
+			not be able to get there in five minutes. Or if you cut
+			through the park and fall and break your leg, you might
+			not be able to get there in five minutes.</p>
+		<p class="centercol">Some analysts (going back at least to
+			<a href="https://kb.osu.edu/bitstream/handle/1811/85984/WPL_08_June_1971_150.pdf?sequence=1">Geis
+			& Zwicky, 1971</a>) have proposed that in natural languages
+			we tend to interpret conditionals as if they mean "<em>if
+			and only if</em>". In other words, "<em>If P, then Q</em>"
+			gets interpreted as "<em>If P, then Q; and if Q, then P</em>".
+			Or, equivalently: "<em>If P, then Q; and if not P, then not
+			Q</em>". (If you want to see how these are equivalent, try
+			making truth tables for "if Q, then P" and for "if not P,
+			then not Q". Or, think about how "if Q, then P" means that
+			the only way for P to be false is if Q is also false.)</p>
+		<p class="centercol">This seems like a more accurate description
+			of the example above; what it seems to mean is that the
+			only way to get to campus in five minutes is to take the
+			shortcut through the park. In other words, if you don't
+			take the shortcut through the park, you won't make it
+			to campus in five minutes (<em>if not P, then not Q</em>);
+			or, equivalently, if you made it to campus in five minutes,
+			then you must have taken the shortcut through the park
+			(<em>if Q, then P</em>). This also seems to work for
+			similar examples like "<em>If you mow the lawn, I'll
+			pay you $5</em>" (we usually interpret this as meaning
+			that the speaker won't pay us $5 if we don't mow the lawn).</p>
+		<p class="centercol">Some theories have proposed (see, e.g., Levinson,
+			chapter 2) 
+		<p class="centercol">In fact it seems to me that the natural-language
+			interpretation of a condition is not even "<em>if and only if</em>",
+			but just "<em>only if</em>". As already discussed above,
+			"<em>if you cut through the park, you can get to school in
+			five minutes</em>" does not seem to mean that cutting through
+			the park <em>guarantees</em> you'll reach campus in five minutes;
+			rather, it seems to mean that cutting through the park <em>is
+			required</em> in order to get to campus in five minutes. So,
+			this is closer to meaning "<em>only if</em> you cut through the park
+			can you get to school in five minutes" than to "<em>if and only if</em>
+			you cut through the park can you get to school in five minutes."
+			In fact, we can imagine counterexamples that make any of these
+			conditionals false (above we imagined situations where you
+			could cut through the park but still not make it to school in
+			five minutes; conversely, we could imagine situations where you
+			don't get to the park but do get to school in five minutes,
+			e.g., if you take the long route but run top speed), but the
+			condition feels to me like it is intended to communicate
+			<em>only if</em>.</p>
+		<p class="centercol">Let's return to the initial example of "<em>If
+			you do some of the readings, you'll get an A</em>". To me, this
+			really seems to be communicating an <em>only if</em> sense;
+			it doesn't sound like it's guaranteeing that you'll get an
+			A (because, for example, if you do some of the readings but
+			you also cheat and plagiarize something, or if you do some
+			of the readings but you drop the class, then you won't get
+			an A). It sounds more like doing all the readings is
+			necessary, but not sufficient, for getting an A.</p>
+		<p class="centercol">To see how this works with "<em>some</em>",
+			let's try some truth tables again. First, a truth table
+			for what happens if we interpret the "<em>if</em>" as
+			"<em>only if</em>" (i.e., "only if you do some of the
+			readings can you get an A", or equivalently, "if you
+			don't do some of the readings, you won't get an A", or
+			equivalently, "to get an A, you have to have done some
+			of the readings"):</p>
+
+		<center>
+		<table border="1" width=33% style="text-align: center;">
+		<tr><td><strong>Situation</strong></td><td><strong><em>some</em>-existential</strong></td><td><strong><em>some</em> but not all</strong></td></tr>
+		<tr><td>Read all and get an A</td><td>T</td><td>F</tr>
+		<tr><td>Read half and get an A</td><td>T</td><td>T</tr>
+		<tr><td>Read none and get an A</td><td>F</td><td>F</tr>
+		<tr><td>Read all and not get an A</td><td>T</td><td>T</tr>
+		<tr><td>Read half and not get an A</td><td>T</td><td>T</tr>
+		<tr><td>Read none and not get an A</td><td>T</td><td>T</tr>
+		</table>
+		</center>
+
+
+		<h3 class="centercol">In-class activities</h3>
+
+	
+
+		
+
+		
+	<hr>
+	<div style="width: 55%; margin-left: auto; margin-right: auto;">
+		<div style="float: left;"><a href="../Genericity/">&#x27f5; Genericity</a></div>
+		<div style="text-align: right;"><a href="../Nonrestrictive/">Non-restrictive modification&#x27f6;</a></div>
+	</div>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-10-28. CC-BY-4.0.</p>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+-->
+
+    </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Stephen Politzer-Ahles</title>
+        <link rel="stylesheet" type="text/css" href="stevetools_stylesheet.css" />
+    </head>
+
+    <body style="background:#DCDCDC">
+
+	<center><button onclick="openStuff();">Click here to open the experiment.</button></center>
+
+
+<script type="text/javascript">
+
+// the used links
+
+var links = [
+"stroop1.pdf",
+"stroop2.pdf",
+"stroop3.pdf"];
+
+openStuff = function () {
+    // get a random number between 0 and the number of links
+    var randIdx = Math.random() * links.length;
+    // round it, so it can be used as array index
+    randIdx = parseInt(randIdx, 10);
+    // construct the link to be opened
+    var link = 'http://people.ku.edu/~sjpa/stroop/' + links[randIdx];
+    // open it in a new window / tab (depends on browser setting)
+    window.open(link);
+};
+
+
+</script>
+</body>
+</html>

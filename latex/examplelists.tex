@@ -1,0 +1,42 @@
+\documentclass[letterpaper,12pt]{article}
+\pagestyle{empty}
+\usepackage{gb4e}
+
+\begin{document}
+
+This document demonstrates how to use the package \texttt{gb4e} to make lists of examples. 
+
+\section{Simple list of examples}
+\begin{exe}
+\ex This is the first example.
+\ex This is the second example.
+\ex Ok, that's enough examples.
+\end{exe}
+
+\section{Examples with judgments}
+\begin{exe}
+\ex[]{I ate an apple.}
+\ex[*]{I ate apple an.}
+\ex[\%]{An apple ate me.}   %We have to write the percentage sign as \%, rather than just %, because % by itself is a command in the LaTeX language
+\ex[?]{I ate me.}
+\end{exe}
+
+\section{Embedded example lists}
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex{I gave John a book.}
+	\ex[\%]{I gave a book John.}
+	\ex[*]{I gave a John book.}
+	\end{xlist}
+\ex
+	\begin{xlist}
+	\ex{I gave a book to John.}
+	\ex[\%]{I gave John to a book.}
+	\ex[?]{I gave to John a book.}
+	\end{xlist}
+\end{exe}
+
+Thanks for reading!
+
+\end{document}

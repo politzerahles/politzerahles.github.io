@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage[margin=1in,
+vmargin={0pt,1in},
+includefoot,includehead]{geometry}
+\usepackage{soul}
+
+\begin{document}
+
+
+Use [hbp] after the $\backslash$begin\{table\} command to tell \LaTeX{} where to try and put the table. It will try each of the locations you tell it to, in that
+order, until it is able to put the table somewhere:
+
+\begin{table}[hbp]
+\begin{tabular}{c | l}
+Command & Where it puts the table \\
+\hline
+\texttt{h} & right \textul{here} (i.e., the current position in the text) \\
+\texttt{b} & at the \textul{bottom} of the page \\
+\texttt{t} & at the \textul{top} of the page \\
+\texttt{p} & on its own \textul{page}
+\end{tabular}
+
+\end{table}
+
+\ \\
+
+Now we will describe how the above table was made. To allow the table to float in your text, the whole thing has to go in a \{table\} environment ($\backslash$begin\{table\} \ldots{} $\backslash$end\{table\}).
+
+\ \\
+
+Inside that, the table itself is in a \{tabular\} environment. The first line of the environment specifies how many columns there are and how they're alined, as
+well as the borders between columns:
+\begin{quote}
+\texttt{$\backslash$begin\{tabular\}\{c | l\}}
+\end{quote}
+specifies that you will be creating a table with one center-aligned column, then a vertical border, then a left-aligned column.
+
+\ \\
+
+After this, you can create the header of the table. Write the content of each column, separated by \texttt{\&}. End with the newline command ($\backslash$$\backslash$) to begin the next row:
+\begin{quote}
+\texttt{Command \& Where it puts the table $\backslash$$\backslash$}
+\end{quote}
+
+\ \\
+
+Add \texttt{$\backslash$hline} to create a horizontal line, separating the header from the body of the table. Then create each row of the table, lining up the
+columns and separating them with \texttt{\&} just like you did for the header. The end result should look like:
+\begin{quotation}
+\ \\
+\texttt{$\backslash$begin\{table\}[hbp]}\\
+\indent\texttt{$\backslash$begin\{tabular\}\{c | l\}}\\
+\indent\texttt{Command \& Where it puts the table $\backslash$$\backslash$}\\
+\indent\texttt{$\backslash$hline}\\
+\indent\texttt{h \& right here (i.e., the current position in the text) $\backslash$$\backslash$}\\
+\indent\texttt{b \& at the bottom of the page $\backslash$$\backslash$}\\
+\indent\texttt{t \& at the top of the page $\backslash$$\backslash$}\\
+\indent\texttt{p \& on its own page}\\
+\indent\texttt{$\backslash$end\{tabular\}}\\
+\texttt{$\backslash$end\{table\}}
+\end{quotation}
+
+\ \\
+
+You can also do more advanced things with tables, such as having headers that span more than one row (using $\backslash$multicolumn) and adding captions, as shown
+below. Consult the \LaTeX{} manual for details.
+
+\begin{table}[hbp]
+\begin{center}
+\begin{tabular}{c l | c l}
+\multicolumn{2}{c}{[i]} & \multicolumn{2}{c}{[u]} \\
+ & & & \\
+Token no. & F$_2$ (Hz) & Token no. & F$_2$ (Hz) \\
+\hline
+1 & 1885 & 11 & 1593 \\
+2 & 1901 & 12 & 1643 \\
+3 & 1867 & 13 & 1710 \\
+4 & 2119 & 14 & 1593 \\
+5 & 2120 & 15 & 2060 \\
+6 & 2327 & 16 & 1810 \\
+7 & 1912 & 17 & 1410 \\
+8 & 2350 & 18 & 1510 \\
+9 & 2477 & 19 & 1960 \\
+10 & 2277 & 20 & 2093 \\
+\multicolumn{2}{c}{$mean=2124$} & \multicolumn{2}{c}{$mean=1738$}
+\end{tabular}
+\end{center}
+\caption{Frequency of F$_2$ for [s] tokens produced before [i] or [u]}
+\end{table}
+
+\end{document}

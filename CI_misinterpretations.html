@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .bigsource, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+	width:65%;
+	margin-left:auto; margin-right:auto;
+	border:1px solid #ccc;
+	overflow:auto;
+	background-color: #FFFFFF;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Demonstration of correct interpretation of confidence intervals</title>
+        <link rel="stylesheet" type="text/css" href="stevetools_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body>
+
+
+
+		<h2>A demonstration of the correct interpretation of confidence intervals</h2>
+
+		<h3 class="center">What confidence intervals mean</h3>
+		<p class="centercol">I frequently notice people interpreting confidence intervals (CIs) incorrectly. This isn't just me; 
+			<a href="http://isites.harvard.edu/fs/docs/icb.topic477909.files/misunderstood_confidence.pdf">Belia, Fidler, Williams, &amp; Cumming (2005)</a>
+			and <a href="http://www.ejwagenmakers.com/inpress/HoekstraEtAlPBR.pdf">Hoekstra, Morey, Rouder, &amp; Wagemakers (2014)</a>
+			have empirically documented how pervasive such misinterpretations are. For example, just today I encountered
+			someone in the ResearchGate question forum stating that a 95% CI means that, if you replicate an experiment 100 times
+			(drawing 100 new samples from the same population), about 95% of the means of these replication samples will fall within your
+			original CI. This is not true. What a 95% CI actually means is that, if you run the experiment 100
+			times and calculate a 95% CI for each one, about 95% of those 100  replication samples's CIs will include the actual population mean.</p>
+		<p class="centercol">That all might sound very theoretical, so let's to put it another way, with an applied example.
+			Say you do a semantic priming experiment and find a semantic priming effect of 40&nbsp;ms, with a 95% CI from 15&nbsp;ms
+			to 65&nbsp;ms. That does not mean that if you replicate it 100 times, 95 of the replications' mean priming effects will
+			be between 15 and 65 ms. It only means that if you run the experiment 100 times and calculate a 95% CI on each of those replications, about 95 of those 95% CIs will include
+			the "real" semantic priming effect, whatever that is. The CI actually gives you no explicit information about whether or not your
+			original sample actually contains the population mean (i.e., the "real" semantic priming effect), and thus <em>it doesn't actually
+			tell you where the population mean falls</em>. Nevertheless, we usually make the inference that, even though it's possible our
+			sample was one of the 5% of hypothetical samples that did not include the population mean, it is more likely that our
+			sample was one of the 95% that did; and, by extension, we make the inference that the population mean probably is within
+			our sample 95% CI, although we can't be sure. (Thus, while it's not technically true to say "There is a 95% chance that the
+			population mean falls within this 95% CI", it is fair to roughly treat the CI as a reasonable estimate for where we are
+			likely to think the population mean probably falls.)</p>
+		<p class="centercol">Importantly, though, this is very different than claiming that 95% of replication
+			samples fall within our CI. It is actually possible to have a situation where very few of the replication samples fall in
+			our CI. Imagine a situation where the true semantic priming effect in the population is 0&nbsp;ms (this might be
+			the case, for instance, with some type of very weak associative relationship, who knows), but any given sample (i.e.,
+			any given experiment) could show a larger- or smaller-than-zero effect because of sampling error. Maybe by sheer luck
+			we recruit a sample of 24 people and get a large priming effect of 40&nbsp;ms with a 95% CI from 15 to 65&nbsp;ms. 
+			Because the population mean is 0, though, if we replicated the experiment 100 times on new samples, very few of the
+			priming effects we observe would fall within that CI. It would very likely be less than 95% of the samples.</p>
+
+		<h3 class="center">A demonstration in R</h3>
+		<p class="centercol">You don't need to take my (and Belia et al.'s, and Hoekstra et al.'s) word for it; the beauty of a computer
+			is that we can actually create a fake population with some effect, and simulate a bunch of experiments from it, and use that
+			to see how CIs behave. Below is some R code that does exactly that.</p>
+
+		<p class="centercol">You can first look at the first chunk, which demonstrates
+			why it's incorrect to say a 95% CI means that 95% of replications will show effects falling within this CI. This code
+			chunk tests that (it takes a sample from the population, calculates a CI of its mean, and then takes a bunch more samples and sees how
+			many of their means fall within the original CI), and shows that it is often not the case. (If by sheer bad luck you run it and
+			all the simulations come out with 95% or more of the replication means falling in the original CI, just run it a few more times
+			and you should quickly get a lot of simulations with fewer than 95% of replication means falling in the original CI. My low
+			score so far is 24%.)</p>
+
+		<p class="centercol">The second chunk then shows the correct interpretation of a CI. It takes a lot of samples (i.e., runs a lot
+			of experiments) and sees how many of their CIs contain the population mean, which we actually know since we created this fake
+			population. Of course, in a real experiment, the population is unknown, which is why we can't actually know if our experiment's
+			CI did or did not capture the real population mean (although we can make the kinds of rough inferences described above).</p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">######################</span>
+<span class="hl com">### CI SIMULATIONS ###</span>
+<span class="hl com">######################</span>
+
+<span class="hl com"># Create a normally distributed population</span>
+<span class="hl std">population</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">rnorm</span><span class="hl std">(</span> <span class="hl num">1000000</span> <span class="hl std">)</span>
+
+<span class="hl com">### INCORRECT DEFINITION OF CI</span>
+<span class="hl com">### The following code chunk uses simulations to show</span>
+<span class="hl com">### that it is not true that 95% of hypothetical samples</span>
+<span class="hl com">### will fall within the original observed CI</span>
+
+<span class="hl com"># A function to simulate one &quot;real&quot; experiment and multiple hypothetical experiments</span>
+<span class="hl std">simulate_experiments_wrong</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span> <span class="hl kwc">n_simulation</span><span class="hl std">,</span> <span class="hl kwc">n_subj</span> <span class="hl std">){</span>
+
+        <span class="hl com"># Do an experiment: sample n_subj subjects from the population</span>
+        <span class="hl std">realsample</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sample</span><span class="hl std">( population, n_subj,</span> <span class="hl kwc">replace</span><span class="hl std">=T )</span>
+
+        <span class="hl com"># Get the 95% CI of this sample</span>
+        <span class="hl std">CI.lengths</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sd</span><span class="hl std">( realsample )</span> <span class="hl opt">/</span> <span class="hl kwd">sqrt</span><span class="hl std">(n_subj)</span> <span class="hl opt">*</span> <span class="hl kwd">qt</span><span class="hl std">(</span> <span class="hl num">.975</span><span class="hl std">, n_subj</span><span class="hl opt">-</span><span class="hl num">1</span> <span class="hl std">)</span>
+        <span class="hl std">realCI</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span> <span class="hl kwd">mean</span><span class="hl std">(realsample)</span><span class="hl opt">-</span><span class="hl std">CI.lengths,</span> <span class="hl kwd">mean</span><span class="hl std">(realsample)</span><span class="hl opt">+</span><span class="hl std">CI.lengths )</span>
+
+        <span class="hl com"># Get n_simulation samples and their means, to compare against the &quot;real&quot; experiment</span>
+        <span class="hl std">newsamplemeans</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">unlist</span><span class="hl std">(</span> <span class="hl kwd">lapply</span><span class="hl std">(</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">n_simulation,</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){</span> <span class="hl kwd">mean</span><span class="hl std">(</span> <span class="hl kwd">sample</span><span class="hl std">( population, n_subj,</span> <span class="hl kwc">replace</span><span class="hl std">=F ) ) } ) )</span>
+
+        <span class="hl com"># Make a histogram showing the original sample CI and the hypothetical sample means</span>
+        <span class="hl std">samplehist</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">hist</span><span class="hl std">( newsamplemeans,</span> <span class="hl kwc">xlab</span><span class="hl std">=</span><span class="hl str">&quot;Sample means&quot;</span><span class="hl std">,</span> <span class="hl kwc">main</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">)</span>
+        <span class="hl kwd">lines</span><span class="hl std">( realCI,</span> <span class="hl kwd">rep</span><span class="hl std">(</span> <span class="hl kwd">max</span><span class="hl std">(samplehist</span><span class="hl opt">$</span><span class="hl std">counts)</span><span class="hl opt">/</span><span class="hl num">2</span><span class="hl std">,</span> <span class="hl num">2</span><span class="hl std">),</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">,</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl num">4</span> <span class="hl std">)</span>
+        <span class="hl kwd">points</span><span class="hl std">(</span> <span class="hl kwd">mean</span><span class="hl std">(realsample),</span> <span class="hl kwd">max</span><span class="hl std">(samplehist</span><span class="hl opt">$</span><span class="hl std">counts)</span><span class="hl opt">/</span><span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">,</span> <span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span> <span class="hl std">)</span>
+        <span class="hl kwd">legend</span><span class="hl std">(</span> <span class="hl str">&quot;top&quot;</span><span class="hl std">,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">,</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl num">4</span><span class="hl std">,</span> <span class="hl kwc">legend</span><span class="hl std">=</span><span class="hl str">&quot;Observed CI&quot;</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">xpd</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">inset</span><span class="hl std">=</span><span class="hl opt">-</span><span class="hl num">.25</span> <span class="hl std">)</span>
+
+        <span class="hl com"># Get the proportion which are within the original CI</span>
+        <span class="hl std">proportion_in_original_CI</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">length</span><span class="hl std">(</span> <span class="hl kwd">which</span><span class="hl std">( newsamplemeans</span><span class="hl opt">&gt;=</span><span class="hl std">realCI[</span><span class="hl num">1</span><span class="hl std">]</span> <span class="hl opt">&amp;</span> <span class="hl std">newsamplemeans</span><span class="hl opt">&lt;=</span><span class="hl std">realCI[</span><span class="hl num">2</span><span class="hl std">] ) )</span> <span class="hl opt">/</span> <span class="hl std">n_simulation</span>
+
+        <span class="hl com"># Show the results</span>
+        <span class="hl kwd">print</span><span class="hl std">(</span> <span class="hl kwd">paste0</span><span class="hl std">( proportion_in_original_CI</span><span class="hl opt">*</span><span class="hl num">100</span><span class="hl std">,</span> <span class="hl str">&quot;% of simulated experiments had a mean that fell within the sample CI (wrong definition)&quot;</span> <span class="hl std">) )</span>
+<span class="hl std">}</span>
+
+<span class="hl com"># If you run this simulation over and over again, you will get a lot of values quite far from 95%</span>
+<span class="hl com"># Here let's do it 6 times</span>
+<span class="hl kwd">par</span><span class="hl std">(</span><span class="hl kwc">mfrow</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">3</span><span class="hl std">) )</span>
+<span class="hl kwa">for</span><span class="hl std">( i</span> <span class="hl kwa">in</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">6</span> <span class="hl std">){</span>
+        <span class="hl kwd">simulate_experiments_wrong</span><span class="hl std">(</span> <span class="hl kwc">n_simulation</span><span class="hl std">=</span><span class="hl num">100</span><span class="hl std">,</span> <span class="hl kwc">n_subj</span><span class="hl std">=</span><span class="hl num">24</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;72% of simulated experiments had a mean that fell within the sample CI (wrong definition)&quot;
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;74% of simulated experiments had a mean that fell within the sample CI (wrong definition)&quot;
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;99% of simulated experiments had a mean that fell within the sample CI (wrong definition)&quot;
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;81% of simulated experiments had a mean that fell within the sample CI (wrong definition)&quot;
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;85% of simulated experiments had a mean that fell within the sample CI (wrong definition)&quot;
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;100% of simulated experiments had a mean that fell within the sample CI (wrong definition)&quot;
+</pre></div>
+</div><div class="rimage default"><center><img src="figure/CIsim1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></center></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com">### CORRECT DEFINITION OF CI</span>
+<span class="hl com">### The following code chunk uses simulations to show that 95% of</span>
+<span class="hl com">### the hypothetical samples' CIs contain the population mean</span>
+
+<span class="hl com"># A function that simulates one hypothetical experiment and tests whether</span>
+<span class="hl com"># its confidence interval contains the real population mean</span>
+<span class="hl std">experiment</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">population</span><span class="hl std">,</span> <span class="hl kwc">n</span><span class="hl std">,</span> <span class="hl kwc">conf.level</span><span class="hl std">){</span>
+
+        <span class="hl com"># Draw a sample from the population</span>
+        <span class="hl std">exp_sample</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sample</span><span class="hl std">( population, n )</span>
+
+        <span class="hl com"># Calculate the conf.level% CI</span>
+        <span class="hl std">CI.lengths</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sd</span><span class="hl std">( exp_sample )</span> <span class="hl opt">/</span> <span class="hl kwd">sqrt</span><span class="hl std">(n)</span> <span class="hl opt">*</span> <span class="hl kwd">qt</span><span class="hl std">(</span> <span class="hl kwd">mean</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,conf.level)), n</span><span class="hl opt">-</span><span class="hl num">1</span> <span class="hl std">)</span>
+        <span class="hl std">CI</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span> <span class="hl kwd">mean</span><span class="hl std">(exp_sample)</span><span class="hl opt">-</span><span class="hl std">CI.lengths,</span> <span class="hl kwd">mean</span><span class="hl std">(exp_sample)</span><span class="hl opt">+</span><span class="hl std">CI.lengths )</span>
+
+        <span class="hl com"># Return the sample CI)</span>
+        <span class="hl kwd">return</span><span class="hl std">( CI )</span>
+<span class="hl std">}</span>
+
+<span class="hl com"># A function to repeat that experiment many times and show how many of the</span>
+<span class="hl com"># sample CIs contained the population mean</span>
+<span class="hl std">simulate_experiments</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span> <span class="hl kwc">n_simulation</span> <span class="hl std">){</span>
+
+        <span class="hl com"># Simulate a bunch of experiments and get their sample CIs</span>
+        <span class="hl std">sampleCIs</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">lapply</span><span class="hl std">(</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">n_simulation,</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){</span><span class="hl kwd">experiment</span><span class="hl std">(population,</span> <span class="hl num">24</span><span class="hl std">,</span> <span class="hl num">.95</span><span class="hl std">)} )</span>
+
+        <span class="hl com"># see which sample CIs include the population mean</span>
+        <span class="hl std">pop_mean_in_sample_CI</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">unlist</span><span class="hl std">(</span> <span class="hl kwd">lapply</span><span class="hl std">( sampleCIs,</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){x[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl opt">&lt;=</span><span class="hl kwd">mean</span><span class="hl std">(population)</span> <span class="hl opt">&amp;</span> <span class="hl std">x[</span><span class="hl num">2</span><span class="hl std">]</span><span class="hl opt">&gt;=</span><span class="hl kwd">mean</span><span class="hl std">(population)} ) )</span>
+
+        <span class="hl com"># Create a plot of all the sample CIs.</span>
+        <span class="hl com"># Sample CIs that include the population mean will be in blue; sample CIs</span>
+        <span class="hl com">#	that don't include the population mean will be in red.</span>
+        <span class="hl std">lowerbounds</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">unlist</span><span class="hl std">(</span> <span class="hl kwd">lapply</span><span class="hl std">( sampleCIs,</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){ x[</span><span class="hl num">1</span><span class="hl std">] } ) )</span>
+        <span class="hl std">upperbounds</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">unlist</span><span class="hl std">(</span> <span class="hl kwd">lapply</span><span class="hl std">( sampleCIs,</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){ x[</span><span class="hl num">2</span><span class="hl std">] } ) )</span>
+        <span class="hl kwd">matplot</span><span class="hl std">(</span> <span class="hl kwd">rbind</span><span class="hl std">(lowerbounds,upperbounds),</span> <span class="hl kwd">rbind</span><span class="hl std">(</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">length</span><span class="hl std">(lowerbounds),</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">length</span><span class="hl std">(lowerbounds) ),</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;l&quot;</span><span class="hl std">,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl kwd">ifelse</span><span class="hl std">( pop_mean_in_sample_CI,</span> <span class="hl str">&quot;blue&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;red&quot;</span><span class="hl std">),</span> <span class="hl kwc">lty</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">ylab</span><span class="hl std">=</span><span class="hl str">&quot;Samples&quot;</span><span class="hl std">,</span> <span class="hl kwc">xlab</span><span class="hl std">=</span><span class="hl str">&quot;CI&quot;</span> <span class="hl std">)</span>
+        <span class="hl kwd">lines</span><span class="hl std">(</span> <span class="hl kwd">rep</span><span class="hl std">(</span> <span class="hl kwd">mean</span><span class="hl std">(population),</span><span class="hl num">2</span> <span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwd">length</span><span class="hl std">(lowerbounds)</span><span class="hl opt">+</span><span class="hl num">5</span> <span class="hl std">),</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;black&quot;</span><span class="hl std">,</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl num">2</span> <span class="hl std">)</span>
+        <span class="hl kwd">legend</span><span class="hl std">(</span> <span class="hl str">&quot;top&quot;</span><span class="hl std">,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;black&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;red&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;blue&quot;</span><span class="hl std">),</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwc">legend</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Population mean&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;CI not including pop. mean&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;CI including pop. mean&quot;</span><span class="hl std">),</span> <span class="hl kwc">xpd</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">inset</span><span class="hl std">=</span><span class="hl opt">-</span><span class="hl num">.325</span> <span class="hl std">)</span>
+
+        <span class="hl com"># Get the proportion of sample CIs that include the population mean, and show it on the screen</span>
+        <span class="hl std">proportion_CIs_including_popmean</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">length</span><span class="hl std">(</span><span class="hl kwd">which</span><span class="hl std">(pop_mean_in_sample_CI))</span><span class="hl opt">/</span><span class="hl kwd">length</span><span class="hl std">(pop_mean_in_sample_CI)</span> <span class="hl opt">*</span> <span class="hl num">100</span>
+        <span class="hl kwd">print</span><span class="hl std">(</span> <span class="hl kwd">paste0</span><span class="hl std">( proportion_CIs_including_popmean,</span> <span class="hl str">&quot;% of simulated experiments contained the real population mean in their sample CIs (right definition)&quot;</span> <span class="hl std">) )</span>
+<span class="hl std">}</span>
+
+<span class="hl com"># If you run this simulation over and over again (by pressing the 'up' key and running the following line again, repeatedly), you will repeatedly get values around 95%.</span>
+<span class="hl com"># The larger the value of n_simulation you use, the closer the results will be to 95% (but it</span>
+<span class="hl com"># will get slow to run)</span>
+<span class="hl com"># Here let's do it 6 times</span>
+<span class="hl kwd">par</span><span class="hl std">(</span><span class="hl kwc">mfrow</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">3</span><span class="hl std">) )</span>
+<span class="hl kwa">for</span><span class="hl std">( i</span> <span class="hl kwa">in</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">6</span> <span class="hl std">){</span>
+        <span class="hl kwd">simulate_experiments</span><span class="hl std">(</span> <span class="hl kwc">n_simulation</span><span class="hl std">=</span><span class="hl num">100</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;96% of simulated experiments contained the real population mean in their sample CIs (right definition)&quot;
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;90% of simulated experiments contained the real population mean in their sample CIs (right definition)&quot;
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;97% of simulated experiments contained the real population mean in their sample CIs (right definition)&quot;
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;96% of simulated experiments contained the real population mean in their sample CIs (right definition)&quot;
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;92% of simulated experiments contained the real population mean in their sample CIs (right definition)&quot;
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;93% of simulated experiments contained the real population mean in their sample CIs (right definition)&quot;
+</pre></div>
+</div><div class="rimage default"><center><img src="figure/CIsim2.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></center></div><div class="rcode">
+</div></div>
+
+
+
+	<hr>
+	<p class="mini">by <a href="/~sjpolit/">Stephen Politzer-Ahles</a>. Last modified on 2016-05-28.</p>
+
+
+
+    </body>
+</html>

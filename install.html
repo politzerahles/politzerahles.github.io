@@ -1,0 +1,6 @@
+<pre>pkgs <- c( "lme4", "languageR", "devtools", "vioplot", "lmerTest", "car", "multcomp", "e1071", "devtools", "coda", "gtools", "mvtnorm", "pbapply", "BayesFactor", "jpeg" )
+pkgs <- pkgs[ !(pkgs %in% installed.packages()[,"Package"]) ]
+if( length(pkgs)>0 ){ install.packages( pkgs[ !(pkgs %in% installed.packages()[,"Package"]) ] ) }
+library(devtools)
+install_github("ndphillips/yarrr")
+</pre>

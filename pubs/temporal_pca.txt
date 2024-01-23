@@ -1,0 +1,72 @@
+# Read in data that I spit out from MATLAB
+library(R.matlab)
+data <- readMat("MMNs_for_R.mat")
+
+# Recover the variables from the MATLAB object
+orig_conditions <- unlist( data$conditions )
+times <- data$times
+orig_subjects <- data$goodsubjs
+orig_channels <- 1:63
+
+# Make vectors indicating the channel, subject, and condition for each row in the matrix
+channels <- rep(orig_channels, length(orig_conditions)*length(orig_subjects))
+subjects <- rep(orig_subjects, each=length(orig_channels), length(orig_conditions) )
+conditions <- rep( orig_conditions, each=length(orig_channels)*length(orig_subjects) )
+
+# The actual data matrix
+data <- data$MMNs.for.R
+
+# to only look at post-stimulus
+# data <- data[,which(times>0)]
+
+# Run the PCA, using covariance matrix
+system.time( pr <- prcomp( data, center=T, scale=F ) )
+
+# Only look at PCs with >5% variance explained
+variance_explained <- pr$sdev^2/sum(pr$sdev^2)
+goodPCs <- which( variance_explained > .05 )
+
+# varimax rotation?
+rotated <- varimax( pr$rotation[,goodPCs] )
+
+# plot the loadings like waveforms
+par(mfrow=c(2, length(goodPCs)) )
+for(pc in goodPCs){
+	# plot the varimax rotated loadings
+	plot( times, rotated$loadings[,pc], # the actual plot
+		type="l", # make it a line plot
+		main=paste("PC",pc, ": ", round(variance_explained[pc]*100,2), "% variance explained", sep=""), # give it a nice title
+		xlab="time", ylab="loading", # axis labels
+		ylim=range(cbind(rotated$loadings[,goodPCs], pr$rotation[,goodPCs])) # set the plot min and max
+	)
+
+	# plot the original loadings
+	lines(times, pr$rotation[,pc], col="blue" )
+
+	# make a legend
+	legend("bottomleft", legend=c("original", "varimax"), lty=1, col=c("blue", "black"))
+}
+
+# plot the component scores for each condition within each PC
+for( pc in goodPCs ){
+
+	# get the loadings for this PC
+	loading <- rotated$loadings[,pc]
+
+	# Let's just do component scores for Fz for now
+	fz <- data[which(channels==5), ]
+
+	# calculate the component scores, by multiplying each datapoint by its respective loading
+	comp_scores <- rowMeans( fz * matrix( rep(t(loading),nrow(fz)), ncol=length(loading), byrow=T) )
+
+	# Identify the subject and condition for each row we're looking at, and organize all this into a data frame
+	Subjects <- subjects[ which(channels==5) ]
+	Conditions <- conditions[ which(channels==5) ]
+	analysis <- data.frame(comp_scores, Subjects, Conditions )
+
+	# re-order the conditions to make the plot show up in an order I'm more used to
+	analysis$Conditions <- factor( analysis$Conditions, levels=c("yi3_in_yi2", "yi2_in_yi3", "yi4_in_yi2", "yi2_in_yi4", "yi3_in_yi4", "yi4_in_yi3") )
+
+	# aggregate the participants' component scores per condition and make a barplot
+	barplot( tapply( analysis$comp_scores, list(analysis$Conditions), mean ), las=2 )
+}	

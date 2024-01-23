@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Categorical independent variables</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Categorical independent variables (3 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">So far we have only examined regression models with continuous independent variables. Regression can also handle
+	categorical variables, though. Imagine that instead of examining how frequency and length influence reaction time, we instead look at
+	whether animal words or plant words are responded to faster:</p>
+<center><img src="regression5.png" alt="Stripchart showing scatter of reaction times to plant words on the left, and reaction times to animal words on the right." width=60% /></center>
+<p class="centercol">As we usually do, let's remake this graph using only dots, rather than spelling out the full words, to make it easier
+	to see. I will also "jitter" the dots left and right a little bit, so that dots with similar reaction times aren't exactly on top of
+	each other:</p>
+<center><img src="regression6.png" alt="Beeswarm plot of reaction times to plant and animal words." width=60% /></center>
+<p class="centercol">To use this variable in a regression equation, we have to represent it as numbers instead of as "plant" and "animal".
+	There are many schemes to do this; the most common one, which we will look at here, is called <em>dummy coding</em> (also sometimes
+	called <em>treatment coding</em>). To code a categorical variable, we need to assign each data point a number based on whether it's a
+	plant or animal. For now, let's give plant words 0 and animal words 1. Then we'll do a regression analysis to figure out the numbers
+	in the regression equation:</p>
+<center><big>\(\hat{Y}=b_0+b_1X_1\)</big></center>
+<p class="centercol">This time, our <em>X</em><sub>1</sub> variable can only be either 0 or 1 (0 for plants, and 1 for animals). This is
+	different from the situation when we examined frequency, where <em>X</em><sub>1</sub> could be any number, since word frequency is
+	continuous. In our current analysis, there are only two possible values for <em>X</em><sub>1</sub>: 0 if this word is a plant word,
+	or 1 if it's an animal word.</p>
+<p class="centercol">When we do the analysis, we get the following results:</p>
+<p style="text-align: center;"><span style="font-family: courier new, courier;">(Intercept) Classanimal </span><br /><span style="font-family: courier new, courier;">6.381750976 0.005994602</span></p>
+<p class="centercol">To understand what these mean, it's easiest to put these numbers into the regression equation:</p>
+<center><big>\(\hat{Y}=6.381750976+0.005994602X_1\)</big></center>
+<p class="centercol">What does this mean for plant words and for animal words? If a word is a plant word, its value for
+	<em>X</em><sub>1</sub> is 0. The coefficient 0.005994602, times <em>X</em><sub>1</sub> (which is zero), gives us zero. In other
+	words, the expected reaction time for plant words is just the intercept: 6.381750976. (We call plant words the "baseline" condition,
+	because they're the one that we coded as zero. The predicted value for the baseline condition, in a simple situation like this one,
+	is just the intercept.)</p>
+<p class="centercol">As for animal words, their value for <em>X</em><sub>1</sub> is 1, so the coefficient 0.005994602, times
+	<em>X</em><sub>1</sub>, will still be 0.005994602. This gets added to the intercept (6.381750976). In other words, the predicted
+	reaction time for animals is 0.005994602 <em>higher</em> than the predicted reaction time for plants; animals are responded to more
+	slowly than plants. What this all means is, the <em>b</em><sub>1</sub> coefficient we get for animal words is directly telling us the
+	<em>difference</em> between the average reaction time for animals and the average reaction time for the baseline condition (plants).
+	Rather than thinking of this coefficient as representing the slope of a line, we can think of it as shifting the whole line up or
+	down:</p>
+<center><img src="regression7.png" alt="Same as before, but with horizontal regression lines added" width=60% /></center>
+<p class="centercol">Handling categorical variables in regression uses this basic concept. There are still a lot more details to know
+	about how to deal with categorical variables, though. Complete the activities below to examine some more issues.</p>
+
+
+		<center>
+
+
+		<button class="collapsible">Regression, ANOVA, and <em>t</em>-tests</button>
+		<div class="content">
+			<p>At the beginning of this module I said that other statistical methods in this subject, like <em>t</em>-tests and ANOVA,
+				are actually just special versions of regression&mdash;in other words, anything you do with a <em>t</em>-test could
+				also be done with regression. (A <em>t</em>-test is essentially just a shortcut to doing one specific kind of
+				regression.)</p>
+			<p>Explain why this is the case.</p>
+		</div>
+
+		<button class="collapsible">Polytomous categorical variables</button>
+		<div class="content">
+			<p>So far we have only examined how to deal with categorical variables with two levels (e.g., plant vs. animal). Sometimes
+				you might have more levels than that; for example, maybe you do a study comparing English speakers, Mandarin
+				speakers, and Cantonese speakers. (Categorical variables with more than two levels are sometimes called "polytomous".)</p>
+			<p>Remember that when we do dummy coding, we turn the categorical variable into a comparison between two levels: the
+				baseline level (plant words, in our example) and another level (animal words, in our example).</p>
+			<p>To handle a variable with more levels, we need to make more comparisons. Think about the English-Cantonese-Mandarin
+				example I just mentioned. In such a variable, there are three possible comparisons:</p>
+			<ol>
+				<li>English vs. Cantonese</li>
+				<li>English vs. Mandarin</li>
+				<li>Mandarin vs. Cantonese</li>
+			</ol>
+			<p>In reality, we only need to make two of these comparisons to fully describe all three conditions. (If I know that
+				English speakers' score on some task is 50, and I know that Cantonese speakers are 15 points higher than English
+				speakers, and I know that Mandarin speakers are 10 points higher than English speakers, then I don't need to
+				specifically calculate the Mandarin vs. Cantonese difference; I can take the information I already mentioned above
+				and use basic arithmetic to deduce that Cantonese is 5 points higher than Mandarin.)</p>
+			<p>Thus, for any categorical variable with <em>K</em> levels, we can represent it in regression as <em>K</em>-1
+				comparisons.</p>
+			<p>Sticking with dummy coding for now, we can transform our "language" variable (a categorical variable with three levels)
+				into two numeric variables: one variable comparing English vs. Cantonese, and another variable comparing English vs.
+				Mandarin. (The choice of which comparison to leave out will be based on your research question; if comparing Mandarin
+				vs. Cantonese is important to your research, you can keep the Mandarin vs. Cantonese comparison and leave out one of
+				the others.) Each data point will get two numbers (one for each variable), as follows:</p>
+			<ol>
+				<li>For the English vs. Cantonese comparison: Cantonese speakers will get 1, and everyone else will get 0;</li>
+				<li>For the English vs. Mandarin comparison: Mandarin speakers will get 1, and everyone else will get 0.</li>
+			</ol>
+			<p>Thus, after we assign the numbers to each data point, there will be the following combinations:</p>
+			<table border="0">
+			<tr>
+				<td>&nbsp;</td>
+				<td><strong>Eng-vs-Can variable</strong></td>
+				<td><strong>Eng-vs-Man variable</strong></td>
+			</tr>
+			<tr>
+				<td><strong>English speakers</strong></td>
+				<td style="text-align: center;">0</td>
+				<td style="text-align: center;">0</td>
+			</tr>
+			<tr>
+				<td><strong>Cantonese speakers</strong></td>
+				<td style="text-align: center;">1</td>
+				<td style="text-align: center;">0</td>
+			</tr>
+			<tr>
+				<td><strong>Mandarin speakers</strong></td>
+				<td style="text-align: center;">0</td>
+				<td style="text-align: center;">1</td>
+			</tr>
+			</table>
+			<p>When we do a regression, English speakers will have a value of 0 for each variable; in other words, English is the
+				baseline level, and thus the predicted score for English speakers will just be the intercept.</p>
+			<p>Cantonese speakers, on the other hand, will have a value of 1 for Eng-vs-Can, and a value of 0 for Eng-vs-Man. Thus,
+				their predicted score will be the intercept <em>plus</em> the Eng-vs-Can coefficient. In other words, the Eng-vs-Can
+				coefficient in the regression results will tell us how much higher Cantonese speakers' score is than English
+				speakers' score.</p>
+			<p>Finally, the coefficient for Eng-vs-Man will tell us the difference between English and Mandarin speakers, following
+				the same logic.</p>
+			<p>There will be no coefficient showing the difference between Mandarin and Cantonese; as described above, this can
+				already be inferred from the other coefficients. If you want to see the comparison between these directly, then you
+				should choose one of these groups (Mandarin or Cantonese), rather than English, to be the baseline group when you
+				code the variables.</p>
+			<p>You may have noticed here that there are a lot of possible comparisons that have not been covered; for example, we
+				haven't looked at how to compare English vs. the average of Mandarin and Cantonese. When you do the reflection
+				question below you will probably come up with more. This is intentional; we have only discussed
+				<em>dummy coding</em>, and <a href="https://stats.idre.ucla.edu/r/library/r-library-contrast-coding-systems-for-categorical-variables/">many
+				other coding schemes exist</a>. For some kinds of comparisons, other coding schemes would be more appropriate. This
+				is a topic you could spend a very long time studying; but first, you need to at least understand dummy coding.</p>
+			<p><strong>Think of a situation in your research where you might have a variable with <em>four or more </em>levels.
+				Describe which level should be the baseline, and which comparisons you want to make. Make a table like the above one
+				to show what the coefficients would be.</strong></p>
+		</div>
+
+
+
+		</center>
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			"<a href="centering.html">Centering</a>".</p>
+
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-16. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+
+

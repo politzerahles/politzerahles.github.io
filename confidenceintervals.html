@@ -1,0 +1,566 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .bigsource, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+	width:65%;
+	margin-left:auto; margin-right:auto;
+	border:1px solid #ccc;
+	overflow:auto;
+	background-color: #FFFFFF;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Confident about confidence intervals?</title>
+        <link rel="stylesheet" type="text/css" href="stevetools_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body>
+
+
+		<center><img src="figure/maeby.png" width=65%/></center>
+		<h1>How confident are you about confidence intervals?</h1>
+		<h2>An introduction to within-subject confidence intervals</h2>
+
+		<p class="centercol">You probably are used to seeing plots with error bars on them;
+			<a href="http://www.tandfonline.com/doi/full/10.1080/23273798.2016.1151058#_i15">here's</a> a recent example
+			(-slash-shameless-plug) from a recent paper of ours. But do you know <a href="https://youtu.be/OQSNhk5ICTI?t=1m16s">what they mean?</a></p>
+
+		<p class="centercol">No matter how good at stats you are, you often can't tell what error bars mean.
+			Unfortunately, people use error bars to illustrate many different things, and even more unfortunately, oftentimes
+			they do not indicate what the error bars actually are. The best thing to plot with error bars is confidence intervals
+			(see, e.g., <a href="http://www.apastyle.org/manual/related/cumming-and-finch.pdf">Cumming &amp; Finch, 2005</a>), but
+			people often use them to plot other things, such as &#x00B1;2 standard errors (a rough approximation, sometimes,
+			of a 95% confidence interval), one standard error, or even one standard deviation. This is problematic because people
+			looking at a plot usually try to make statistical inferences based on the error bars (e.g., "The error bar for this
+			condition doesn't cross the mean for that condition, so the difference is significant!"), but these inferences are only
+			licensed for certain kinds of error bars; an inference based on how a 95% confidence interval works (e.g., "The bottom
+			of the error bar for this condition only just barely touches the top of the error bar for that condition, therefore
+			<em>p</em>&#x2248;.01")  would be invalid if you're actually looking at error bars showing 1 standard error (a much
+			narrower range than a 95% confidence interval). Furthermore, the fact that error bars can mean so many different things
+			often causes researchers confusion about their own results: I often hear people asking questions along the lines of
+			"Why do my stats come out significant but my error bars cross?", or vice versa. Therefore, it's important to know what
+			the different kinds of error bars are, and to know which kind to use on any given plot. Not only does this help you
+			present your data more honestly, but it also can help you be more confident about results that you're seeing.</p>
+
+		<p class="centercol">In this essay, I will assume that we all accept that error bars should show [95%]
+			confidence intervals (CIs) and that we should indicate this in our figure captions;<sup><a href="#f1">1</a></sup><a name="f1_intext"></a>
+			if you are not yet convinced of that, do check out Cumming &amp; Finch (2005), linked above. What I will discuss here
+			is a tougher issue: that of how to plot error bars for a <em>within-subjects</em> design. As you probably know, the formula
+			for the confidence interval of a parameter estimate (like a sample mean) is
+			<strong><span style="color: #008000;">Mean &#x00B1; (SD / sqrt(N) * <em>t</em><sub>critical</sub>)</span></strong>: i.e., if you have a mean
+			based on 24 participants, you take the standard deviation of the 24 participants' means, divide by the square root of 24,
+			and multiply by what the critical <em>t</em>-value would be for a <em>t</em>-test on this mean (as N gets higher and
+			higher, this critical <em>t</em>-value for &#x03B1;=.05 approaches 1.96) and finally you add and subtract this value from
+			the sample mean. As we will see below, however, this standard CI
+			formula is not always appropriate. In particular, for a plot of different within-subjects conditions, CIs based on this
+			formula will lead you astray. Nonetheless, in psycholinguistics we are usually interested in
+			within-subject comparisons, and therefore once we all agree to plot CIs instead of standard errors or something else, we
+			run into a new challenge, the challenge of how to plot meaningful error bars for within-subject comparisons. Below we'll
+			discuss why this matters, and how to solve the problem using Cousineau (or Cousineau-Morey) CIs.</p>
+
+		<h3 class="centercol">Standard CIs, and why they are not appropriate for within-subjects designs</h3>
+
+		<p class="centercol"><a href="https://web.uvic.ca/psyc/masson/LM94.pdf">Loftus &amp; Masson (1994)</a>
+			explain and illustrate why it's a problem to use typical between-subjects CIs in a plot showing within-subjects manipulations.
+			This is highly recommended reading, but to make a long story short, trying to make inferences about within-subjects effects
+			based on a between-subject CI in a graph is often misleading, because a typical between-subjects CI only shows the variation
+			between subjects within a given condition, whereas you are interested in making paired comparisons with another condition.
+			To put that another way: a typical between-subjects CI provides a rough estimate of where that condition's mean might really
+			be in the population.<sup><a href="#f2">2</a></sup><a name="f2_intext"></a> However, for a within-subjects experiment, we typically don't care about
+			the population mean for each condition; we only care about the population mean of the <em>difference</em> between two (or more) conditions.
+			For example, in a semantic priming study where we compare people's response times when they have to read aloud target words
+			(like <em>doctor</em>) preceded by associatively-related primes (<em>nurse</em>) or by unrelated primes (<em>table</em>), we
+			generally do not care about estimating the population mean of the response time for primed words and that of the response
+			time for un-primed words; we only care about finding the unprimed-primed difference, for each subject, and using those
+			differences to estimate the population mean of the difference. (And then, usually, all we care about is whether or not that 
+			population mean might be zero; if our CI suggests that the difference is not likely to be zero, we call it
+			"statistically significant" and celebrate, while the real statisticians weep and gnash their teeth as they behold our over-reliance on statistical significance.)</p>
+
+		<div style="width:55%; margin-left:auto; margin-right:auto">
+		<img src="figure/CummingFinch2005fig.png" title="Cumming and Finch 2005 figure" style="float:right" alt="A figure illustrating two group means and a difference with error bars" class="plot" />
+		</div><p class="centercol">The solution Cumming &amp; Finch (2005) recommend for this problem is to plot, instead of or in addition to the
+			condition means, the <em>difference</em> of interest, along with its CI. The CI for the difference can be computed as a normal
+			between-subject CI, using the familiar CI formula, since we are interested in how much this difference varies between subjects. To the
+			right is an example (Figure 3b from Cumming &amp; Finch, 2005) illustrating this. The two dots represent condition means and their
+			between-subjects CIs, while the triangle, which is on its own scale off to the right, represents the mean of the paired difference,
+			and the CI of that mean difference.</p>
+
+		
+		<p class="centercol">Let's create a plot like this using some real psycholinguistic data, as a starting
+			point for playing around with different kinds of CIs. The data are from
+			<a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0063943">Politzer-Ahles and Fiorentino (2013)</a>
+			and can be downloaded from there. The R code for recreating the plots is available at the bottom of this post (also note that,
+			while I'm using R here, everything I'm describing can also be done in Excel or whatever your preferred software is). Without going
+			into too much detail about the experiment, I'll just say this this was an experiment where we looked at how quickly people
+			read a critical part of a sentence, as a function of two factors about the preceding context: whether one of the preceding
+			sentences used the quantifier <em>some</em> or <em>only some</em> (this factor we called Quantifier) and whether another
+			preceding sentence used the quantifier <em>any</em> or <em>all</em> (this factor we called Boundedness). We were interested
+			in the simple effect of Boundedness at each level of Quantifier; for theoretical reasons that I of course find interesting
+			but that are irrelevant here, we predicted a significant effect of Boundedness in the <em>some</em> stimuli (such that
+			reading times would be slower after <em>any</em> than after <em>all</em>) and no comparable effect in the <em>only some</em>
+			stimuli. Here's how the results look, in a plot<sup><a href="#f3">3</a></sup><a name="f3_intext"></a> somewhat following Cumming &amp; Finch's
+			suggestion, with separate dots for each simple difference (on their own axis, which is on the right), and with <em>p</em>-values
+			(from paired <em>t</em>-tests<a href="#f4"><sup>4</sup></a><a name="f4_intext"></a>) added so we can tell if the confidence
+			intervals are a reasonable reflection of the significance level:</p>
+		<center><img src="figure/CIexample1.png" alt="Untitled2"  /></center>
+
+		<p class="centercol">We see here that the between-subject CIs of the differences (calculated using the familiar between-subjects CI formula:
+			<strong><span style="color: #008000;">SD / sqrt(N) * <em>t</em><sub>critical</sub></span></strong>) look reasonable: both
+			simple effects are significant at a=.05, and both error bars fail to cross zero. So everything is as it should be. (Of course, if we
+			were using this plot in a paper, we should also have given it a descriptive caption that explains what the differences represent&mdash;i.e.,
+			which condition was subtracted from which&mdash;and what the error bars represent.) Let's see
+			how things would look if we had used this same CI formula to add CIs to the condition means themselves:</p>
+
+		<center><img src="figure/CIexample2.png" alt="Untitled2"  /></center>
+
+		<p class="centercol">Suddenly we have nonsense! If we looked at this plot with only the bars and between-subject CIs on the bars, without
+			the difference CIs and p-values, we would have incorrectly concluded that there are no
+			significant simple effects here. Hopefully this, along with the similar examples in Loftus and Masson (1994), convinces everyone
+			that plotting a between-subjects CI on each bar is misleading if you are interested in making inferences about within-subject
+			differences.</p>
+
+		<h3 class="centercol">Alternatives to standard CIs for within-subject comparisons</h3>
+
+		<p class="centercol">Above we already saw one solution to the problem of plotting CIs for within-subject comparisons: you can plot
+			a difference and its CI, rather than (or in addition to) plotting the individual condition means. This is fine and
+			straightforward when you only have two conditions to compare. But it can quickly get out of hand, as Cumming and Finch (2005)
+			also note. In the above plot we showed two differences rather than one, and the plot is already getting clunky, and that's
+			without even plotting two more simple effects that we could have plotted (the effects of Quantifier at each level of Boundedness),
+			plus the two main effects, plus the interaction. All of those could, in theory, have been plotted in the same way as we plotted
+			the two simple effects of interest. The problem gets even more complicated for a factor with more than two levels, where there
+			are multiple possible pairwise comparisons that could be plotted. Imagine how badly the problem scales for a 2x2x4 design (e.g.,
+			in <a href="pubs/Politzer-AhlesZhang_2014_JCL.pdf#page=21">Politzer-Ahles &amp; Zhang, in press</a>).
+			It becomes unfeasible to show all possible pairwise differences on a plot.</p>
+
+		<p class="centercol">Of course, you can strategically plot just the pairwise differences that are relevant to your hypothesis, like we did
+			in our sample plots above. But it would be ideal to plot the data in such a way that a reader interested in other comparisons that
+			you haven't considered can still make those comparisons. (Hopefully you also make your data available so readers can pursue these
+			comparisons; however, it would be ideal to make this information available at a glance in the plot, and in some contexts, like a
+			conference talk, you usually can't give the data to the audience.) What would be ideal is an error bar that can be put on an
+			individual condition mean to help people make inferences about the difference between that mean and any other condition they want
+			to look at. Fortunately, <em>within-subject confidence intervals</em> have been developed and can serve roughly this purpose.<p>
+
+		<p class="centercol">What we want in a within-subject CI is for it to license the same kinds of inferences as a between-subject CI does.
+			Lucky for us, Cumming &amp; Finch (2005) provide guidelines for what kind of inferences can be made based on visual inspection of a 
+			pair of between-subjects CIs. Check their paper for the detailed guidelines; here's a quick summary:</p>
+			<ul class="center">
+				<li>If two error bars overlap by about 50%, then probably <em>p</em>&#x2248;.05.</li>
+				<li>If two error bars just barely touch at the edges, then probably <em>p</em>&#x2248;.01.</li>
+			</ul>
+		<p class="centercol">Now we just need to test out within-subject CIs to see if they conform to these expectations for our sample data,
+			where we already know that one difference is at <em>p</em>&#x2248;.031 and the other at
+			<em>p</em>&#x2248;.006.</p>
+
+		<p class="centercol">The first kind of within-subject CI is that proposed by Loftus &amp; Masson (1994), which is based on terms from the
+			repeated-measures ANOVA table. I don't use this one, for a few reasons. First of all, for a stats dummy like me, it's a pain to calculate. Secondly,
+			it calculates equal-sized CIs for each condition, whereas I generally want a unique CI for each condition, since sometimes one
+			condition has more variance than another. Finally, and most importantly, the size of the CIs depends on the comparison you want
+			to make: you need to make different CIs for looking at a certain main effect versus another main effect versus a certain interaction, etc.
+			Of course, there is a reason for this: the test statistics for different effects are indeed different. However, this leaves us at
+			the same quandary we discussed above for complex datasets, and thus I would prefer a kind of CI that allows for testing just about
+			any pairwise comparison (at the expense of main effects and interactions; those I usually discuss in the text and don't worry about
+			directly illustrating in a plot).</p>
+
+		<p class="centercol"><a href="http://www.tqmp.org/RegularArticles/vol01-1/p042/p042.pdf">Cousineau (2005)</a> describes another method of
+			calculating within-subject CIs which addresses all these problems. It is simple, it allows a unique CI for each condition, and it
+			is not dependent on the comparisons tested. (In fact, Loftus &amp; Masson, 1994, also describe such a method in their appendix, but
+			I find this method easier so it's what I use.) This method turns out to be slightly biased: it gives slightly smaller CIs than the
+			Loftus &amp; Masson method. <a href="http://pcl.missouri.edu/sites/default/files/morey.2008.pdf">Morey (2008)</a> updated the formula
+			for these CIs to correct for the bias, so nowadays CIs derived by this [updated] method are known as "Cousineau-Morey CIs".</p>
+
+		<p class="centercol">I won't go into detail on how Cousineau-Morey CIs are calculated; the formula is actually quite simple, both papers are
+			very accessible and easy to read, and there are some nice tutorials online
+			(<a href="https://motorbehaviour.wordpress.com/2014/10/31/confidence-intervals-in-within-participant-design-a-tutorial-on-the-cousineau-morey-method/">here</a>
+			is a very clear one; plus, my R code below includes a [hopefully] handy function to compute these CIs automatically; implementations can
+			also be found in, e.g., <a href="http://link.springer.com/article/10.3758%2Fs13428-011-0123-7">Baguley, 2012</a>, and 
+			<a href="http://link.springer.com/article/10.3758%2Fs13428-013-0441-z">Cousineau & O'Brien, 2014</a>). Let's forge
+			ahead and test out these CIs to see if they match up to the inference criteria that we want. Here's a new plot, with 95% Cousineau-Morey
+			CIs, rather than standard between-subject CIs, shown on each bar. As usual, the code is available at the end of this post.</p>
+
+		<center><img src="figure/CIexample3.png" alt="Untitled2"  /></center>
+
+		<p class="centercol">Things look much better now. On the left-hand side, where we know <em>p</em>&#x2248;.031, the bars do indeed appear
+			to overlap by about half (i.e., one bar reaches about halfway up the other bar, and vice versa). And on the right-hand side, where
+			we know <em>p</em>&#x2248;.006, the lines only just barely cross. This comes close to the criteria outlined in Cumming &amp; Finch
+			(2005), although in both cases the <em>p</em>-value I might guess from visual inspection is probably a bit higher than the real
+			<em>p</em>-value we observed in a quick-and-dirty <em>t</em>-test. In fact, the code below can be used to re-making the plot without
+			Morey's bias correction if we want to try it. Doing this will get slightly narrower error bars, but given that the method is known
+			to be biased I believe the error bars are shown here are probably better. Even though they appear to be a bit wider than we might
+			have expected based on Cumming &amp; Finch's criteria, it must be noted that these criteria were
+			originally defined for between-subject CIs rather than within-subject CIs (and direct comparisons between two condition means within a larger
+			set of condition means was never the main purpose of Cousineau's CIs; see, e.g. Baguley, 2012), and they are just rough rules of thumb
+			anyway. In any case,
+			these within-subjects CIs are clearly better (in the sense that they more accurately reflect the conclusions we would make on the
+			basis of the statistical tests) than standard CIs. Just keep in mind that these CIs are no longer necessarily estimates of the likely range of values of the population
+			mean of a condition (like between-subject CIs are), but rather are more like a handy heuristic for making statistical inferences about
+			within-subject comparisons.</p>
+
+		<p class="centercol">It would be worthwhile to try out this comparison on more datasets, and especially on simulated datasets, 
+			to try to lay out some rules of thumb for inference based on visual inspection of within-subject CIs, comparable to Cumming &amp;
+			Finch's rules of thumb for inference from between-subject CIs. (It's entirely possible that this has already been done.)
+			It will also be worthwhile to further explore another CI method which I haven't discussed here: non-parametric CIs estimated from
+			mixed-effect models on multiple bootstrap replicates of the dataset (these will be particularly useful for psycholinguistic data with crossed subjects and
+			items, since these do not require aggregating over items like I have done throughout this example; in the limited tests I have done
+			with these CIs, however, they come out looking more like the between-subject than the within-subject CIs; see Baguley, 2012, for a
+			more detailed comparison between different types of within-subject CIs). Nonetheless, as should be
+			clear from this demonstration, Cousineau-Morey CIs will give more a more or less meaningful glimpse of
+			the statistical significance of pairwise comparisons, and are far superiour to using the standard between-subjects CI formula
+			on within-subjects data. Of course, these won't be appropriate for every case; in cases where you are interested in illustrating more
+			complex patterns, or directly showing the CI of a test parameter (such as a difference or difference of differences) then you may need
+			to consider the Cumming &amp; Finch (2005) or Loftus &amp; Masson (1994) methods.</p>
+
+	<h3 class="centercol">Take-home message</h3>
+
+	<ol class="center">
+		<li>If you're interested in making within-subject comparisons, don't show standard, between-subject confidence intervals.</li>
+		<li>"Confidence intervals", and error bars in general, can mean a lot of different things. Don't just blindly slap on bars (in Excel, ggplot2,
+			or whatever you use for plotting) without knowing what they represent. Think carefully about what you want to show and what kind of
+			inferences the viewer should be able to make from the error bars in your plots.</li>
+	</ol>
+
+	<h3 class="centercol"> Notes</h3>
+
+	<p class="centercol">I myself did not know about within-subject CIs until fairly recently (as indicated by the number of my own papers that show bad
+		error bars). I believe it was <a href="http://tallinzen.net/">Tal Linzen</a> and <a href="http://aswhite.net/">Aaron White</a> who brought
+		this whole concept to my attention.</p>
+	
+	<p class="centercol">
+		<a href="#f1_intext"><sup>1</sup></a><a name="f1"></a>The observant reader may notice that in my own paper that I linked at the beginning of
+			this post, I broke this rule; that figure shows &#x00B1;2 SE bars rather than 95% CI bars. I also broke this rule in
+			all my other papers that are mentioned in this post. We all have skeletons in our closet.<br />
+		<a href="#f2_intext"><sup>2</sup></a><a name="f2"></a>This is a simplification; technically, what a between-subjects 95% CI for a given parameter
+			(like a mean) means is that, if
+			you repeat this experiment an infinite number of times and make a 95% CI for that parameter in each experiment, 95% of those CIs will
+			contain the true (population) parameter. It is not technically the case that a 95% CI of the mean for a given experiment is 95% likely to contain the
+			true mean. I personally think it's fair, however, to make the inference that for a given study
+			your 95% CI is more likely to be one of the hypothetical 95% of CIs that does contain the population mean rather than one of the
+			hypothetical 5% of CIs that does not, unless you have reason to believe otherwise (e.g., if you know based on previous literature that
+			the mean you just found is implausible). Nonetheless, it is good to keep the true meaning of  a CI in the back of your mind, because CIs
+			are widely misinterpreted even among psychology researchers who are highly experienced in applied statistics
+			(<a href="http://isites.harvard.edu/fs/docs/icb.topic477909.files/misunderstood_confidence.pdf">Belia, Fidler, Williams, &amp; Cumming, 2005</a>;
+			<a href="http://www.ejwagenmakers.com/inpress/HoekstraEtAlPBR.pdf">Hoekstra, Morey, Rouder, &amp; Wagemakers, 2014</a>).<br />
+		<a href="#f3_intext"><sup>3</sup></a><a name="f3"></a>Here I'm using a barplot, going against the advice of many smart people who advocate
+			avoiding barplots when possible (here's one <a href="https://pagepiccinini.com/2016/02/23/boxplots-vs-barplots/">example</a> from
+			Page Piccinini). I have another
+			post forthcoming explaining my argument in favor of still using barplots sometimes. Long story short, for this essay I chose to use barplots
+			because I was going to be adding extra dot doodads on the plot, so I wanted to keep the plots as simple as possible and avoid having a lot
+			of other distracting stuff going on. You are welcome, of course, to use the data and the code here to re-create these examples using,
+			e.g., violin plots, bean plots, or <a href="http://www.r-bloggers.com/the-pirate-plot-2-0-the-rdi-plotting-choice-of-r-pirates/">pirate plots</a>.<br />
+		<a href="#f4_intext"><sup>4</sup></a><a name="f4"></a>To keep things simple I've aggregated the trials for each condition and each subject,
+			averaging over items. Normally we would probably use a mixed-effects model, but that's not critical for this example (yet).</p>
+
+	<h3 class="centercol">References</h3>
+	<ul class="center">
+		<li>Baguley, T. (2012). <a href="http://link.springer.com/article/10.3758%2Fs13428-011-0123-7">Calculating and graphing within-subject confidence intervals for ANOVA</a>. <em>Behavior Research Methods, 44</em>, 158-175.</li>
+		<li>Belia, S., Fidler, F., Williams, J., &amp; Cumming, G. (2005). <a href="http://isites.harvard.edu/fs/docs/icb.topic477909.files/misunderstood_confidence.pdf">Researchers misunderstand confidence intervals and standard error bars</a>. <em>Psychological Methods, 10</em>, 389-396.</li>
+		<li>Cousineau, D. (2005). <a href="http://www.tqmp.org/RegularArticles/vol01-1/p042/p042.pdf">Confidence intervals in within-subject design: a simpler solution to Loftus and Masson's method</a>. <em>Tutorials in Quantitative Methods for Psychology, 1</em>, 42-45.</li>
+		<li>Cousineau, D., & O'Brien, F. (2012). <a href="http://link.springer.com/article/10.3758%2Fs13428-013-0441-z">Error bars in within-subject designs: a comment on Baguley (2012)</a>. <em>Behavior Research Methods, 46</em>, 1149-1151.</li>
+		<li>Cumming, G., &amp; Finch, S. (2005). <a href="http://www.apastyle.org/manual/related/cumming-and-finch.pdf">Inference by eye: confidence intervals and how to read pictures of data</a>. <em>American Psychologist, 60</em>, 170-180.</li>
+		<li>Hoekstra, R., Morey, R., Rouder, J., &amp; Wagenmakers, E., (2014). <a href="http://link.springer.com/article/10.3758%2Fs13423-013-0572-3">Robust misinterpretation of confidence intervals</a>. <em>Psychonomic Bulletin and Review, 21</em>, 1157-1164.</li>
+		<li>Loftus, G., &amp; Masson, M. (1994). <a href="https://web.uvic.ca/psyc/masson/LM94.pdf">Using confidence intervals in within-subject designs</a>. <em>Psychonomic Bulletin &amp; Review, 1</em>, 476-490.</li>
+		<li>Morey, R. (2008). <a href="http://pcl.missouri.edu/sites/default/files/morey.2008.pdf">Confidence intervals from normalized data: a correction to Cousineau (2005)</a>. <em>Tutorials in Quantitative Methods for Psychology, 4</em>, 61-64.</li>
+	</ul>
+
+	<h3 class="centercol">Code</h3>
+<div id="unnamed-chunk-1" class="chunk">
+<div class="rcode">
+<div class="source">
+<pre class="knitr r"><span class="hl com">##########################</span>
+<span class="hl com">### PREPARING THE DATA ###</span>
+<span class="hl com">##########################</span>
+
+<span class="hl com"># Clear the workspace</span>
+<span class="hl kwd">rm</span><span class="hl std">(</span><span class="hl kwc">list</span><span class="hl std">=</span><span class="hl kwd">ls</span><span class="hl std">())</span>
+
+<span class="hl com"># Load the data (downloaded from Supplementary File S2 of http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0063943)</span>
+<span class="hl kwd">load</span><span class="hl std">(</span> <span class="hl str">"C:\\Users\\Spolitzerahles\\Desktop\\File S2.RData"</span> <span class="hl std">)</span>
+
+<span class="hl com"># Pull out just the critical region, of the critical trials</span>
+<span class="hl std">crit</span> <span class="hl kwb">&lt;-</span> <span class="hl std">RTdata[ RTdata</span><span class="hl opt">$</span><span class="hl std">RegionNum</span><span class="hl opt">==</span><span class="hl num">8</span> <span class="hl opt">&amp;</span> <span class="hl std">RTdata</span><span class="hl opt">$</span><span class="hl std">Quantifier</span><span class="hl opt">!=</span><span class="hl str">"filler"</span><span class="hl std">, ]</span>
+
+<span class="hl com"># Clean up factors</span>
+<span class="hl std">crit</span><span class="hl opt">$</span><span class="hl std">Item</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">factor</span><span class="hl std">(crit</span><span class="hl opt">$</span><span class="hl std">Item)</span>
+<span class="hl std">crit</span><span class="hl opt">$</span><span class="hl std">Boundedness</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">factor</span><span class="hl std">(crit</span><span class="hl opt">$</span><span class="hl std">Boundedness)</span>
+<span class="hl std">crit</span><span class="hl opt">$</span><span class="hl std">Quantifier</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">factor</span><span class="hl std">(crit</span><span class="hl opt">$</span><span class="hl std">Quantifier)</span>
+
+<span class="hl com"># Get the condition means</span>
+<span class="hl std">means</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">tapply</span><span class="hl std">( crit</span><span class="hl opt">$</span><span class="hl std">RT, crit[,</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">"Boundedness"</span><span class="hl std">,</span><span class="hl str">"Quantifier"</span><span class="hl std">)], mean )</span>
+
+
+
+<span class="hl com">######################</span>
+<span class="hl com">### THE FIRST PLOT ###</span>
+<span class="hl com">######################</span>
+
+<span class="hl com"># Find nice y-limits</span>
+<span class="hl std">ylim</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span> <span class="hl kwd">min</span><span class="hl std">(means)</span><span class="hl opt">*</span><span class="hl num">.9</span><span class="hl std">,</span> <span class="hl kwd">max</span><span class="hl std">(means)</span><span class="hl opt">*</span><span class="hl num">1.1</span> <span class="hl std">)</span>
+
+<span class="hl com"># Make a barplot</span>
+<span class="hl std">xvals</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">barplot</span><span class="hl std">( means,</span>
+        <span class="hl kwc">beside</span><span class="hl std">=T,</span> <span class="hl com"># plot bars beside rather than stacked</span>
+        <span class="hl kwc">ylim</span><span class="hl std">=ylim,</span>
+        <span class="hl kwc">xpd</span><span class="hl std">=F,</span> <span class="hl com"># this is so that bars don't go below the bottom of the graph</span>
+        <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">"indianred"</span><span class="hl std">,</span> <span class="hl str">"cadetblue"</span><span class="hl std">),</span>
+        <span class="hl kwc">yaxt</span><span class="hl std">=</span><span class="hl str">"n"</span><span class="hl std">,</span> <span class="hl com"># this suppresses the axis so we can make our own</span>
+        <span class="hl kwc">xlab</span><span class="hl std">=</span><span class="hl str">"Quantifier"</span><span class="hl std">,</span>
+        <span class="hl kwc">ylab</span><span class="hl std">=</span><span class="hl str">"RT (ms)"</span> <span class="hl std">)</span>
+
+<span class="hl com"># Make a legend</span>
+<span class="hl kwd">legend</span><span class="hl std">(</span> <span class="hl str">"top"</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">"indianred"</span><span class="hl std">,</span> <span class="hl str">"cadetblue"</span><span class="hl std">),</span> <span class="hl kwc">legend</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">"\"all\" context"</span><span class="hl std">,</span> <span class="hl str">"\"any\" context"</span><span class="hl std">) )</span>
+
+<span class="hl com"># Create a new y-axis</span>
+<span class="hl kwd">axis</span><span class="hl std">(</span> <span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">at</span><span class="hl std">=</span><span class="hl kwd">seq</span><span class="hl std">( ylim[</span><span class="hl num">1</span><span class="hl std">], ylim[</span><span class="hl num">2</span><span class="hl std">],</span> <span class="hl kwc">length.out</span><span class="hl std">=</span><span class="hl num">8</span> <span class="hl std">),</span> <span class="hl kwc">labels</span><span class="hl std">=</span><span class="hl kwd">round</span><span class="hl std">(</span> <span class="hl kwd">seq</span><span class="hl std">( ylim[</span><span class="hl num">1</span><span class="hl std">], ylim[</span><span class="hl num">2</span><span class="hl std">],</span> <span class="hl kwc">length.out</span><span class="hl std">=</span><span class="hl num">8</span> <span class="hl std">) ) )</span>
+
+
+
+<span class="hl com">### Here we'll get the difference CIs by finding the mean difference (simple effect) for each subject and</span>
+<span class="hl com">###	then computing the confidence intervals of those</span>
+
+        <span class="hl com"># The condition means for each subject</span>
+        <span class="hl std">subjmeans</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">tapply</span><span class="hl std">( crit</span><span class="hl opt">$</span><span class="hl std">RT, crit[,</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">"Boundedness"</span><span class="hl std">,</span><span class="hl str">"Quantifier"</span><span class="hl std">,</span><span class="hl str">"Subject"</span><span class="hl std">)], mean )</span>
+
+        <span class="hl com"># The two differences (simple effects) for each subject</span>
+        <span class="hl std">subjdiffs</span> <span class="hl kwb">&lt;-</span> <span class="hl std">subjmeans[</span><span class="hl num">2</span><span class="hl std">,,]</span> <span class="hl opt">-</span> <span class="hl std">subjmeans[</span><span class="hl num">1</span><span class="hl std">,,]</span>
+
+        <span class="hl com"># How far the CI will extend in each direction from the mean. For each difference, this</span>
+        <span class="hl com">#	is the SD, divided by sqrt(N), times the critical t-value</span>
+        <span class="hl std">CI.length</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">apply</span><span class="hl std">( subjdiffs,</span> <span class="hl num">1</span><span class="hl std">, sd )</span> <span class="hl opt">/</span> <span class="hl kwd">sqrt</span><span class="hl std">(</span><span class="hl kwd">dim</span><span class="hl std">(subjdiffs)[</span><span class="hl num">2</span><span class="hl std">])</span> <span class="hl opt">*</span> <span class="hl kwd">qt</span><span class="hl std">(</span> <span class="hl num">.975</span><span class="hl std">,</span> <span class="hl kwd">dim</span><span class="hl std">(subjdiffs)[</span><span class="hl num">2</span><span class="hl std">]</span><span class="hl opt">-</span><span class="hl num">1</span> <span class="hl std">)</span>
+
+<span class="hl com">### Done getting difference CIs</span>
+
+
+<span class="hl com"># Get the differences for plotting</span>
+<span class="hl std">diffs</span> <span class="hl kwb">&lt;-</span> <span class="hl std">means[</span><span class="hl num">2</span><span class="hl std">,]</span> <span class="hl opt">-</span> <span class="hl std">means[</span><span class="hl num">1</span><span class="hl std">,]</span>
+
+
+<span class="hl com">### Here things get ugly. We want to plot the differences, but on a different scale than we</span>
+<span class="hl com">###	plotted the actual condition means (since those are on the order of hundreds, whereas these are</span>
+<span class="hl com">###	on the order of tens). So the next chunk figures out a good scale for those differences, and a</span>
+<span class="hl com">###	mapping between that scale and the main scale</span>
+
+        <span class="hl com"># Find the ideal scale for the difference</span>
+        <span class="hl std">points.ymin</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">min</span><span class="hl std">(diffs</span> <span class="hl opt">-</span> <span class="hl std">CI.length)</span> <span class="hl opt">*</span> <span class="hl num">.95</span>
+        <span class="hl std">points.ymax</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">max</span><span class="hl std">( diffs</span> <span class="hl opt">+</span> <span class="hl std">CI.length )</span> <span class="hl opt">*</span> <span class="hl num">1.05</span>
+        <span class="hl std">points.ylim</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(points.ymin, points.ymax )</span>
+
+        <span class="hl com"># Find the offset---how far away from the main scale the difference scale is. This will be used to figure</span>
+        <span class="hl com">#	out, for any given spot on the difference scale, what spot it corresponds to on the plot's real scale</span>
+        <span class="hl std">offset</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">mean</span><span class="hl std">(ylim)</span> <span class="hl opt">-</span> <span class="hl kwd">mean</span><span class="hl std">(points.ylim)</span>
+
+        <span class="hl com"># What will be the labels of the difference scale. We take what was the main scale, remove the first and</span>
+        <span class="hl com">#	last point (to make this scale visually different from the other one), and subtract the offset</span>
+        <span class="hl std">points.seq</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">seq</span><span class="hl std">( ylim[</span><span class="hl num">1</span><span class="hl std">], ylim[</span><span class="hl num">2</span><span class="hl std">],</span> <span class="hl kwc">length.out</span><span class="hl std">=</span><span class="hl num">8</span> <span class="hl std">)[</span><span class="hl num">2</span><span class="hl opt">:</span><span class="hl num">7</span><span class="hl std">]</span><span class="hl opt">-</span><span class="hl std">offset</span>
+
+        <span class="hl com"># This is to ensure that the difference scale will include 0 as one of its axis ticks. The first line finds</span>
+        <span class="hl com">#	which value on the difference scale is closest to 0, and the next line shifts the whole scale by</span>
+        <span class="hl com">#	that value so that 0 occurs in the sequence</span>
+        <span class="hl std">closest_to_zero</span> <span class="hl kwb">&lt;-</span> <span class="hl std">points.seq[</span> <span class="hl kwd">which</span><span class="hl std">(</span> <span class="hl kwd">abs</span><span class="hl std">(points.seq)</span><span class="hl opt">==</span><span class="hl kwd">min</span><span class="hl std">(</span><span class="hl kwd">abs</span><span class="hl std">(points.seq)) ) ]</span>
+        <span class="hl std">points.seq</span> <span class="hl kwb">&lt;-</span> <span class="hl std">points.seq</span> <span class="hl opt">-</span> <span class="hl std">closest_to_zero</span>
+
+        <span class="hl com"># Finally, we can plot this new scale. Note that the "real" location of the scale is adjusted by the offset,</span>
+        <span class="hl com">#	but the text to be shown on the axis is not. Thus, the tick "12" (for example) will line up with the</span>
+        <span class="hl com">#	spot 12+offset on the plot's "real" scale"</span>
+        <span class="hl kwd">axis</span><span class="hl std">(</span> <span class="hl num">4</span><span class="hl std">,</span> <span class="hl kwc">at</span><span class="hl std">=points.seq</span> <span class="hl opt">+</span> <span class="hl std">offset,</span> <span class="hl kwc">labels</span><span class="hl std">=</span><span class="hl kwd">round</span><span class="hl std">( points.seq ) )</span>
+
+<span class="hl com">### Done futzing with the scale</span>
+
+
+<span class="hl com"># Plot the actual differences as points (note we offset by 'offset' so that the differences, which are small, will</span>
+<span class="hl com">#	show up on the real scale; if we didn't do this, the differences would be way below the bottom of the figure)</span>
+<span class="hl kwd">points</span><span class="hl std">(</span> <span class="hl kwd">apply</span><span class="hl std">(xvals,</span><span class="hl num">2</span><span class="hl std">,mean), diffs</span><span class="hl opt">+</span><span class="hl std">offset,</span> <span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">4</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">"blue"</span> <span class="hl std">)</span>
+
+<span class="hl com"># Plot error bars, representing the CIs, around the differences</span>
+<span class="hl kwd">arrows</span><span class="hl std">(</span> <span class="hl kwd">apply</span><span class="hl std">(xvals,</span><span class="hl num">2</span><span class="hl std">,mean), diffs</span><span class="hl opt">+</span><span class="hl std">CI.length</span><span class="hl opt">+</span><span class="hl std">offset,</span> <span class="hl kwd">apply</span><span class="hl std">(xvals,</span><span class="hl num">2</span><span class="hl std">,mean), diffs</span><span class="hl opt">-</span><span class="hl std">CI.length</span><span class="hl opt">+</span><span class="hl std">offset,</span> <span class="hl kwc">code</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">length</span><span class="hl std">=</span><span class="hl num">.1</span><span class="hl std">,</span> <span class="hl kwc">angle</span><span class="hl std">=</span><span class="hl num">90</span><span class="hl std">,</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl num">5</span><span class="hl std">,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">"blue"</span> <span class="hl std">)</span>
+
+<span class="hl com"># Draw a line at 0</span>
+<span class="hl kwd">lines</span><span class="hl std">(</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">2</span><span class="hl opt">*</span><span class="hl kwd">max</span><span class="hl std">(xvals)),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">)</span><span class="hl opt">+</span><span class="hl std">offset )</span>
+
+<span class="hl com"># Plop the simple effect p-values onto the plot</span>
+<span class="hl kwd">text</span><span class="hl std">(</span> <span class="hl kwd">mean</span><span class="hl std">(xvals[,</span><span class="hl num">1</span><span class="hl std">]), diffs[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl opt">+</span><span class="hl std">CI.length[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl opt">+</span><span class="hl std">offset</span><span class="hl opt">+</span><span class="hl num">10</span><span class="hl std">,</span> <span class="hl kwd">paste0</span><span class="hl std">(</span> <span class="hl str">"p="</span><span class="hl std">,</span> <span class="hl kwd">round</span><span class="hl std">(</span> <span class="hl kwd">t.test</span><span class="hl std">(subjmeans[</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,], subjmeans[</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,],</span> <span class="hl kwc">paired</span><span class="hl std">=T )</span><span class="hl opt">$</span><span class="hl std">p.value,</span> <span class="hl num">3</span><span class="hl std">) ),</span> <span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">"blue"</span> <span class="hl std">)</span>
+<span class="hl kwd">text</span><span class="hl std">(</span> <span class="hl kwd">mean</span><span class="hl std">(xvals[,</span><span class="hl num">2</span><span class="hl std">]), diffs[</span><span class="hl num">2</span><span class="hl std">]</span><span class="hl opt">-</span><span class="hl std">CI.length[</span><span class="hl num">2</span><span class="hl std">]</span><span class="hl opt">+</span><span class="hl std">offset</span><span class="hl opt">-</span><span class="hl num">10</span><span class="hl std">,</span> <span class="hl kwd">paste0</span><span class="hl std">(</span> <span class="hl str">"p="</span><span class="hl std">,</span> <span class="hl kwd">round</span><span class="hl std">(</span> <span class="hl kwd">t.test</span><span class="hl std">(subjmeans[</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,], subjmeans[</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,],</span> <span class="hl kwc">paired</span><span class="hl std">=T )</span><span class="hl opt">$</span><span class="hl std">p.value,</span> <span class="hl num">3</span><span class="hl std">) ),</span> <span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">"blue"</span> <span class="hl std">)</span>
+
+
+
+
+
+
+
+<span class="hl com">###### The rest of the script adds error bars on top of the plot already generated above.</span>
+<span class="hl com">###### Rather than reproduce the above code four times, I'll just leave each error bar version</span>
+<span class="hl com">######  below. You can run whichever one of them (and comment out or delete the rest) you want.</span>
+
+
+
+
+
+<span class="hl com">############################################</span>
+<span class="hl com">### THE SECOND PLOT: BETWEEN-SUBJECT CIs ###</span>
+<span class="hl com">############################################</span>
+
+<span class="hl com"># Calculate between-subject CIs</span>
+
+<span class="hl com"># First aggregate over subjects (because we want the SD of the subject means, not the SD of</span>
+<span class="hl com">#	all the datapoints)</span>
+<span class="hl std">subjmeans.aggr</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">aggregate</span><span class="hl std">( crit</span><span class="hl opt">$</span><span class="hl std">RT, crit[,</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">"Boundedness"</span><span class="hl std">,</span><span class="hl str">"Quantifier"</span><span class="hl std">,</span><span class="hl str">"Subject"</span><span class="hl std">)], mean )</span>
+
+<span class="hl com">#Then use the typical CI function: SD (tapply'ed so we get it for each condition) / sqrt(N) * critical t</span>
+<span class="hl std">CI.lengths</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">tapply</span><span class="hl std">( subjmeans.aggr</span><span class="hl opt">$</span><span class="hl std">x, subjmeans.aggr[,</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">"Boundedness"</span><span class="hl std">,</span><span class="hl str">"Quantifier"</span><span class="hl std">)], sd )</span> <span class="hl opt">/</span> <span class="hl kwd">sqrt</span><span class="hl std">(</span> <span class="hl kwd">length</span><span class="hl std">(</span><span class="hl kwd">levels</span><span class="hl std">(subjmeans.aggr</span><span class="hl opt">$</span><span class="hl std">Subject)) )</span> <span class="hl opt">*</span> <span class="hl kwd">qt</span><span class="hl std">(</span> <span class="hl num">.975</span><span class="hl std">,</span> <span class="hl kwd">length</span><span class="hl std">(</span><span class="hl kwd">levels</span><span class="hl std">(subjmeans.aggr</span><span class="hl opt">$</span><span class="hl std">Subject))</span><span class="hl opt">-</span><span class="hl num">1</span> <span class="hl std">)</span>
+
+<span class="hl com"># Use those CIs to add error bars</span>
+<span class="hl kwd">arrows</span><span class="hl std">( xvals, means</span><span class="hl opt">+</span><span class="hl std">CI.lengths, xvals, means</span><span class="hl opt">-</span><span class="hl std">CI.lengths,</span> <span class="hl kwc">code</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">length</span><span class="hl std">=</span><span class="hl num">.1</span><span class="hl std">,</span> <span class="hl kwc">angle</span><span class="hl std">=</span><span class="hl num">90</span><span class="hl std">,</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl num">2</span> <span class="hl std">)</span>
+
+
+
+
+
+
+
+
+<span class="hl com">##########################################################</span>
+<span class="hl com">### THE THIRD PLOT: COUSINEAU-MOREY WITHIN-SUBJECT CIs ###</span>
+<span class="hl com">##########################################################</span>
+
+
+<span class="hl com"># This is a function that calculates Cousineau-Morey within-subject CIs.</span>
+<span class="hl com">#	formula: the formula describing what you want to plot, i.e.,</span>
+<span class="hl com">#		DV ~ IV1 + IV2 ....</span>
+<span class="hl com">#	data: the data frame</span>
+<span class="hl com">#	grouping.var: defaults to "Subject". Don't include this in the</span>
+<span class="hl com">#		formula.</span>
+<span class="hl com">#	conf.level: confidence level for the CI. Defaults to .95</span>
+<span class="hl com">#	correct: Correction to apply. Defaults to "Morey" to apply the Morey (2008)</span>
+<span class="hl com">#		bias correction; it will also do this if correct==T. To not do the</span>
+<span class="hl com">#		correction, set it to anything else (e.g. correct=="none" or</span>
+<span class="hl com">#		correct==F)</span>
+<span class="hl com"># The output of the function isn't actually a CI, it's the ranges from the mean.</span>
+<span class="hl com">#	So an actual CI will be the mean +/- what is returned in this function.</span>
+<span class="hl com">#	It returns the output in the table, with variables in the same order as</span>
+<span class="hl com">#	what you get from tapply( DV, IVs, mean), so that is handy.</span>
+<span class="hl std">CMCI</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span> <span class="hl kwc">formula</span><span class="hl std">,</span> <span class="hl kwc">data</span><span class="hl std">,</span> <span class="hl kwc">grouping.var</span><span class="hl std">=</span><span class="hl str">"Subject"</span><span class="hl std">,</span> <span class="hl kwc">conf.level</span><span class="hl std">=</span><span class="hl num">.95</span><span class="hl std">,</span> <span class="hl kwc">correct</span><span class="hl std">=</span><span class="hl str">"Morey"</span> <span class="hl std">){</span>
+
+        <span class="hl com"># Figure out the DV and the IVs.</span>
+        <span class="hl com"># This doesn't use all.var() because that strips away functions,</span>
+        <span class="hl com">#	whereas sometimes your formula might be like log(DV) ~</span>
+        <span class="hl com">#	rather than just DV.</span>
+        <span class="hl std">vars</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">rownames</span><span class="hl std">(</span><span class="hl kwd">attr</span><span class="hl std">(</span><span class="hl kwd">terms</span><span class="hl std">(formula),</span><span class="hl str">"factors"</span><span class="hl std">))</span>
+        <span class="hl std">DV</span> <span class="hl kwb">&lt;-</span> <span class="hl std">vars[</span><span class="hl num">1</span><span class="hl std">]</span>
+        <span class="hl std">IVs</span> <span class="hl kwb">&lt;-</span> <span class="hl std">vars[</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">]</span>
+
+        <span class="hl std">data</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">aggregate</span><span class="hl std">( data[,DV], data[,</span><span class="hl kwd">c</span><span class="hl std">(IVs,grouping.var)], mean )</span>
+        <span class="hl kwd">colnames</span><span class="hl std">(data)[</span> <span class="hl kwd">length</span><span class="hl std">(</span><span class="hl kwd">colnames</span><span class="hl std">(data)) ]</span> <span class="hl kwb">&lt;-</span> <span class="hl std">DV</span>
+
+        <span class="hl com"># Get the means</span>
+        <span class="hl std">means</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">tapply</span><span class="hl std">( data[,DV], data[,IVs], mean )</span>
+
+        <span class="hl com">## Get the 95% CIs using the Cousineau-Morey method (Morey, 2008)</span>
+
+                <span class="hl com"># First find the mean for each participant</span>
+                <span class="hl std">ptpmeans</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">aggregate</span><span class="hl std">( data[,DV],</span> <span class="hl kwd">list</span><span class="hl std">(data[,grouping.var]), mean )</span>
+                <span class="hl kwd">colnames</span><span class="hl std">(ptpmeans)</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">"Subject"</span><span class="hl std">,</span> <span class="hl str">"Mean"</span><span class="hl std">)</span>
+                <span class="hl kwd">rownames</span><span class="hl std">(ptpmeans)</span> <span class="hl kwb">&lt;-</span> <span class="hl std">ptpmeans</span><span class="hl opt">$</span><span class="hl std">Subject</span>
+
+                <span class="hl com"># Scale the data by subtracting the participant mean and adding the grand mean</span>
+                <span class="hl std">data</span><span class="hl opt">$</span><span class="hl std">scaled_DV</span> <span class="hl kwb">&lt;-</span> <span class="hl std">data[,DV]</span> <span class="hl opt">-</span> <span class="hl std">ptpmeans[</span><span class="hl kwd">as.character</span><span class="hl std">(data[,grouping.var]),</span><span class="hl str">"Mean"</span><span class="hl std">]</span> <span class="hl opt">+</span> <span class="hl kwd">mean</span><span class="hl std">(data[,DV])</span>
+
+                <span class="hl com"># </span>
+                <span class="hl kwa">if</span><span class="hl std">(</span> <span class="hl kwd">tolower</span><span class="hl std">(correct)</span><span class="hl opt">==</span><span class="hl str">"morey"</span> <span class="hl opt">|</span> <span class="hl std">correct</span><span class="hl opt">==</span><span class="hl std">T ){</span>
+                        <span class="hl com"># The number of conditions</span>
+                        <span class="hl std">K</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sum</span><span class="hl std">(</span> <span class="hl kwd">unlist</span><span class="hl std">(</span> <span class="hl kwd">lapply</span><span class="hl std">( IVs,</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){</span> <span class="hl kwd">length</span><span class="hl std">(</span><span class="hl kwd">levels</span><span class="hl std">(data[,x]))}) ) )</span>
+
+                        <span class="hl com"># the Morey (2008) correction factor	</span>
+                        <span class="hl std">correction_factor</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sqrt</span><span class="hl std">(K</span><span class="hl opt">/</span><span class="hl std">(K</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">))</span>
+                <span class="hl std">}</span> <span class="hl kwa">else</span> <span class="hl std">{</span>
+                        <span class="hl std">correction_factor</span> <span class="hl kwb">&lt;-</span> <span class="hl num">1</span>
+                <span class="hl std">}</span>
+                <span class="hl com"># The number of participants</span>
+                <span class="hl std">N</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">length</span><span class="hl std">(</span><span class="hl kwd">levels</span><span class="hl std">(data[,grouping.var]))</span>
+
+
+                <span class="hl com"># Get the CIs</span>
+                <span class="hl std">CIs</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">tapply</span><span class="hl std">( data</span><span class="hl opt">$</span><span class="hl std">scaled_DV, data[,IVs], sd )</span> <span class="hl opt">/</span> <span class="hl kwd">sqrt</span><span class="hl std">( N )</span> <span class="hl opt">*</span> <span class="hl kwd">qt</span><span class="hl std">(</span><span class="hl kwd">mean</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(conf.level,</span><span class="hl num">1</span><span class="hl std">)), N</span><span class="hl opt">-</span><span class="hl num">1</span> <span class="hl std">)</span> <span class="hl opt">*</span> <span class="hl std">correction_factor</span>
+
+        <span class="hl com">## Done figuring out Cousineau-Morey CIs</span>
+
+        <span class="hl kwd">return</span><span class="hl std">( CIs )</span>
+
+
+<span class="hl std">}</span>
+
+<span class="hl com"># Calculate the CI lengths</span>
+<span class="hl std">CI.lengths</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">CMCI</span><span class="hl std">( RT</span> <span class="hl opt">~</span> <span class="hl std">Boundedness</span> <span class="hl opt">+</span> <span class="hl std">Quantifier, crit,</span> <span class="hl kwc">grouping.var</span><span class="hl std">=</span><span class="hl str">"Subject"</span><span class="hl std">,</span> <span class="hl kwc">correct</span><span class="hl std">=</span><span class="hl str">"Morey"</span><span class="hl std">,</span> <span class="hl kwc">conf.level</span><span class="hl std">=</span><span class="hl num">.95</span> <span class="hl std">)</span>
+
+<span class="hl com"># Plot error bars using those</span>
+<span class="hl kwd">arrows</span><span class="hl std">( xvals, means</span><span class="hl opt">+</span><span class="hl std">CI.lengths, xvals, means</span><span class="hl opt">-</span><span class="hl std">CI.lengths,</span> <span class="hl kwc">code</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">length</span><span class="hl std">=</span><span class="hl num">.1</span><span class="hl std">,</span> <span class="hl kwc">angle</span><span class="hl std">=</span><span class="hl num">90</span><span class="hl std">,</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl num">2</span> <span class="hl std">)</span>
+</pre>
+</div>
+</div>
+
+	<hr>
+	<p class="mini">by <a href=".">Stephen Politzer-Ahles</a>. Last modified on 2016-05-10.</p>
+
+
+
+    </body>
+</html>

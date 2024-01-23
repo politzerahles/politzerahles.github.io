@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Confidence intervals</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Confidence intervals (2 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">In the "Introduction to inferential statistics" module we discussed the <em>p</em>-value, which is a number
+	describing how much the effect you observe in your data is consistent with a specific hypothesis (usually the hypothesis that the
+	effect is 0). For example, if your data are very inconsistent with the hypothesis that the effect is 0, then the p-value will be
+	very small.</p>
+<p class="centercol">An alternative way of looking at the same information is to look at what <em>range</em> of hypotheses your data are
+	not inconsistent with. That range is called a <strong><em>confidence</em> <em>interval</em></strong>.</p>
+<p class="centercol">For example, imagine you develop a test to measure people's executive function skills (this might be a flanker task,
+	a Stroop task, a Simon task, a stop-signal task, or one of the many other tasks), and then you use it to compare executive function
+	in bilinguals and monilinguals. You find that, based on your test, bilinguals' executive function is 7.2 points higher than
+	monolinguals (what I am expressing here is an <em>unstandardized</em> effect size). You could conduct a test to compare these data
+	against the null hypothesis that bilinguals and monolinguals' executive function is equal (i.e., bilinguals are 0 points higher than
+	monolinguals), and maybe for that test you would get <em>p</em>=.006, which means: "under the assumption that bilinguals and
+	monolinguals' executive function is equal, there's only a 0.6% chance that I would observe these data with a 7.2-point difference."</p>
+<p class="centercol">An alternative way to analyze the same dataset would be to calculate the confidence interval around the effect. For
+	example, maybe you find that bilinguals' executive function is 7.2 points higher than monolinguals, and that the confidence interval
+	for this effect goes from 4.1 to 10.3. This tells you a very specific piece of information: the effect you got (7.2 points) is
+	<em>not significantly different</em> from any number between 4.1 and 10.3, and it <em>is significantly different</em> from any number
+	outside this range. In other words, your effect is significantly bigger than zero.</p>
+<p class="centercol">(The formal definition of a confidence interval is more technical than this; see
+	"<a href="https://www.polyu.edu.hk/cbs/sjpolit/CI_misinterpretations.html">A demonstration of the correct interpretation of
+	confidence intervals</a>" for details.)</p>
+<p class="centercol">There are several different mathematical procedures for calculating confidence intervals. You don't need to know them
+	for this module; our goal for now is just to understand what confidence intervals mean and what they are useful for.</p>
+<p class="centercol">Do the activities below to learn more about confidence intervals.</p>
+
+	<center>
+	<button class="collapsible">Common scenarios revealed by confidence intervals</button>
+	<div class="content">
+		<p>One thing that's useful about confidence intervals is that they can show more situations than <em>p</em>-values. A
+			<em>p</em>-value can tell you if your effect is significantly different from some hypothesis (usually the hypothesis that
+			"there is no effect") or if it's not. But a confidence interval, combined with some other common-sense information, can
+			tell you more.</p>
+		<p>To understand how this works, we need to understand one other concept: the <em>smallest effect of interest</em> or
+			<em>smallest meaningful effect</em>. In many research situations, we have some idea about what effect sizes we might be
+			interested in. For example, if we are trying to develop some kind of training to improve kids' vocabulary, then we might
+			have some idea of how effective this training needs to be to be worthwhile. If I do research and find that my training can
+			improve kids' vocabulary by 2 words per year, but the training costs a billion dollars and involves spanking kids until
+			they cry, then I should probably decide the training is not worthwhile&mdash;a vocabulary improvement of 2 words per year
+			is simply not big enough to care about (especially if it comes with a substantial cost). In more basic science
+			applications, the smallest effect of interest might not be motivated by practical or money or ethical concerns like the,
+			above example but by what we know about the phenomenon we are studying. For example, if we do a reaction time experiment,
+			we might know that cognitively meaningful effects (like priming) tend to increase or decrease reaction times by about 10
+			milliseconds or more, so we might assume that effects smaller than that are probably not meaningful. Or, for speech
+			perception experiments, we might know that very subtle differences are not possible to perceive, so we might have some
+			idea of how "big" a difference needs to be for it to be meaningful for speech perception research. Or we might know
+			what kinds of differences are detectable by the methods currently available to us&mdash;for example, in event-related
+			potential research (see the "Electrophysiology" module), linguistic manipulations tend to modulate brain components like
+			the N400 or MMN by about 1-10 microvolts; so we know that an effect of 0.0001 microvolts is simply too small to
+			meaningfully study using the equipment and the research paradigms that are currently available to us (it would instead
+			require more sensitive technology and/or more sensitive research paradigms; we'll learn about the latter in the "Power"
+			section of this module).</p>
+		<p>Why is this useful? Because when we calculate a confidence interval, we can see if that confidence interval does or does not
+			exclude the smallest effect of interest. To see how, consider the example graphs below.</p>
+		<p>In each graph, I'm showing an effect (the red dot) and its confidence interval (the range of the red bars around the dot). In
+			each graph, the dashed line shows the smallest effect size of interest in the study, and the solid black line shows zero
+			effect.</p>
+		<center><img src="cis.png" alt="Sample effects and CIs. see main text for details." width=100% /></center>
+		<p>These are four common situations that can happen with research results, and which you can only see if you look at confidence
+			intervals and think about the smallest effect of interest. The first two situations are generally situations that you like
+			to get (they allow you to make clear conclusions), and the second two situations are generally situations you don't like
+			to see (they don't allow any clear conclusions).</p>
+		<p>The first graph shows a situation where both zero and the smallest effect of interest are lower than the confidence interval.
+			This is the sort of situation that allows you to conclude you found a big effect: you know your effect is significantly
+			larger than zero, <em>and</em> you know your effect is significantly larger than any other effect that would be too small
+			to care about. In other words, you've got a meaningfully large effect.</p>
+		<p>The second graph shows a situation where zero is within the confidence interval, <em>and</em> the smallest effect of interest
+			is bigger than the confidence interval. This is the sort of situation that allows you to conclude you found no significant,
+			meaningful effect: not only is your effect not-significantly-different-than zero, it's also significantly smaller than any
+			effects that would be big enough to be meaningful. You really should never say you have "no effect" if you have not looked
+			at this sort of confidence interval. (You will see why when we look at the last graph.)</p>
+		<p>The third graph shows a problem situation. Here, the effect is significantly bigger than zero, <em>but</em> it's also
+			significantly smaller than any effect that would be big enough for us to consider meaningful. It's difficult to make a
+			firm conclusion here. <a href="https://elifesciences.org/articles/33468">This paper</a> has an example of an effect like
+			this; we observed (in some of the exploratory analyses towards the end) an effect that may be significantly bigger than
+			zero, but that is still so small it's arguably not very meaningful. This paper ended up causing some controversy in its
+			field, because different people took it as evidence for different things; some people looked at this paper and felt that
+			it supported the existence of this particular effect (because it did indeed find an effect significantly larger than zero),
+			whereas others felt that it challenged the existence of this effect (because the effect found in this paper was significantly
+			smaller than what any previous papers had found).</p>
+		<p>Finally, the last graph shows the worst (and, probably, most common) situation. The effect is not significantly different
+			from zero, so you might be tempted to conclude "there's no effect". (Technically you should never say this; there's always
+			an effect, it's just a matter of whether the effect is significant or not.) <em>But</em> the effect is also not
+			significantly smaller than some meaningfully big and important effect sizes, like 6 or 7, since those are also within its
+			confidence interval. In other words, you can't conclude anything from these results: they're consistent with "no effect"
+			and also consistent with "big effect" at the same time. They are what we would call "uninformative" or "indeterminate"
+			results; some people might even call them useless.</p>
+		<p>There are other possible patterns beyond the four shown here, but these four are common ones.</p>
+		<p><strong>Thinking about your own research</strong>, why do you think it's important to look at this? What does this tell you
+			that <em>p</em>-values don't? And <span style="text-decoration: underline;">can you think of what a "smallest effect of
+			interest" might be for one of your projects</span>?</p>
+	</div>
+
+	<button class="collapsible">Big effects vs. significant effects</button>
+	<div class="content">
+		<p>People often confuse effect size and significance; people assume that big effects should be significant or that significant
+			effects should be big. This is not always true.</p>
+		<p>Using the format of the graphs from the previous question, draw a graph of an effect that's big but not significant (here
+			when I say "significant" I mean "significantly different from zero"), and draw a graph of an effect that's small but
+			significant. (You can draw these next to each other on the same scale, or you can draw them in separate graphs.)</p>
+	</div>
+	</center>
+
+	<p class="centercol">After you finish this activity, do the "<a href="power.html">Power</a>" activity if you have not already. If you
+		have finished both this and Power, then you are done with the module (assuming all your work on this and the
+			previous tasks has been satisfactory). However, you may still continue on to the <a href="advanced-level.html">advanced-level
+			task for this module</a> if you wish to complete this module at the advanced level (if you're aiming for a higher
+			grade or if you are just particularly interested in this topic). Otherwise, you can <a href="index.html">return to the
+			module homepage</a> to review this module, or <a href="..">return to the class homepage</a> to select a different module
+			or assignment to do now.</p>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-17. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+

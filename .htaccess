@@ -1,0 +1,2 @@
+ErrorDocument 404 http://people.ku.edu/~sjpa/404page.html
+ErrorDocument 403 http://people.ku.edu/~sjpa/403page.html

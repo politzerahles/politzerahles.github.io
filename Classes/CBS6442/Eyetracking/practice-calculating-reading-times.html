@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<style type="text/css">
+.txtUpsideDown 
+{
+	filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=2);  /* IE6,IE7 */
+	ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)"; /* IE8 */
+	-moz-transform: rotate(-180deg);  /* FF3.5+ */
+	-o-transform: rotate(-180deg);  /* Opera 10.5 */
+	-webkit-transform: rotate(-180deg);  /* Safari 3.1+, Chrome */
+	position: absolute; 
+}
+</style>
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Practice calculating reading times</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Practice calculating reading times (1-2 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">Now you know some reading measures, practice calculating various reading measures from a real dataset. Below I have
+	shown you the pattern of eye movements and fixations over one sentence, and I want you to calculate several different reading time
+	measures. I encourage you to work with one or more partners.</p>
+<p class="centercol">Unlike most exercises in this subject, for this test there are specific correct answers. Don't move on to the rest of
+	the module until you are able to answer the below test questions correctly (the correct answers are listed at the bottom of this
+	page).</p>
+
+<h4 class="centercol">The data</h4>
+<p class="centercol">Here's another sample eye-tracking result. In this case, I'm also showing you how many milliseconds each fixation lasted. Again, I'm
+	showing the results in both a picture and a table.</p>
+<center><img src="eyetracking2.png" alt="Another image showing a sample pattern of eye movements. See text below for a text-format, machine-readable table of the results" width=70% /></center>
+
+<center>
+<table border=1>
+<tr>
+	<td>Fixation 1</td><td>175&nbsp;ms</td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+	<td>Fixation 2</td><td></td><td>202&nbsp;ms</td><td></td><td></td><td></td><td></td>
+</tr>
+
+<tr>
+	<td>Fixation 3</td><td></td><td></td><td>118&nbsp;ms</td><td></td><td></td><td></td>
+</tr>
+
+<tr>
+	<td>Fixation 4</td><td></td><td></td><td></td><td>492&nbsp;ms</td><td></td><td></td>
+</tr>
+
+<tr>
+	<td>Fixation 5</td><td></td><td>326&nbsp;ms</td><td></td><td></td><td></td><td></td>
+</tr>
+
+<tr>
+	<td>Fixation 6</td><td></td><td></td><td></td><td>288&nbsp;ms</td><td></td><td></td>
+</tr>
+
+<tr>
+	<td>Fixation 7</td><td></td><td></td><td></td><td></td><td>706&nbsp;ms</td><td></td>
+</tr>
+
+<tr>
+	<td>Fixation 8</td><td></td><td></td><td></td><td></td><td>383&nbsp;ms</td><td></td>
+</tr>
+
+<tr>
+	<td>Fixation 9</td><td></td><td></td><td>421&nbsp;ms</td><td></td><td></td><td></td>
+</tr>
+
+<tr>
+	<td>Fixation 10</td><td></td><td></td><td></td><td>512&nbsp;ms</td><td></td><td></td>
+</tr>
+
+<tr>
+	<td>Fixation 11</td><td></td><td></td><td></td><td></td><td>111&nbsp;ms</td><td></td>
+</tr>
+
+<tr>
+	<td>Fixation 12</td><td></td><td></td><td></td><td></td><td></td><td>367&nbsp;ms</td>
+</tr>
+
+<tr>
+	<td>Fixation 13</td><td></td><td></td><td></td><td></td><td>545&nbsp;ms</td><td></td>
+</tr>
+
+<tr>
+	<td>Fixation 4</td><td></td><td></td><td></td><td></td><td></td><td>862&nbsp;ms</td>
+</tr>
+
+<tr>
+	<td></td><td><strong>The</strong></td><td><strong>busy girl</strong></td><td><strong>saw</strong></td><td><strong>the bank</strong></td><td><strong><span style="color: red">was closed</span></strong></td><td><strong>that afternoon</strong></td>
+</tr>
+</table>
+</center>
+
+<p class="centercol">I want to know how long people took to read the phrase <em>was closed</em>. Below I have listed several different reading time
+	measures; some of them are ones you read about in the previous question, and some are totally new. (Beneath each one I have included
+	a brief explanation of what it means.) Calculate each reading time measure and fill in the blank.</p>
+<ul class="center">
+	<li><strong>First fixation time</strong>: _____ ms
+		<ul>
+			<li>duration of the first fixation on this word or group of words</li>
+		</ul>
+	</li>
+	<li><strong>First pass time</strong>: _____ ms
+		<ul>
+			<li>sum of all fixations on this region, from the first time this region was looked at until the first time this region
+				was left (in either direction)</li>
+		</ul>
+	</li>
+	<li><strong>Go-past time</strong>: _____ ms
+		<ul>
+			<li>sum of all fixations on any region, from the first time this region was looked at until the first time this region was
+				gone past</li>
+		</ul>
+	</li>
+	<li><strong>Second-pass time</strong>: _____ ms
+		<ul>
+			<li>sum of all fixations on the region from the second time the region was looked at (after being left once) until the second time it was looked away from</li>
+		</ul>
+	</li>
+	<li><strong>Rereading time</strong>: _____ ms
+		<ul>
+			<li>sum of all fixations on the region after the region was gone past at least once</li>
+		</ul>
+	</li>
+	<li><strong>Total time</strong>: _____ ms
+		<ul>
+			<li>sum of all fixations on the region</li>
+		</ul>
+	</li>
+</ul>
+
+
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			"<a href="reflection-on-eye-tracking-for-reading.html">Reflection on eye-tracking for reading</a>".</p>
+
+<p class="txtUpsideDown">Answers: first fixation time: 706ms; first pass time: 1089ms; go-past time: 2133ms; second pass time: 111ms; rereading time: 545ms; total time: 1745ms.
+<br /><br /></p>
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-14. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+

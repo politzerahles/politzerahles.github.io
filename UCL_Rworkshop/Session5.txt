@@ -1,0 +1,731 @@
+# Run this to make sure you have the latest version of R and all the packages we'll use:
+if( !( "installr" %in% installed.packages()[,"Package"] ) ){ install.packages("installr") } 
+library(installr); updateR()
+pkgs <- c( "lme4", "languageR", "devtools", "vioplot", "lmerTest", "car", "multcomp", "e1071" )
+pkgs <- pkgs[ !(pkgs %in% installed.packages()[,"Package"]) ]
+if( length(pkgs)>0 ){ install.packages( pkgs[ !(pkgs %in% installed.packages()[,"Package"]) ] ) }
+if( !( "yarrr" %in% installed.packages()[,"Package"] ) ){ library(devtools); install_github("ndphillips/yarrr") }
+
+
+
+
+
+
+
+
+
+
+
+### Dumb intro "plotting" plot
+P <- rbind( c(1, 1.5, 1.5, 1, 1, 1), c( 2, 2, 1.5, 1.5, 2, 1) )
+L <- rbind( c( 2, 2, 2.5 ), c( 2, 1, 1 ) )
+O <- rbind( c( 3, 3.5, 3.5, 3, 3 ), c( 2, 2, 1, 1, 2 ) )
+T <- rbind( c( 4, 4.5, 4.25, 4.25 ), c( 2, 2, 2, 1 ) )
+i <- rbind( c( 6, 6 ), c( 2, 1 ) )
+N <- rbind( c( 7, 7, 7.5, 7.5 ), c( 1, 2, 1, 2) )
+G <- rbind( c( 8.5, 8, 8, 8.5, 8.5, 8.25 ), c( 2, 2, 1, 1, 1.5, 1.5 ) )
+
+
+plot( P[1,], P[2,], type="n", xlim=c(0,10), ylim=c(0,3) )
+lines( P[1,], P[2,] ); points( P[1,], P[2,] )
+lines( L[1,], L[2,] ); points( L[1,], L[2,] )
+lines( O[1,], O[2,] ); points( O[1,], O[2,] )
+lines( T[1,], T[2,] ); points( T[1,], T[2,] )
+lines( T[1,]+1, T[2,] ); points( T[1,]+1, T[2,] )
+lines( i[1,], i[2,] ); points( i[1,], i[2,] )
+lines( N[1,], N[2,] ); points( N[1,], N[2,] )
+lines( G[1,], G[2,] ); points( G[1,], G[2,] )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###############################
+### BARPLOT WITH ERROR BARS ###
+###############################
+
+
+	##########################
+	### PREPARING THE DATA ###
+	##########################
+	
+	# Clear the workspace
+	rm(list=ls())
+
+	# Load the data (downloaded from Supplementary File S2 of http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0063943)
+	load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/File S2.RData" ) )
+
+	# load custom functions
+	source( url( "http://www.polyu.edu.hk/cbs/sjpolit/Steve_functions.txt" ) )
+
+	# Pull out just the critical region, of the critical trials
+	crit <- RTdata[ RTdata$RegionNum==8 & RTdata$Quantifier!="filler", ]
+	
+	# Clean up factors
+	crit$Item <- factor(crit$Item)
+	crit$Boundedness <- factor(crit$Boundedness)
+	crit$Quantifier <- factor(crit$Quantifier)
+
+	# Get the condition means
+	means <- tapply( crit$RT, crit[,c("Boundedness","Quantifier")], mean )
+
+
+
+	############################################
+	### THE FIRST PLOT: BETWEEN-SUBJECTS CIs ###
+	############################################
+
+	### Calculate between-subject CIs
+
+		# First aggregate over subjects (because we want the SD of the subject means, not the SD of
+		#	all the datapoints)
+		subjmeans.aggr <- aggregate( crit$RT, crit[,c("Boundedness","Quantifier","Subject")], mean )
+
+		#Then use the typical CI function: SD (tapply'ed so we get it for each condition) / sqrt(N) * critical t
+		CI.lengths <- tapply( subjmeans.aggr$x, subjmeans.aggr[,c("Boundedness","Quantifier")], sd ) / sqrt( length(levels(subjmeans.aggr$Subject)) ) * qt( .975, length(levels(subjmeans.aggr$Subject))-1 )
+
+	### Done figuring out [the lengths of] the between-subject CIs
+	
+
+	# Find nice y-limits
+	ylim <- c( min(means-CI.lengths)*.9, max(means+CI.lengths)*1.1 )
+
+	# Make a barplot
+	xvals <- barplot( means,
+	        beside=T, # plot bars beside rather than stacked
+	        ylim=ylim,
+	        xpd=F, # this is so that bars don't go below the bottom of the graph
+	        col=c("indianred", "cadetblue"),
+        	yaxt="n", # this suppresses the axis so we can make our own
+	        xlab="Quantifier",
+	        ylab="RT (ms)" )
+
+	# Make a legend
+	legend( "top", fill=c("indianred", "cadetblue"), legend=c("\"all\" context", "\"any\" context") )
+
+	# Create a new y-axis
+	# '2' specifies it's the left axis. 'at' is the list of locations where ticks will go, and 'labels' is the labels that will be plotted for the ticks
+	axis( 2, at=seq( ylim[1], ylim[2], length.out=8 ), labels=round( seq( ylim[1], ylim[2], length.out=8 ) ) )
+
+	# Use those CIs to add error bars
+	# code=3 adds arrowheads on each side of the bars, and angle=90 makes them actually be perpendicular lines rather than real arrowheads
+	arrows( xvals, means+CI.lengths, xvals, means-CI.lengths, code=3, length=.1, angle=90, lwd=2 )
+
+	# Quick-and-dirty t-test to see whether those CIs are reflecting our statistical pattern
+	SOME_any <- subjmeans.aggr[ subjmeans.aggr$Quantifier=="some of them" & subjmeans.aggr$Boundedness=="any of them", "x"]
+	SOME_all <- subjmeans.aggr[ subjmeans.aggr$Quantifier=="some of them" & subjmeans.aggr$Boundedness=="all of them", "x"]
+	t.test( SOME_any, SOME_all, paired=T )
+
+
+	### But plotting the between-subjects CIs for a within-subjects comparison is probably not a good idea. Here we'll plot the
+	###	CIs of the DIFFERENCES (rather than of the conditions) to illustrate the problem
+
+	### Here we'll get the difference CIs by finding the mean difference (simple effect) for each subject and
+	###	then computing the confidence intervals of those
+
+	        # The condition means for each subject
+	        subjmeans <- tapply( crit$RT, crit[,c("Boundedness","Quantifier","Subject")], mean )
+
+	        # The two differences (simple effects) for each subject
+	        subjdiffs <- subjmeans[2,,] - subjmeans[1,,]
+
+	        # How far the CI will extend in each direction from the mean. For each difference, this
+	        #	is the SD, divided by sqrt(N), times the critical t-value
+	        CI.length <- apply( subjdiffs, 1, sd ) / sqrt(dim(subjdiffs)[2]) * qt( .975, dim(subjdiffs)[2]-1 )
+
+	### Done getting difference CIs
+
+
+	# Get the differences for plotting
+	diffs <- means[2,] - means[1,]
+
+
+	### Here things get ugly. We want to plot the differences, but on a different scale than we
+	###	plotted the actual condition means (since those are on the order of hundreds, whereas these are
+	###	on the order of tens). So the next chunk figures out a good scale for those differences, and a
+	###	mapping between that scale and the main scale
+
+		# Find the ideal scale for the difference
+	        points.ymin <- min(diffs - CI.length) * .95
+	        points.ymax <- max( diffs + CI.length ) * 1.05
+	        points.ylim <- c(points.ymin, points.ymax )
+	
+	        # Find the offset---how far away from the main scale the difference scale is. This will be used to figure
+	        #	out, for any given spot on the difference scale, what spot it corresponds to on the plot's real scale
+	        offset <- mean(ylim) - mean(points.ylim)
+
+	        # What will be the labels of the difference scale. We take what was the main scale, remove the first and
+	        #	last point (to make this scale visually different from the other one), and subtract the offset
+	        points.seq <- seq( ylim[1], ylim[2], length.out=8 )[2:7]-offset
+
+	        # This is to ensure that the difference scale will include 0 as one of its axis ticks. The first line finds
+	        #	which value on the difference scale is closest to 0, and the next line shifts the whole scale by
+	        #	that value so that 0 occurs in the sequence
+	        closest_to_zero <- points.seq[ which( abs(points.seq)==min(abs(points.seq)) ) ]
+	        points.seq <- points.seq - closest_to_zero
+
+	        # Finally, we can plot this new scale. Note that the "real" location of the scale is adjusted by the offset,
+	        #	but the text to be shown on the axis is not. Thus, the tick "12" (for example) will line up with the
+	        #	spot 12+offset on the plot's "real" scale"
+	        axis( 4, at=points.seq + offset, labels=round( points.seq ) )
+
+	### Done futzing with the scale
+
+
+	# Plot the actual differences as points (note we offset by 'offset' so that the differences, which are small, will
+	#	show up on the real scale; if we didn't do this, the differences would be way below the bottom of the figure)
+	points( apply(xvals,2,mean), diffs+offset, cex=4, pch=16, col="blue" )
+
+	# Plot error bars, representing the CIs, around the differences
+	arrows( apply(xvals,2,mean), diffs+CI.length+offset, apply(xvals,2,mean), diffs-CI.length+offset, code=3, length=.1, angle=90, lwd=5, col="blue" )
+
+	# Draw a line at 0
+	lines( c(0, 2*max(xvals)), c(0, 0)+offset )
+
+	# Plop the simple effect p-values onto the plot
+	text( mean(xvals[,1]), diffs[1]-CI.length[1]+offset-10, paste0( "p=", round( t.test(subjmeans[2,1,], subjmeans[1,1,], paired=T )$p.value, 3) ), cex=2, col="blue" )
+	text( mean(xvals[,2]), diffs[2]+CI.length[2]+offset+10, paste0( "p=", round( t.test(subjmeans[2,2,], subjmeans[1,2,], paired=T )$p.value, 3) ), cex=2, col="blue" )
+
+
+
+
+
+
+
+	############################################
+	### THE SECOND PLOT: COUSINEAU-MOREY CIs ###
+	############################################
+
+	# Calculate Cousineau-Morey CI lengths using custom function
+	CI.lengths <- CMCI( RT ~ Boundedness + Quantifier, crit, grouping.var="Subject", correct="Morey", conf.level=.95 )	
+
+	# Find nice y-limits
+	ylim <- c( min(means-CI.lengths)*.9, max(means+CI.lengths)*1.1 )
+
+	# Make a barplot
+	xvals <- barplot( means,
+	        beside=T, # plot bars beside rather than stacked
+	        ylim=ylim,
+	        xpd=F, # this is so that bars don't go below the bottom of the graph
+	        col=c("indianred", "cadetblue"),
+	        xlab="Quantifier",
+	        ylab="RT (ms)" )
+
+	# Make a legend
+	legend( "top", fill=c("indianred", "cadetblue"), legend=c("\"all\" context", "\"any\" context") )
+
+	# Use those CIs to add error bars
+	# code=3 adds arrowheads on each side of the bars, and angle=90 makes them actually be perpendicular lines rather than real arrowheads
+	arrows( xvals, means+CI.lengths, xvals, means-CI.lengths, code=3, length=.1, angle=90, lwd=2 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#########################################################
+### LINEPLOT WITH ERROR BARS (and let's anti-alias it ###
+#########################################################
+
+
+	##########################
+	### PREPARING THE DATA ###
+	##########################
+	
+	# Clear the workspace
+	rm(list=ls())
+
+	# Load the data (downloaded from Supplementary File S2 of http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0063943)
+	load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/File S2.RData" ) )
+
+	# load custom functions
+	source( url( "http://www.polyu.edu.hk/cbs/sjpolit/Steve_functions.txt" ) )
+
+	# Pull out just the critical region, of the critical trials
+	critRT <- RTdata[ RTdata$RegionNum>2 & RTdata$Quantifier!="filler", ]
+	
+	# Clean up factors
+	critRT$Item <- factor(critRT$Item)
+	critRT$Boundedness <- factor(critRT$Boundedness)
+	critRT$Quantifier <- factor(critRT$Quantifier)
+	critRT$RegionNum <- factor(critRT$RegionNum)
+
+
+
+
+	########################
+	### A SIMPLE EXAMPLE ###
+	########################
+
+		# Get the means
+		means <- tapply( critRT$RT, critRT[, c("Boundedness", "RegionNum", "Quantifier")], mean)
+	
+		# Get the CIs
+		CI.lengths <- CMCI( RT ~ Boundedness + RegionNum + Quantifier, critRT, grouping.var="Subject", correct="Morey", conf.level=.95 )
+	
+		# We know the 1st dimension is Boundedness (1="all", 2="any") and the 2nd is RegionNum. And 3rd dimension is Quantifier
+		#	(1="only some", 2="some"). For now let's only plot the "some" data (i.e., level 2 of the 3rd dimension
+		q <- 2
+
+		# Lay out the plot area
+		plot( as.numeric( colnames( means ) ), means[1,,q], # this would plot the qth level of the 3rd dimension ("some")...
+			ylim = c( .85*min( means-CI.lengths ), 1.15*max( means-CI.lengths ) ), # set up a nice y-axis range
+			xlab = "Segment index",
+			ylab = "RT (ms)",
+			type = "n" # make it not actually plot anything (here we're just making a plot of the right sized area; we'll use lines() below to plot
+		)
+		
+		# Plot each line and its error bars
+		for( i in 1:dim(means)[1] ){
+			lines( as.numeric(names(means[i,,q])), means[i,,q], type="o", lwd=2, col=c("red","blue")[i], pch=16 )
+			arrows(as.numeric(names(means[i,,q])), means[i,,q]-CI.lengths[i,,q], as.numeric(names(means[i,,q])), means[i,,q]+CI.lengths[i,,q], angle=90, length=.025, col=c("red","blue")[i], code=3, lwd=3)
+		}
+
+		# Plot legend
+		legend( "top", inset=.1, legend=rownames( means ), col=c("red","blue"), lwd=2 )
+
+
+
+
+	###########################################
+	### A COMPLICATED EXAMPLE: ANTI-ALIASED ###
+	###########################################
+
+
+		################################
+		### SETTING UP THE PLOT AREA ###
+		################################
+
+		### To anti-alias, we are going to save the data to a file rather than showing it on the screen. For some byzantine
+		###	operating-system-related reasons that I don't understand, this causes (on typical Windows machines) the plot
+		###	to be smooth and anti-aliased. I have the impression that it might not be necessary on Mac; plots might be
+		###	automatically anti-aliased there. (If so, you can forgo the Sys.setenv(), bitmap(), and dev.off() commands
+		###	that are here, and instead just let the plot come up on your screen)
+
+		# You need to have GhostScript installed (from http://www.ghostscript.com/download/gsdnld.html)
+		Sys.setenv(R_GSCMD="C:\\Program Files\\gs\\gs9.19\\bin\\gswin64c.exe")
+
+		# Specify the location where the file will be saved to. Must also specify the width and height; I got an appropriate width
+		#	and height just by futzing around with the numbers until I liked it
+		# Another useful thing here: you can specify a resolution (helpful when journals require e.g. 300 dpi). Not a deal-breaker,
+		#	since you could also change the resolution of a figure in GIMP or whatever post-hoc
+		bitmap("C:\\Users\\Spolitzerahles\\Desktop\\a_line_plot.tif", type="tiff24nc", res=600, units="in", width=6.83, height=3.6)
+
+
+		# Some plot settings
+		par(xpd=T, # allows stuff to show up outside the 'plot' (i.e., the box) but within the 'figure' (i.e., the actual plot window). We'll need this for letting axis text show up
+			mar=c(10.75,5,3,.5), # futz with the margins. I made them bigger than usual, to allow labels in bigger fonts
+			mfrow=c(1,2), # Multiple plots. 1 column, 2 rows
+			ps=12 # set the font size to 12 pt
+		)
+	
+	
+	
+		################################
+		### ACTUALLY MAKING THE PLOT ###
+		################################
+	
+		# Create a new 'logRT' variable. This is my own fault: my custom function CMCI can't handle a formula log(RT)~, it has to be the exact
+		#	variable name. I can fix this (in fact I already did in newpirateplot()), I just have been too lazy to do it just yet
+		critRT$logRT <- log(critRT$RT)	
+	
+		# Get the means
+		means <- tapply( critRT$logRT, critRT[, c("Boundedness", "RegionNum", "Quantifier")], mean)
+	
+		# Get the CIs
+		CI.lengths <- CMCI( logRT ~ Boundedness + RegionNum + Quantifier, critRT, grouping.var="Subject", correct="Morey", conf.level=.95 )
+	
+		# What will be the x-axis labels (rather than meaningless region labels like '4', '5', '6'...)
+		labels <- c("John said that", "some of them", "were.", "He added", "that", "the rest", "would be", "staying", "in", "a hotel.")
+	
+	
+		# Make two plots one for the implicit ("some") conditions and one for the explicit ("only some")
+		for( explicitorimplicit in c("implicit", "explicit") ){
+	
+			# Will grab the appropriate level of the means and CIs matrices; I happen to know that explicit (only some) is the first level
+			j <- ifelse( explicitorimplicit=="explicit", 1, 2)
+	
+			# I'll want to label the subplots as "A" and "B" on the final figure
+			jlabel <- ifelse( explicitorimplicit=="explicit", "B", "A")
+	
+			# In the x-axis labels we'll need the sentence to go "...only some of them..." or "some of them"
+			labels[2] <- ifelse( explicitorimplicit=="explicit", "only some of them", "some of them" )
+	
+	
+			# Lay out the plot area
+			plot(means[1,,j], # this would plot row 1 (upper-bounded, "all" condition), all columns (all regions), 3rd dimension j (either "only some" or "some" condition)
+				xaxt="n", # Leave the x-axis out (we'll create our own manually)
+				ylim=c(.99*min(means), 1.01*max(means)),
+				ylab=NA,
+				xlab=NA,
+				cex.lab=2/3, # Sets the label text to be 2/3 normal size
+				cex.axis=2/3, # same for the axis text
+				yaxs="i", # don't pad the y-axis
+				type="n" # don't actually plot anything. (that'll be done with lines() later; for now we're just setting out the plot space
+			)
+	
+			# Create nice y-axis using our custom labels.
+			# Normally I would do this using axis(). But I wanted the labels partially rotated, and string rotation (srt=) is only allowed in the text() function
+			text(1:length(labels), y=5.45, label=labels, ps=8, srt=67.5, cex=2/3)
+			
+			# Plot the x-axis label that says "Region". I found the appropriate x- and y- locations just by futzing around with the numbers until I liked it
+			text(5.5, 5.3, label="Region", ps=12)
+	
+			# On the left-hand side of the graph only, plot a y-axis label. Again the x- and y-values I just chose manually by messing around
+			if( explicitorimplicit=="implicit" ){ text(-.7, y=5.95, "Reading time (log ms)", srt=90, cex=2/3) }
+	
+			# Plot the A or B up in the corner. x- and y- labels chosen just by futzing around until I liked them
+			text(-.6, y=6.37, label=jlabel, ps=12)
+	
+			### Plot the legend.
+	
+				# whether the quantifier is going to be "some" or "only some
+				s <- ifelse( explicitorimplicit=="implicit", "some", "only some" )
+				
+				# The legend will use bquote() rather than paste() in order to get italics. But bquote() treats stuff as math. So to have
+				#	this be a hyphen, rather than a minus sign (which will end up with spaces around it) I need to treat it as its own string
+				hyphen <- "-"
+	
+				legend( "top", # puts the legend at the top middle
+					# The legend text. it uses bquote() to string together the pieces, and wraps it in sapply() (see http://stackoverflow.com/questions/7210346/multiple-bquote-items-in-legend-of-an-r-plot for why)
+					legend=sapply( c( bquote(Upper*.(hyphen)*bounded~italic(.(s))), bquote(Lower*.(hyphen)*bounded~italic(.(s))) ), as.expression),
+					col=c("blue","red"), # the two line colors
+					lty=1, # solid line
+					inset=.1, # pull the legend inwards a bit,instead of having it right at the plot edge
+					cex=.8,
+					lwd=1.5,
+					y.intersp=2) # leave some space between the legend items
+	 		### Done hacking the legend
+	
+	
+			# Plot row 1 (the upper-bounded, "all" condition")
+			lines(means[1,,j],
+				col="blue", # in blue
+				pch=1, # Sets the type of dot (see ?points). in R by itself this would look like an open circle, but with anti-aliasing it appears as a closed circle on my machine
+				type="o", # plots both lines and dots, instead of just lines
+				lwd=1.5 # makes the line a bit fatter than default
+			)
+	
+			# Plots the confidence intervals around each dot
+			arrows(1:length(labels), means[1,,j]-CI.lengths[1,,j], 1:length(labels), means[1,,j]+CI.lengths[1,,j], angle=90, length=.025, col="blue", code=3, xpd=F)
+	
+			# Repeats the lines and confidence intervals, this time for row 2 (the lower-bounded, "any" condition)
+			lines(means[2,,j], col="red", pch=1, type="o", lwd=1.5)
+			# Note that here I also shift the error bars over a tad bit (.025) so they're not right on top of the blue error bars
+			arrows(1:length(labels)+.025, means[2,,j]-CI.lengths[2,,j], 1:length(labels)+.025, means[2,,j]+CI.lengths[2,,j], angle=90, length=.025, col="red", code=3, xpd=F)
+	
+			# Plots significance asterisks at the specified regions where I know there are significant effects
+			# The x-vals are the regions to plot asterisks over. The y-vals are ones that I chose manually to get the asterisk to be where I wanted
+			if( explicitorimplicit=="implicit" ){
+				text(6, label="*", y=5.8, ps=12)
+			} else {
+				# The second star I don't put directly above region 10 because there's no good space (the error bars are long and like off the chart) so instead I put it just off to the right, at 10.15 instead of 10
+				text(c(5,10.15), label="*", y=c(5.8,6.3), ps=12)
+			}
+	
+		}
+		
+		# Closes the graphics device and saves the image
+		dev.off()
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#####################################
+### SCATTER WITH REGRESSION LINES ###
+#####################################
+
+
+### WARNING!!! ###
+### WARNING!!! ###
+### WARNING!!! ###
+### As was pointed out during the workshop, the confidence bands around these regression lines
+###	aren't necessarily good for drawing statistical inferences. They're a pretty way to get
+###	a sneak peek at the variation around an effect, but be careful about trying to draw
+###	inferences about statistical significance from them.
+
+# Grab chick data (just diets 1 and 3)
+cw <- data.frame( ChickWeight[ ChickWeight$Diet %in% c(1,3), ] )
+
+# I'm not sure why they have this var as an ordered factor; make it unordered
+class(cw$Chick) <- "factor"
+
+# Clean up factors
+cw$Diet <- factor( cw$Diet )
+
+# Center 'time'
+cw$cTime <- cw$Time - mean(cw$Time)
+
+# Fix the "weight" column name, I find it annoying that it's lowercase and the rest are capital
+colnames(cw)[ colnames(cw)=="weight" ] <- "Weight"
+
+# Scatterplot, with different colors for diets 1 and 3
+plot( Weight ~ cTime, cw, col=c("red","blue")[cw$Diet], pch=16, cex.axis=1.5, cex.lab=1.5 )
+
+# Get a model. I do it intercept-less, so I can let each diet have its own mean and SE, rather than letting diet 1
+#	have a mean and SE and diet 2 have an effect (and SE) only relative to diet 1
+library(lme4)
+model <- lmer( Weight ~ 0+Diet/cTime + (cTime|Chick), cw )
+
+# Line for Diet 1
+abline( fixef(model)["Diet1"], fixef(model)["Diet1:cTime"], col="red", lwd=2 )
+
+# Line for Diet 3
+abline( fixef(model)["Diet3"], fixef(model)["Diet3:cTime"], col="blue", lwd=2 )
+
+# Make a legend
+legend( "topleft", # put it at the top left
+	legend=paste0( "Diet", c(1,3) ), # the legend labels
+	col=c("red","blue"), # the legend colors
+	lty=1, lwd=2, # let there be solid lines, and make them width=2
+	pch=16, # let there be filled dots
+	cex=2 ) # big text
+
+
+
+### The rest figures out confidence bands to put around the lines. Code is quite messy
+
+	# Start with a series of x-values covering the range of the data
+	x <- seq( min(cw$cTime) - .25*abs(min(cw$cTime)), max(cw$cTime) + .25*abs(max(cw$cTime)), length.out=500 )
+
+	# Pull out the model coefficients
+	coefficients <- summary(model)$coefficients
+
+	# For diet 1, figure out the possible min and max lines by taking the intercept +- 2SE and the slope +- 2SE
+	diet1_upper_a <- coefficients["Diet1",1] + 2*coefficients["Diet1",2] + x * (coefficients["Diet1:cTime",1] + 2*coefficients["Diet1:cTime",2])
+	diet1_upper_b <- coefficients["Diet1",1] + 2*coefficients["Diet1",2] + x * (coefficients["Diet1:cTime",1] - 2*coefficients["Diet1:cTime",2])
+	diet1_lower_a <- coefficients["Diet1",1] - 2*coefficients["Diet1",2] + x * (coefficients["Diet1:cTime",1] + 2*coefficients["Diet1:cTime",2])
+	diet1_lower_b <- coefficients["Diet1",1] - 2*coefficients["Diet1",2] + x * (coefficients["Diet1:cTime",1] - 2*coefficients["Diet1:cTime",2])
+
+	# At each x-value, find the min and max of those possible ones, to get the overall confidence band
+	diet1_upper <- apply( rbind(diet1_upper_a, diet1_upper_b, diet1_lower_a, diet1_lower_b), 2, max )
+	diet1_lower <- apply( rbind(diet1_upper_a, diet1_upper_b, diet1_lower_a, diet1_lower_b), 2, min )
+
+	# Plot the confidence band as a shaded polygon around the line
+	# Technically, the borders of the polygon will be up along the top of the confidence band and then back around the bottom.
+	# So the x-values are x and then back along x backwards; the y-values are the upper bounds and then coming along the lower bounds backwards
+	polygon( c( x, rev(x)), c(diet1_upper, rev(diet1_lower)),
+		border=NA, # suppress the line around the border; we just want a shaded polygon with no border
+		col=rgb(1,0,0,.2) ) # instead of just specifying 'red', use the rgb() function to create a red with transparency of alpha=.2
+
+
+	# Now we repeat the whole process for diet3
+	diet3_upper_a <- coefficients["Diet3",1] + 2*coefficients["Diet3",2] + x * (coefficients["Diet3:cTime",1] + 2*coefficients["Diet3:cTime",2])
+	diet3_upper_b <- coefficients["Diet3",1] + 2*coefficients["Diet3",2] + x * (coefficients["Diet3:cTime",1] - 2*coefficients["Diet3:cTime",2])
+	diet3_lower_a <- coefficients["Diet3",1] - 2*coefficients["Diet3",2] + x * (coefficients["Diet3:cTime",1] + 2*coefficients["Diet3:cTime",2])
+	diet3_lower_b <- coefficients["Diet3",1] - 2*coefficients["Diet3",2] + x * (coefficients["Diet3:cTime",1] - 2*coefficients["Diet3:cTime",2])
+
+	# At each x-value, find the min and max of those possible ones, to get the overall confidence band
+	diet3_upper <- apply( rbind(diet3_upper_a, diet3_upper_b, diet3_lower_a, diet3_lower_b), 2, max )
+	diet3_lower <- apply( rbind(diet3_upper_a, diet3_upper_b, diet3_lower_a, diet3_lower_b), 2, min )
+
+	# Plot the confidence band as a shaded polygon around the line
+	# Technically, the borders of the polygon will be up along the top of the confidence band and then back around the bottom.
+	# So the x-values are x and then back along x backwards; the y-values are the upper bounds and then coming along the lower bounds backwards
+	polygon( c( x, rev(x)), c(diet3_upper, rev(diet3_lower)),
+		border=NA, # suppress the line around the border; we just want a shaded polygon with no border
+		col=rgb(0,0,1,.2) ) # instead of just specifying 'red', use the rgb() function to create a red with transparency of alpha=.2
+
+### Done making confidence bands
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+####################################################
+### COMPARING BAR, BOX, VIOLIN, AND PIRATE PLOTS ###
+####################################################
+
+
+	##########################
+	### PREPARING THE DATA ###
+	##########################
+	
+	# Clear the workspace
+	rm(list=ls())
+
+	# Load the data (downloaded from Supplementary File S2 of http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0063943)
+	load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/File S2.RData" ) )
+
+	# load custom functions
+	source( url( "http://www.polyu.edu.hk/cbs/sjpolit/Steve_functions.txt" ) )
+
+	# Pull out just the critical region, of the critical trials
+	crit <- RTdata[ RTdata$RegionNum==8 & RTdata$Quantifier!="filler", ]
+	
+	# Clean up factors
+	crit$Item <- factor(crit$Item)
+	crit$Boundedness <- factor(crit$Boundedness)
+	crit$Quantifier <- factor(crit$Quantifier)
+
+	# Get the condition means
+	means <- tapply( crit$RT, crit[,c("Boundedness","Quantifier")], mean )
+
+
+
+	###############
+	### BARPLOT ###
+	###############
+
+	# Calculate Cousineau-Morey CI lengths using custom function
+	CI.lengths <- CMCI( RT ~ Boundedness + Quantifier, crit, grouping.var="Subject", correct="Morey", conf.level=.95 )	
+
+	# Find nice y-limits
+	ylim <- c( min(means-CI.lengths)*.9, max(means+CI.lengths)*1.1 )
+
+	# Make a barplot
+	xvals <- barplot( means,
+	        beside=T, # plot bars beside rather than stacked
+	        ylim=ylim,
+	        xpd=F, # this is so that bars don't go below the bottom of the graph
+	        xlab="Quantifier",
+	        ylab="RT (ms)" )
+
+	# Make a legend
+	legend( "top", fill=c("indianred", "cadetblue"), legend=c("\"all\" context", "\"any\" context") )
+
+	# Use those CIs to add error bars
+	# code=3 adds arrowheads on each side of the bars, and angle=90 makes them actually be perpendicular lines rather than real arrowheads
+	arrows( xvals, means+CI.lengths, xvals, means-CI.lengths, code=3, length=.1, angle=90, lwd=2 )
+
+
+
+
+	###############
+	### BOXPLOT ###
+	###############
+
+	library(lattice)
+
+	# boxplots for each combination of two factors
+	# another option is boxplot() {base}. I prefer bwplot() {trellis} because it can do grouped factors, just liked grouped bars of a barplot
+	# To get grouped factors with a regular boxplot() (which makes arguably nicer-looking boxes) I think you need to combine it with ggplot2 or hack the x-axis
+	bwplot( log(RT) ~ Boundedness | Quantifier, # formula
+		crit, # data
+		ylab="RT (ms)",
+		xlab="Condition",
+		layout=(c(2,1)),
+		notch=T # plot confidence notches. (note, though, these are not necessarily comparable to within-subject CIs of the mean.) see ?boxplot.stats
+	 )
+
+
+	###################
+	### VIOLIN PLOT ###
+	###################
+
+	library(vioplot)
+
+	vioplot( log( crit[ crit$Quantifier=="only some of them" & crit$Boundedness=="all of them", "RT" ] ), 
+		log( crit[ crit$Quantifier=="only some of them" & crit$Boundedness=="any of them", "RT" ] ), 
+		log( crit[ crit$Quantifier=="some of them" & crit$Boundedness=="all of them", "RT" ] ), 
+		log( crit[ crit$Quantifier=="some of them" & crit$Boundedness=="any of them", "RT" ] ),
+		names = c("ONLYSOME_all", "ONLYSOME_any", "SOME_all", "SOME_any")
+	)
+	title( ylab="RT (log ms)" )
+
+
+
+
+	###################
+	### PIRATE PLOT ###
+	###################
+
+	# Use custom function modified from Nathaniel Phillips (http://www.r-bloggers.com/the-pirate-plot-2-0-the-rdi-plotting-choice-of-r-pirates/)
+	CIpirateplot( log(RT) ~ Quantifier + Boundedness, # formula
+		crit, # data
+		grouping.var="Subject", # compute within CIs over subjects
+		ci.o = .5, # have a within-subj CI plotted with .5 opacity
+		bar.o = 1, # make the bars pretty transparent
+		point.o = 0,
+		bean.o = 0
+	) 
+
+
+

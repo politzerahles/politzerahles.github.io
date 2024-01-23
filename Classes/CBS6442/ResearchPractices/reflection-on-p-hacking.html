@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Reflection on p-hacking</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Reflection on <em>p</em>-hacking (1 hour)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+		<p class="centercol">Here is a list of the papers from the previous task, along with brief descriptions of what ridiculous
+			things they demonstrated:</p>
+		<ul class="center">
+			<li><strong>Music about old age makes you younger:</strong> Simmons, J., Nelson, L., & Simonsohn, U. (2011). <a href="http://journals.sagepub.com/doi/abs/10.1177/0956797611417632">False-positive psychology: undisclosed flexibility in data collection and analysis allows presenting anything as significant</a>. <em>Psychological Science, 22</em>, 1359-1366.</li>
+			<li><strong>Countries with shorter names have higher GDPs:</strong> <a href="https://www.youtube.com/watch?v=A0vEGuOMTyA">Video demo by Neuroskeptic</a> (example begins around 14:48)
+				<ul><li><a href="phack.xlsx"><strong>Data (xlsx)</strong></a></li></ul></li>
+			<li><strong>People whose subject ID is odd believe odd things:</strong> <a href="http://datacolada.org/48">Blog post by Simonsohn</a></li>
+			<li><strong>Countries with more languages have more traffic accidents:</strong> Roberts, S., & Winters, J. (2013). <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0070902">Linguistic diversity and traffic accidents: lessons from statistical studies of cultural traits</a>. <em>PLoS ONE, 8</em>, e70902.</li>
+			<li><strong>Brain activation in the nose:</strong> Baker, C., Hutchison, T., & Kanwisher, N. (2007). <a href="https://www.nature.com/neuro/journal/v10/n1/full/nn0107-3.html">Does the fusiform face area contain subregions highly selective for nonfaces?</a> <em>Nature Neuroscience, 10</em>, 3-4.</li>
+			<li><strong>Brain activation in a dead fish:</strong> Bennett, C., Baird, A., Miller, M., & Wolford, G. (2009). <a href="http://prefrontal.org/files/posters/Bennett-Salmon-2009.pdf">Neural correlates of interspecies perspective taking in the post-mortem atlantic salmon: an argument for proper multiple comparisons correction.</a> <em>15th Annual Meeting of the Organization for Human Brain Mapping</em>, San Francisco.</li>
+			<li><em>General review about p-hacking:</em> Gelman, A., & Loken, E. (2013 manuscript). <a href="http://www.stat.columbia.edu/~gelman/research/unpublished/p_hacking.pdf">The garden of forking paths: why multiple comparisons can be a problem, even when there is no "fishing expedition" or "p-hacking" and the research hypothesis was posited ahead of time.</a></li>
+			<li><a href="http://blogs.discovermagazine.com/neuroskeptic/2010/11/24/the-9-circles-of-scientific-hell/">The 9 Circles of Scientific Hell</a> by Neuroskeptic</a>
+		</ul>
+<p class="centercol">What all those papers have in common is that they demonstrate that a certain way of data analysis is bad because it
+	might lead you to making crazy conclusions. For example, what the Bennett paper shows is: if you don't do proper correction for
+	multiple comparisons when analyzing fMRI data, you might wrongly conclude that the brain of a dead fish shows different brain
+	responses when it is shown happy faces vs. angry faces. (This is obviously insane.) What the Simmons paper shows is: if you perform
+	lots of different kinds of data analyses without any analysis plan, you might wrongly conclude that participants who listen to a
+	Beatles song literally become younger. etc. The Simmons paper and the Gelman paper included at the above website both give detailed
+	and comprehensive explanations of what p-hacking is and how it can cause you to get junk results which lead to junk conclusions; if
+	you don't feel like you understand the concept of p-hacking, I recommend reading first the Simmons paper and then the Gelman paper.
+	Or, for a funny introduction, see the video below (this touches on a lot of things other than just p-hacking, but p-hacking is
+	briefly mentioned).</p>
+<center><iframe width="560" height="315" src="https://www.youtube.com/embed/0Rnq1NpHdmw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
+
+
+<p class="centercol">Continue to the questions below to reflect on your understanding of p-hacking.</p>
+
+
+		<center>
+
+		<button class="collapsible">Common p-hacking practices</button>
+		<div class="content">
+			<p>Are there any common research practices (including research practices that you often see in papers in your field, or
+				research practices you've done yourself on previous research projects you did) that you thought were ok but that you
+				now learned are a form of p-hacking? If so, what are they?</p>
+		</div>
+
+		<button class="collapsible">Risky practices in your own research</button>
+		<div class="content">
+			<p>Think about your own research (including studies you have done before and/or studies you plan to carry out in the
+				future). What is one way that you might accidentally p-hack&mdash;in other words, what is something you might be
+				tempted to do, that would be p-hacking? (The reason I'm asking this is of course not to encourage you to p-hack, but
+				to encourage you to identify potential research practices that you need to be wary of and need to be careful to
+				avoid.)</p>
+		</div>
+
+<!--		<button class="collapsible"></button>
+		<div class="content">
+<p>Let's think about how you might identify p-hacking in other people's work (such as published papers). People don't always explicitly say that they p-hacked; people often don't report all the analyses they tried, they just do a lot of different analyses and then only write up the one that got the most impressive result (this is precisely the main form of p-hacking that the Simmons paper discusses). So, in that case, you can't just read their paper and see that they did problematic analyses; that information might not be available in the paper. Still, there are some "red flags" that can be a good warning that you should be skeptical. These red flags include the following:</p>
+<ul>
+<li><strong>Many p-values just below .05 in the paper</strong> (See the "Introduction to inferential statistics" module for more information about what p-values are). If an effect is real, studies on that effect will tend to elicit a pretty natural range of p-values, with some very low p-values, some p-values closer to .05, etc. If you see a paper with multiple experiments (or one experiment testing multiple hypotheses), and almost all the p-values are around .04, .03, or similar values that are just barely below .05, that doesn't seem very natural; it's possible in that situation that the experimenter was just repeatedly p-hacking each experiment just enough to get it "statistically significant". (Of course it's not&nbsp;<em>proof</em> that they p-hacked, it's just reason to be skeptical; this and all the other red flags here should be interpreted together with the other evidence from the paper.)</li>
+<li><strong>Very specific analysis techniques without clear <em>a priori</em><em> </em>motivation</strong>. For an example, look at the Simmons paper: they analyzed the age of the participants in their study, but first controlled for the participants' fathers' age. Why did they control for father's age and not mother's age? It's not clear why father's age rather than mother's age should matter. When you see this kind of weird specific stuff, it <em>might</em> be an indication that the researchers tried lots of analyses and this analysis happened to be the only one that got a significant result.</li>
+<li><strong>Overly specific predictions without clear <em>a priori</em></strong><strong>motivation</strong>. This is similar to the previous one. Imagine you read a paper about some brain imaging experiment, and they say something like, "we predict that reading sentences with incorrect classifiers will elicit increased brain activity in the posterior region, but <em>decreased</em> brain activity in the anterior region; furthermore, we expect that this pattern will only occur in native speakers with high reading ability, not in native speakers with low reading ability, and not in non-native speakers [regardless of reading ability]". This is so specific. It's hard to believe someone could make such a specific prediction beforehand; things like this are sometimes the result of <a href="https://en.wikipedia.org/w/index.php?title=HARKing&amp;oldid=978172971" target="_blank" rel="noreferrer noopener">HARKing</a> ("hypothesizing after results are known" -- i.e., waiting until after you've seen the data, and then making up a hypothesis that matches the data. It's kind of like closing your eyes and throwing a dart at a <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Darts_in_a_dartboard.jpg/1200px-Darts_in_a_dartboard.jpg" target="_blank" rel="noreferrer noopener">dart board</a>, then opening your eyes to see where it hit, and saying, "Yes, that's exactly the spot I was aiming for!"). Again, interpret this with caution: specific hypotheses are not always proof of questionable research practices (sometimes a paper does have really well-motivated specific hypothesesbased on clear previous results in the literature), they just sometimes are.</li>
+</ul>
+<p></p>
+<p><strong>Think about your own research area. What's something you might see in a paper that might be a "red flag" for possible p-hacking?</strong></p>
+<p></p>
+		</div>
+-->
+		</center>
+
+
+
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			"<a href="pre-registration.html">Pre-registration</a>".</p>
+
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-17. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+
+

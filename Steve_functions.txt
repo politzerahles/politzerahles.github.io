@@ -1,0 +1,1059 @@
+
+
+
+lmerplot <- function(
+        model,
+        fixefcoefficients = 2:length(fixef(model)),
+        grouping.vars = NULL,
+        contrastlabels = names(fixef(model))[fixefcoefficients],
+        mfrow=NULL,
+	use.par=T,
+        jitter.amt=.5,
+        pch=16,
+        scatter.col=rgb(0,0,0,alpha=.5),
+        violin.col=rgb(0,0,0,alpha=.25),
+        ci.type="df.est",
+        conf=.95,
+        ci.n=100,
+        ci.boottype="norm",
+        fixef.ci.col=rgb(1,0,0,alpha=.75),
+        ranef.ci.col=rgb(0,0,1,alpha=.75),
+        xlims.equal=T,
+	xlab="Estimate"
+        ){
+        ### A function that plots the random effect variability associated with fixed-effect contrasts from an lmer model.
+        ### Inputs:
+        ###	model: an lmer model (I guess this may also work with a glmer model)
+        ###	fixefcoefficients: a numerical list of which coefficietns to plot. By default, this does
+        ###		does every coefficient except the intercept. If you have a design that is not fully
+        ###		repeated (e.g., some measures that are within-subjects but between-items) then this
+        ###		won't work for them by default, and you'll have to specify different stuff
+        ###	grouping.vars: The random effects. By default this is NULL and the function figures them out.
+        ###		However, the default may cause problems (like if you have a contrast that is within-subjects
+        ###		but between-items), and in such cases you may need to use this to plot only one random effect,
+        ###		and then call the function a second time to plot the other random effect with a different
+        ###		selection of coefficients to plot.
+        ###	contrastlabels: By default the plot will label the contrasts with the same labels the coefficients
+        ###		are given in the mixed-effect model summary. You can instead use this to specify (as a
+        ###		vector of strings) the names you want to appear on the axis for each contrast.
+        ###	mfrow: The layout of subplots. Each random effect gets one subplot. If you leave this as the
+        ###		default (NULL) then the function will figure out a reasonable layout (this works for
+        ###		up to 9 random effects). Otherwise, you can specify your own layout, the same way as
+        ###		you would for par(mfrow=...).
+        ###	jitter.amt: the amount of jitter to use for the univariate scatter of the BLUPs (default: .5)
+        ###	pch: The symbol to use for the univariate scatter; see ?points
+        ###	scatter.col: The color to use for the univariate scatter. By default this is an rgb() object making
+        ###		black color with alpha=.5 opacity (rgb(0,0,0,alpha=.5)); you could specify this as a different
+        ###		rgb object, or just as a color name (although then you lose the opacity).
+        ###	violin.col: The color to use for the lines of the violin plot surrounding the univariate scatter. Default
+        ###		is black with alpha=.25 opacity.
+        ###	ci.type: How the fixed-effect confidence interval should be calculated. The default, "df.est", estimates
+        ###		degrees of freedom using the formula from Baayen (2008:270): number of observations minus number
+        ###		of fixed-effects parameters. Alternatively, if you put anything else here, it will calculate a
+        ###		normal bootstrap CI based on ci.n replications. (Options I haven't implemented yet are the
+        ###		Satterthwaite approximation, or other types of bootstrap CIs, like percentile bootstrap---which
+        ###		require far more replications than normal bootstrap, and normal bootstrap is already quite slow
+        ###		for most mixed-effect models.)
+        ###	ci.n: number of replications to use for bootstrap CIs (default: 100)
+        ###	ci.boottype: type of bootstrap CI to compute. Default is "norm"; I haven't tested with other types and
+        ###		I suspect they won't work properly (because I have hard-coded the stuff that grabs the appropriate
+        ###		lower and upper bounds from the normal CI).
+        ###	fixef.ci.col: The color to use for plotting the fixed-effect mean and its CI. Default is red with alpha=.75.
+        ###	ranef.ci.col: The color to use for plotting the random-effect CI (the standard CI of the BLUP-adjusted estimates).
+        ###		Default is blue with alpha=.75.
+        ###	xlims.equal: If TRUE (the default), the plots for all random effects will have the same scale. If FALSE,
+        ###		each plot will be fitted to its own scale.
+        # Figures out what the random effects are, if they weren't specified explicitly
+        if( is.null( grouping.vars ) ){
+                grouping.vars <- names(ranef(model))
+        }
+
+        # Figures out the subplot layout. For up to 9 random effects (already pretty implausibly high)
+        #	this sets reasonable defaults. For more than 9 it doesn't; in that case you're better
+        #	off setting your own mfrow= in the function call.
+        if( is.null(mfrow) ){
+                mfrow <- rbind(
+                        c(1,1),
+                        c(1,2),
+                        c(1,3),
+                        c(2,2),
+                        c(2,3),
+                        c(2,3),
+                        c(2,4),
+                        c(2,4),
+                        c(3,3)
+                        )[ length(grouping.vars), ]
+        }
+        
+	if (use.par){
+		old.par <- par()
+		par( mfrow=mfrow, mar=c(5.1, 8.1, 1.1, 1.1) )
+	}
+
+        # calculate fixed-effect CIs
+        # this way uses the Baayen formula for estimating DFs (default)
+        if( ci.type=="df.est" ){
+                # estimate the dfs in the model
+                dfs <- nrow(model@frame) - nrow(summary(model)$coefficients)
+
+                # find margins of error (half-width of CIs)
+                MEs <- summary(model)$coefficients[,2] * qt( mean(c(1,conf)), dfs-1 )
+
+                CIs <- do.call( rbind, lapply( fixefcoefficients, function(x){ c(fixef(model)[x] - MEs[x], fixef(model)[x] + MEs[x] ) } ) )
+
+        # otherwise use bootstrap
+        } else {
+                getB <- function(.) { beta =getME(., "beta") }
+                message( paste( "Calculating bootstrap confidence intervals based on", ci.n, "samples. This may take a while." ) )
+                boo <- bootMer( model, getB, ci.n )
+                CIs <- do.call( rbind, lapply( fixefcoefficients, function(x){ boot.ci( boo, index=x, type="norm" )$normal[-1] } ) )
+        }
+
+
+        # If xlims.equal==T, then figure out the x-axis range that will fit all the datapoints for
+        #	all random effects. Otherwise, set 'null' so that plot() will figure out its own
+        #	xlim (which will probably be different for each random effect)
+        if( xlims.equal ){
+
+                # This huge mess figures out the range of BLUP-adjusted random effects across all contrasts and all random variables
+                xlim <- range(
+                                unlist( lapply( grouping.vars, function(gv){
+                                                unlist( lapply( fixefcoefficients, function(x){
+                                                        unlist(
+                                                                ranef(model)[[gv]][, which( names(ranef(model)[[gv]]) == names(fixef(model))[x] )] +
+                                                                t( matrix( fixef(model)[fixefcoefficients] ) )[rep(1,nrow( ranef(model)[[gv]] )),]
+                                                        )
+                                                } ) )
+                                } ) )
+                        )
+
+                # Adds a little padding below and above the bottom line (unless the x-limits don't include 0, then it stretches to get 0 in there)
+                xlim[1] <- ifelse( xlim[1]<0, 1.1*xlim[1], 0 )
+                xlim[2] <- ifelse( xlim[2]>0, 1.1*xlim[2], 0 )
+
+        } else {
+                xlim <- NULL
+        }
+
+        # Iterate through each random effect, giving it its own subplot
+        for( grouping.var in grouping.vars ){
+
+                # Figure out each fixef coefficient index's corresponding coefficient index for this random effect.
+                #	(they're not always the same; for example, coefficient 2 of the fixed effects could be
+                #	coefficient 1 of a given random effect, if e.g. there are no random intercepts)
+                ranefcoefficients <- unlist( lapply( fixefcoefficients, function(x){ which( names(ranef(model)[[grouping.var]]) == names(fixef(model))[x] ) } ) )
+
+                # how many groups (e.g. subjects or items) in this random effect
+                ngroup <- nrow(ranef(model)[[grouping.var]])
+
+                # how many contrasts will be plotted. (the default is all but the intercept
+                ncontrast <- length(fixefcoefficients)
+
+                # The coefficients for each level of the random effect (i.e., BLUP + fixef), organized as a long vector (for scatter plotting)
+                effects_vector <- unlist( ranef(model)[[grouping.var]][,ranefcoefficients] ) + rep(fixef(model)[fixefcoefficients], each=ngroup)
+
+                # The coefficients for each level of the random effect (i.e., BLUP + fixef), organized as a data frame (for violin plotting)
+                effects_df <- unname( do.call( data.frame, lapply( 1:length(fixefcoefficients), function(x){ ranef(model)[[grouping.var]][,ranefcoefficients[x]] + fixef(model)[fixefcoefficients[x]] } ) ) )
+                colnames(effects_df) <- contrastlabels
+
+                # Plot coefficients for each level of the random effect, as a scatter plot
+                plot( effects_vector, jitter( rep( (ncontrast):1, each=ngroup ), jitter.amt ), pch=pch, yaxt="n", ylab=NA, ylim=c(0,ncontrast+1), main=grouping.var, xlab=xlab, col=scatter.col, xlim=xlim )
+
+                # Make an axis with contrast labels instead of just numbers
+                axis(2, at=(ncontrast):1, labels=contrastlabels, las=2 )
+
+                # width for the violin plot
+                viowidth <- .45
+
+                # Iterate thru each contrast, plotting its violin and CIs
+                for( contrast in 1:(ncontrast) ){
+
+                        # The density function of the estimates for this coefficient at each level of this random effect
+                        d <- density( effects_df[,contrast] )
+
+                        # shrinking the density function to fit in the space we have
+                        dy <- d$y / max(d$y) * viowidth
+
+                        # plot the top and bottom of the violin
+                        lines( d$x, dy+(ncontrast-(contrast-1)), col=violin.col )
+                        lines( d$x, (ncontrast-(contrast-1))-dy, col=violin.col )
+
+                        # Plot the fixed-effect mean
+                        lines( rep(fixef(model)[fixefcoefficients[contrast]], 2), c(ncontrast-(contrast-1)+.45, ncontrast-(contrast-1)-.45), col=fixef.ci.col, lwd=5 )
+
+                        # Plot the fixed-effect CI (calculated as above)
+                        arrows( CIs[contrast,1], ncontrast-(contrast-1), CIs[contrast,2], ncontrast-(contrast-1), code=3, angle=90, length=.2, lwd=5, col=fixef.ci.col )
+
+                        # Figure out the random effect CI (normal CI of the BLUPs for this effect) and plot it
+                        ranefME <- sqrt( var( ranef(model)[[grouping.var]][,ranefcoefficients[contrast]] ) / ngroup ) * 2
+                        arrows( fixef(model)[fixefcoefficients[contrast]]-ranefME, ncontrast-(contrast-1), fixef(model)[fixefcoefficients[contrast]]+ranefME, ncontrast-(contrast-1), code=3, angle=90, length=.1, lwd=3, col=ranef.ci.col )
+                }
+
+
+                # Plot a vertical line at 0
+                lines( c(0,0), c(-1, ncontrast+2) )
+        }
+
+        # reset par to how it was before the function call
+	if (use.par){
+	        suppressWarnings( par(old.par) )
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+# This is a modified version of Nathaniel Phillips' pirateplot() function. Instead of plotting
+#    a bayesian Highest Density Interval, it uses that polygon to instead plot a confidence
+#    interval. Usage is the same as pirateplot(), except you also must specify a grouping.vfar
+#    (defaults to "Subject") and a confidence level for the CI (defaults to .95). If you set
+#    grouping.var=NA, you get a standard between-subjects confidence interval; if you set
+#    it to be the name of your subjects variable then you get a Cousineau-Morey within-subjects
+#    confidence interval.
+CIpirateplot <- function (formula, data, line.fun = mean, pal = "appletv", back.col = gray(1),
+    point.cex = 1, point.pch = 1, point.lwd = 1, cut.min = NULL,
+    cut.max = NULL, width.min = 0.3, width.max = NA, bean.o = .5,
+    point.o = .5, bar.o = .1, ci.o = .5, line.o = 1,
+    theme.o = 1, jitter.val = 0.03, line.lwd = 2,
+    gl.col = NULL, ylim = NULL, xlim = NULL, xlab = NULL, ylab = NULL,
+    main = NULL, yaxt = NULL, add = F, y.levels = NULL, bar.border.col = NULL, grouping.var = NULL, conf.level=.95, errbartype="CIbetween", CI.type=NA, make.legend=F,
+    IV.orders = NA, legend.horiz=T, legend.bg="white",
+    ...)
+{
+    library("yarrr")
+
+    if( !is.na(CI.type) ){
+        errbartype <- paste0( "CI", CI.type )
+    }
+
+    if( is.null(grouping.var) & errbartype=="CIwithin" ){
+        warning( "Within-subject CIs cannot be calculated when grouping.var==NA. The plot will show between-subject CIs." )
+        errbartype <- "CIbetween"
+    }
+   
+    if( is.null( grouping.var ) ){
+        fullformula <- formula
+    } else {
+        # A version of the formula which also has the grouping var; we need this for
+        #    within-subjects CIs
+        fullformula <- update(formula, as.formula( paste("~.+", paste(grouping.var,collapse="+")) ) )
+    }
+    data.2 <- model.frame(formula = fullformula, data = data)
+    dv.name <- names(data.2)[1]
+    dv.v <- data.2[, 1]
+
+    if( is.null( grouping.var ) ){
+        fixef_cols <- 2:(ncol(data.2))
+    } else {
+        # Which columns have fixed-effect factors. This leaves off the last column,
+        #    which is the grouping var (probably "Subject")
+        fixef_cols <- 2:(ncol(data.2)-length(grouping.var))
+
+        # also makes sure the grouping var is a factor
+        for( gv in grouping.var ){
+            data.2[,gv] <- factor( data.2[,gv] )
+        }
+    }
+    iv.levels <- lapply(fixef_cols, FUN = function(x) {
+        unique(data.2[, x])
+    })
+
+    iv.lengths <- sapply(1:length(iv.levels), FUN = function(x) {
+        length(iv.levels[[x]])
+    })
+    iv.names <- names(data.2)[fixef_cols]
+    if( !is.null( IV.orders ) ){
+        for( level in names(IV.orders) ){
+            levelidx <- which( iv.names==level )
+            iv.levels[[levelidx]] <- IV.orders[[level]]
+        }
+    }
+    n.iv <- length(iv.levels)
+    if (is.na(width.max)) {
+        if (n.iv == 1) {
+            width.max <- 0.45
+        }
+        if (n.iv == 2) {
+            width.max <- 0.5
+        }
+    }
+
+    if( ! is.null(grouping.var) ){
+        if( length(grouping.var)==1 ){
+            n.groups <- length(levels(factor(data.2[,grouping.var])))
+        }
+    }
+
+    bean.mtx <- expand.grid(iv.levels)
+    names(bean.mtx) <- names(data.2)[fixef_cols]
+    n.beans <- nrow(bean.mtx)
+    bean.mtx$bean.num <- 1:nrow(bean.mtx)
+    bean.loc <- 1:n.beans
+    group.spacing <- 1
+    if (n.iv == 2) {
+        bean.loc <- bean.loc + rep(group.spacing * (0:(iv.lengths[2] -
+            1)), each = iv.lengths[1])
+    }
+    bean.mtx$x.loc <- bean.loc
+    data.2 <- merge(data.2, bean.mtx)
+    n.cols <- iv.lengths[1]
+    if (theme.o == 1) {
+        point.o <- ifelse(is.null(point.o), 0.3, point.o)
+        bean.o <- ifelse(is.null(bean.o), 0.1, bean.o)
+        ci.o <- ifelse(is.null(ci.o), 0, ci.o)
+        line.o <- ifelse(is.null(line.o), 0.5, line.o)
+        bar.o <- ifelse(is.null(bar.o), 0.5, bar.o)
+    }
+    if (theme.o == 2) {
+        point.o <- ifelse(is.null(point.o), 0.8, point.o)
+        bean.o <- ifelse(is.null(bean.o), 0.5, bean.o)
+        ci.o <- ifelse(is.null(ci.o), 0, ci.o)
+        line.o <- ifelse(is.null(line.o), 0.1, line.o)
+        bar.o <- ifelse(is.null(bar.o), 0.1, bar.o)
+    }
+    if (theme.o == 3) {
+        point.o <- ifelse(is.null(point.o), 0.2, point.o)
+        bean.o <- ifelse(is.null(bean.o), 0.2, bean.o)
+        ci.o <- ifelse(is.null(ci.o), 0.8, ci.o)
+        line.o <- ifelse(is.null(line.o), 1, line.o)
+        bar.o <- ifelse(is.null(bar.o), 0.1, bar.o)
+    }
+    if (theme.o == 0) {
+        point.o <- ifelse(is.null(point.o), 0, point.o)
+        bean.o <- ifelse(is.null(bean.o), 0, bean.o)
+        ci.o <- ifelse(is.null(ci.o), 0, ci.o)
+        line.o <- ifelse(is.null(line.o), 0, line.o)
+        bar.o <- ifelse(is.null(bar.o), 0, bar.o)
+    }
+    if (mean(pal %in% piratepal(palette="names")) == 1) {
+        col.vec <- rep(piratepal(palette = pal, length.out = n.cols))
+        point.col <- piratepal(palette = pal, length.out = n.cols,
+            trans = 1 - point.o)
+        bean.border.col <- piratepal(palette = pal, length.out = n.cols,
+            trans = 1 - bean.o)
+        ci.band.col <- piratepal(palette = pal, length.out = n.cols,
+            trans = 1 - ci.o)
+        average.line.col <- piratepal(palette = pal, length.out = n.cols,
+            trans = 1 - line.o)
+        bar.col <- piratepal(palette = pal, length.out = n.cols,
+            trans = 1 - bar.o)
+    }
+    if (mean(pal %in% piratepal(palette="names")) != 1) {
+        if (length(pal) < n.cols) {
+            pal <- rep(pal, n.cols)
+        }
+        col.vec <- pal
+        point.col <- sapply(1:length(pal), function(x) {
+            transparent(pal[x], trans.val = 1 - point.o)
+        })
+        bean.border.col <- sapply(1:length(pal), function(x) {
+            transparent(pal[x], trans.val = 1 - bean.o)
+        })
+        ci.band.col <- sapply(1:length(pal), function(x) {
+            transparent(pal[x], trans.val = 1 - ci.o)
+        })
+        average.line.col <- sapply(1:length(pal), function(x) {
+            transparent(pal[x], trans.val = 1 - line.o)
+        })
+        bar.col <- sapply(1:length(pal), function(x) {
+            transparent(pal[x], trans.val = 1 - bar.o)
+        })
+    }
+    if (n.iv == 2) {
+        col.vec <- rep(col.vec, times = iv.lengths[2])
+        point.col <- rep(point.col, times = iv.lengths[2])
+        bean.border.col <- rep(bean.border.col, times = iv.lengths[2])
+        ci.band.col <- rep(ci.band.col, times = iv.lengths[2])
+        average.line.col <- rep(average.line.col, times = iv.lengths[2])
+        bar.col <- rep(bar.col, times = iv.lengths[2])
+    }
+    if (is.null(bar.border.col)) {
+        bar.border.col <- bar.col
+    }
+    if (is.null(bar.border.col) == F) {
+        bar.border.col <- rep(bar.border.col, times = length(bar.col))
+    }
+    if (is.null(ylim) == TRUE & is.null(y.levels) == TRUE) {
+        steps.p <- c(unlist( lapply(9:1, function(x){1*10^(-x)}) ), .25, .5, 1, 2, 5, 10, 25, 50, seq(100, 900,
+            100), seq(1000, 9000, 1000), seq(10000, 1e+05-1e+04, 10000),
+            seq(1e+05, 1e+06-1e+05, 1e+05), seq(1e+06, 1e+07-1e+06, 1e+06),
+            seq(1e+07, 1e+08-1e+07, 1e+07), seq(1e+08, 1e+09-1e+08, 1e+08))
+        range <- max(dv.v) - min(dv.v)
+        steps.p.m <- range/steps.p
+        best.step.size <- steps.p[which(abs(steps.p.m - 10) ==
+            min(abs(steps.p.m - 10)))]
+        plot.min <- floor(min(dv.v)/best.step.size) * best.step.size
+        plot.max <- ceiling(max(dv.v)/best.step.size) * best.step.size
+        ylim <- c(plot.min, plot.max)
+        y.levels <- seq(plot.min, plot.max, by = best.step.size)
+    }
+    if (is.null(ylim) == FALSE & is.null(y.levels) == TRUE) {
+         steps.p <- c(unlist( lapply(9:1, function(x){1*10^(-x)}) ), .25, .5, 1, 2, 5, 10, 25, 50, seq(100, 900,
+            100), seq(1000, 9000, 1000), seq(10000, 1e+05-1e+04, 10000),
+            seq(1e+05, 1e+06-1e+05, 1e+05), seq(1e+06, 1e+07-1e+06, 1e+06),
+            seq(1e+07, 1e+08-1e+07, 1e+07), seq(1e+08, 1e+09-1e+08, 1e+08))
+        range <- ylim[2] - ylim[1]
+        steps.p.m <- range/steps.p
+        best.step.size <- steps.p[which(abs(steps.p.m - 10) ==
+            min(abs(steps.p.m - 10)))]
+        plot.min <- floor(ylim[1]/best.step.size) * best.step.size
+        plot.max <- ylim[1] + 10 * best.step.size
+        y.levels <- seq(ylim[1], ylim[2], by = best.step.size)
+    }
+    if (is.null(ylim) == TRUE & is.null(y.levels) == FALSE) {
+        ylim <- c(min(y.levels), max(y.levels))
+    }
+    if (is.null(xlim)) {
+        xlim <- c(min(bean.loc) - 0.5, max(bean.loc) + 0.5)
+    }
+    if (is.null(xlab)) {
+        xlab <- iv.names[1]
+    }
+    if (is.null(ylab)) {
+        ylab <- dv.name
+    }
+    if (add == F) {
+        par(mar = c(5, 4, 4, 1) + 0.1)
+        plot(1, xlim = xlim, ylim = ylim, type = "n", xaxt = "n",
+            yaxt = "n", xlab = ifelse(make.legend, NA, xlab), ylab = ylab, main = main,
+            yaxt = yaxt)
+        if (is.null(yaxt)) {
+            axis(side = 2, at = y.levels, las = 1, lwd = 1, lwd.ticks = 1)
+        }
+        rect(-1000, -1000, 10000, 10000, col = back.col)
+        if (is.null(gl.col) == F) {
+            abline(h = seq(min(y.levels), max(y.levels), length.out = 21),
+                lwd = c(0.75, 0.25), col = gl.col)
+        }
+    }
+
+
+    if( errbartype=="CIbetween" ){
+        if( is.null(grouping.var) ){
+            CIs <- tapply( data.2[,dv.name], data.2[,iv.names], sd ) / sqrt( table( data.2[,iv.names] ) ) * qt( mean(c(conf.level,1)), table( data.2[,iv.names] ) )
+        } else {
+           
+            # First aggregate within the grouping var (because we want the SD of e.g. the subject means, not the SD of
+            #    all the datapoints)
+            groupmeans.aggr <- aggregate( data.2[,dv.name], data.2[,c(iv.names,grouping.var)], mean )
+   
+            #Then use the typical CI function: SD (tapply'ed so we get it for each condition) / sqrt(N) * critical t
+            CIs <- tapply( groupmeans.aggr$x, groupmeans.aggr[,iv.names], sd ) / sqrt(n.groups) * qt(mean(c(conf.level,1)), n.groups-1 )
+        }
+    }
+    if( errbartype=="CIwithin" ){
+        # Figures out the Cousineau-Morey confidence intervals
+        CIs <- CMCI( formula, data.2, grouping.var )
+    }
+    if( errbartype=="SD" ){
+        CIs <- tapply( data.2[,dv.name], data.2[,iv.names], sd )
+    }
+    if( errbartype=="CIlmer" ){
+        data$Condition <- factor( do.call( paste0, lapply( iv.names, function(IV){ data[,IV] } ) ) )
+        require(lme4)
+        require(boot)
+        modelformula <- formula( paste0( dv.name, " ~ 0+Condition + ", paste0("(1|", grouping.var, ")", collapse=" + " ) ) )
+        #modelformula <- formula( paste0( dv.name, " ~ 0+Condition + ", paste0("(0+Condition||", grouping.var, ")", collapse=" + " ) ) )
+        model <- lmer( modelformula, data )
+        getB <- function(.) { getME(., "beta") }
+        boo <- bootMer( model, getB, nsim=100 )
+        CIs <- do.call( cbind, lapply( 1:length(fixef(model)), function(x){ boot.ci( boo, index=x, type="norm" )$norm[2:3] } ) )
+
+        # figures out which thing in the lmerCI corresponds to "bean"
+        lmerbeantable <- unlist( lapply( 1:n.beans, function(bean.i){ which( levels(data$Condition)==paste( unlist( data.2[ data.2$bean.num==bean.i, iv.names ][1,] ), collapse="" ) ) } ) )
+
+    }
+
+
+    # Figures out which condition corresponds to which "bean". This is
+    #    necessary because pirateplot doesn't use the same order as
+    #    factor(), whereas my CMCI function does.
+    tapply(data.2$bean.num, data.2[,iv.names], mean ) -> beantable
+
+
+   
+    for (bean.i in 1:n.beans) {
+        dv.i <- data.2[data.2$bean.num == bean.i, dv.name]
+        fun.val <- line.fun(dv.i)
+        x.loc.i <- bean.mtx$x.loc[bean.i]
+        rect(x.loc.i - width.max, 0, x.loc.i + width.max, fun.val,
+            col = bar.col[bean.i], border = bar.border.col[bean.i],
+            lwd = 1)
+        {
+            if (length(dv.i) > 5) {
+                dens.i <- density(dv.i)
+                dens.y.i <- dens.i$y
+                dens.x.i <- dens.i$x
+                if (max(dens.y.i) < width.min) {
+                  dens.y.i <- dens.y.i/max(dens.y.i) * width.min
+                }
+                if (max(dens.y.i) > width.max) {
+                  dens.y.i <- dens.y.i/max(dens.y.i) * width.max
+                }
+                dens.x.plot.i <- dens.x.i
+                dens.y.plot.i <- dens.y.i
+                if (is.null(cut.min) == F) {
+                  dens.x.plot.i <- dens.x.i[dens.x.i > cut.min]
+                  dens.y.plot.i <- dens.y.i[dens.x.i > cut.min]
+                }
+                if (is.null(cut.max) == F) {
+                  dens.x.plot.i <- dens.x.i[dens.x.i < cut.max]
+                  dens.y.plot.i <- dens.y.i[dens.x.i < cut.max]
+                }
+                polygon(c(x.loc.i - dens.y.plot.i[1:(length(dens.x.plot.i))],
+                  x.loc.i + rev(dens.y.plot.i[1:(length(dens.x.plot.i))])),
+                  c(dens.x.plot.i[1:(length(dens.x.plot.i))],
+                    rev(dens.x.plot.i[1:(length(dens.x.plot.i))])),
+                  col = gray(1, alpha = bean.o), border = bean.border.col[bean.i],
+                  lwd = 2)
+            }
+        }
+        segments(x.loc.i - width.max, fun.val, x.loc.i + width.max,
+            fun.val, col = average.line.col[bean.i], lwd = line.lwd,
+            lend = 3)
+        if (ci.o > 0) {
+        # Sets the upper and lower "hdi" limits to be the upper and lower
+        #    bounds of the CI
+        if( errbartype=="CIlmer" ){
+            ci.lb <- CIs[1,lmerbeantable[bean.i]]
+            ci.ub <- CIs[2,lmerbeantable[bean.i]]
+        } else {
+                ci.lb <- fun.val - CIs[ which(beantable==bean.i) ]
+                ci.ub <- fun.val + CIs[ which(beantable==bean.i) ]
+        }
+            dens.ci.x <- dens.x.i[dens.x.i >= ci.lb & dens.x.i <=
+                ci.ub]
+            dens.ci.y <- dens.y.i[dens.x.i >= ci.lb & dens.x.i <=
+                ci.ub]
+            band.type <- "wide"
+            if (band.type == "constrained") {
+                polygon(c(x.loc.i - dens.ci.y, x.loc.i + rev(dens.ci.y)),
+                  c(dens.ci.x, rev(dens.ci.x)), col = ci.band.col[bean.i],
+                  border = NA, lwd = 2)
+            }
+            if (band.type == "wide") {
+                rect(x.loc.i - width.max, ci.lb, x.loc.i + width.max,
+                  ci.ub, col = ci.band.col[bean.i], border = NA)
+            }
+        }
+        points(rep(x.loc.i, length(dv.i)) + rnorm(length(dv.i),
+            mean = 0, sd = jitter.val), dv.i, pch = point.pch,
+            col = point.col[bean.i], cex = point.cex, lwd = point.lwd)
+    }
+    if ( make.legend==F ) { mtext(bean.mtx[, 1], side = 1, at = bean.mtx$x.loc, line = 0.5)
+    } else {
+        # put a legend
+        legend( "top", legend=unique(bean.mtx[, 1]), fill=average.line.col, horiz=legend.horiz, bg=legend.bg )
+    }
+   
+    if (n.iv == 2) {
+        text.loc <- (iv.lengths[1] + 1)/2 * (2 * (1:iv.lengths[2]) -
+            1)
+        mtext(text = paste(names(bean.mtx)[2], "=", unique(bean.mtx[,
+            2])), side = 1, line = 2, at = text.loc)
+    }
+
+}
+
+
+
+
+
+
+
+# This is a modified version of Nathaniel Phillips' pirateplot() function. Instead of plotting
+#	a bayesian Highest Density Interval, it uses that polygon to instead plot a confidence
+#	interval. Usage is the same as pirateplot(), except you also must specify a grouping.var
+#	(defaults to "Subject") and a confidence level for the CI (defaults to .95). If you set
+#	grouping.var=NA, you get a standard between-subjects confidence interval; if you set
+#	it to be the name of your subjects variable then you get a Cousineau-Morey within-subjects
+#	confidence interval.
+CIpirateplotold <- function (formula, data, line.fun = mean, pal = "appletv", back.col = gray(1), 
+    point.cex = 1, point.pch = 1, point.lwd = 1, cut.min = NULL, 
+    cut.max = NULL, width.min = 0.3, width.max = NA, bean.o = .5, 
+    point.o = .5, bar.o = .1, ci.o = .5, line.o = 1, 
+    theme.o = 1, jitter.val = 0.03, line.lwd = 2, 
+    gl.col = NULL, ylim = NULL, xlim = NULL, xlab = NULL, ylab = NULL, 
+    main = NULL, yaxt = NULL, add = F, y.levels = NULL, bar.border.col = NULL, grouping.var = NA, conf.level=.95, CI.type="between", make.legend=F,
+	IV.orders = NA,
+    ...) 
+{
+	library("yarrr")
+
+	if( is.na(grouping.var) & CI.type=="within" ){
+		warning( "Within-subject CIs cannot be calculated when grouping.var==NA. The plot will show between-subject CIs." )
+		CI.type <- "between"
+	}
+	
+	if( is.na( grouping.var ) ){
+		fullformula <- formula
+	} else {
+		# A version of the formula which also has the grouping var; we need this for
+		#	within-subjects CIs
+		fullformula <- update(formula, as.formula( paste("~.+", grouping.var) ) )
+	}
+    data.2 <- model.frame(formula = fullformula, data = data)
+    dv.name <- names(data.2)[1]
+    dv.v <- data.2[, 1]
+
+	if( is.na( grouping.var ) ){
+		fixef_cols <- 2:(ncol(data.2))
+	} else {
+		# Which columns have fixed-effect factors. This leaves off the last column,
+		#	which is the grouping var (probably "Subject")
+		fixef_cols <- 2:(ncol(data.2)-1)
+
+		# also makes sure the grouping var is a factor
+		data.2[,grouping.var] <- factor( data.2[,grouping.var] )
+	}
+    iv.levels <- lapply(fixef_cols, FUN = function(x) {
+        unique(data.2[, x])
+    })
+
+    iv.lengths <- sapply(1:length(iv.levels), FUN = function(x) {
+        length(iv.levels[[x]])
+    })
+    iv.names <- names(data.2)[fixef_cols]
+	if( !is.na( IV.orders ) ){
+		for( level in names(IV.orders) ){
+			levelidx <- which( iv.names==level )
+			iv.levels[[levelidx]] <- IV.orders[[level]]
+		}
+	}
+    n.iv <- length(iv.levels)
+    if (is.na(width.max)) {
+        if (n.iv == 1) {
+            width.max <- 0.45
+        }
+        if (n.iv == 2) {
+            width.max <- 0.5
+        }
+    }
+
+	if( ! is.na(grouping.var) ){
+		n.groups <- length(levels(factor(data.2[,grouping.var])))
+	}
+
+    bean.mtx <- expand.grid(iv.levels)
+    names(bean.mtx) <- names(data.2)[fixef_cols]
+    n.beans <- nrow(bean.mtx)
+    bean.mtx$bean.num <- 1:nrow(bean.mtx)
+    bean.loc <- 1:n.beans
+    group.spacing <- 1
+    if (n.iv == 2) {
+        bean.loc <- bean.loc + rep(group.spacing * (0:(iv.lengths[2] - 
+            1)), each = iv.lengths[1])
+    }
+    bean.mtx$x.loc <- bean.loc
+    data.2 <- merge(data.2, bean.mtx)
+    n.cols <- iv.lengths[1]
+    if (theme.o == 1) {
+        point.o <- ifelse(is.null(point.o), 0.3, point.o)
+        bean.o <- ifelse(is.null(bean.o), 0.1, bean.o)
+        ci.o <- ifelse(is.null(ci.o), 0, ci.o)
+        line.o <- ifelse(is.null(line.o), 0.5, line.o)
+        bar.o <- ifelse(is.null(bar.o), 0.5, bar.o)
+    }
+    if (theme.o == 2) {
+        point.o <- ifelse(is.null(point.o), 0.8, point.o)
+        bean.o <- ifelse(is.null(bean.o), 0.5, bean.o)
+        ci.o <- ifelse(is.null(ci.o), 0, ci.o)
+        line.o <- ifelse(is.null(line.o), 0.1, line.o)
+        bar.o <- ifelse(is.null(bar.o), 0.1, bar.o)
+    }
+    if (theme.o == 3) {
+        point.o <- ifelse(is.null(point.o), 0.2, point.o)
+        bean.o <- ifelse(is.null(bean.o), 0.2, bean.o)
+        ci.o <- ifelse(is.null(ci.o), 0.8, ci.o)
+        line.o <- ifelse(is.null(line.o), 1, line.o)
+        bar.o <- ifelse(is.null(bar.o), 0.1, bar.o)
+    }
+    if (theme.o == 0) {
+        point.o <- ifelse(is.null(point.o), 0, point.o)
+        bean.o <- ifelse(is.null(bean.o), 0, bean.o)
+        ci.o <- ifelse(is.null(ci.o), 0, ci.o)
+        line.o <- ifelse(is.null(line.o), 0, line.o)
+        bar.o <- ifelse(is.null(bar.o), 0, bar.o)
+    }
+    if (mean(pal %in% piratepal(action = "p")) == 1) {
+        col.vec <- rep(piratepal(palette = pal, length.out = n.cols))
+        point.col <- piratepal(palette = pal, length.out = n.cols, 
+            trans = 1 - point.o)
+        bean.border.col <- piratepal(palette = pal, length.out = n.cols, 
+            trans = 1 - bean.o)
+        ci.band.col <- piratepal(palette = pal, length.out = n.cols, 
+            trans = 1 - ci.o)
+        average.line.col <- piratepal(palette = pal, length.out = n.cols, 
+            trans = 1 - line.o)
+        bar.col <- piratepal(palette = pal, length.out = n.cols, 
+            trans = 1 - bar.o)
+    }
+    if (mean(pal %in% piratepal(action = "p")) != 1) {
+        if (length(pal) < n.cols) {
+            pal <- rep(pal, n.cols)
+        }
+        col.vec <- pal
+        point.col <- sapply(1:length(pal), function(x) {
+            transparent(pal[x], trans.val = 1 - point.o)
+        })
+        bean.border.col <- sapply(1:length(pal), function(x) {
+            transparent(pal[x], trans.val = 1 - bean.o)
+        })
+        ci.band.col <- sapply(1:length(pal), function(x) {
+            transparent(pal[x], trans.val = 1 - ci.o)
+        })
+        average.line.col <- sapply(1:length(pal), function(x) {
+            transparent(pal[x], trans.val = 1 - line.o)
+        })
+        bar.col <- sapply(1:length(pal), function(x) {
+            transparent(pal[x], trans.val = 1 - bar.o)
+        })
+    }
+    if (n.iv == 2) {
+        col.vec <- rep(col.vec, times = iv.lengths[2])
+        point.col <- rep(point.col, times = iv.lengths[2])
+        bean.border.col <- rep(bean.border.col, times = iv.lengths[2])
+        ci.band.col <- rep(ci.band.col, times = iv.lengths[2])
+        average.line.col <- rep(average.line.col, times = iv.lengths[2])
+        bar.col <- rep(bar.col, times = iv.lengths[2])
+    }
+    if (is.null(bar.border.col)) {
+        bar.border.col <- bar.col
+    }
+    if (is.null(bar.border.col) == F) {
+        bar.border.col <- rep(bar.border.col, times = length(bar.col))
+    }
+    if (is.null(ylim) == TRUE & is.null(y.levels) == TRUE) {
+        steps.p <- c(unlist( lapply(9:1, function(x){1*10^(-x)}) ), .25, .5, 1, 2, 5, 10, 25, 50, seq(100, 900, 
+            100), seq(1000, 9000, 1000), seq(10000, 1e+05-1e+04, 10000), 
+            seq(1e+05, 1e+06-1e+05, 1e+05), seq(1e+06, 1e+07-1e+06, 1e+06), 
+            seq(1e+07, 1e+08-1e+07, 1e+07), seq(1e+08, 1e+09-1e+08, 1e+08))
+        range <- max(dv.v) - min(dv.v)
+        steps.p.m <- range/steps.p
+        best.step.size <- steps.p[which(abs(steps.p.m - 10) == 
+            min(abs(steps.p.m - 10)))]
+        plot.min <- floor(min(dv.v)/best.step.size) * best.step.size
+        plot.max <- ceiling(max(dv.v)/best.step.size) * best.step.size
+        ylim <- c(plot.min, plot.max)
+        y.levels <- seq(plot.min, plot.max, by = best.step.size)
+    }
+    if (is.null(ylim) == FALSE & is.null(y.levels) == TRUE) {
+         steps.p <- c(unlist( lapply(9:1, function(x){1*10^(-x)}) ), .25, .5, 1, 2, 5, 10, 25, 50, seq(100, 900, 
+            100), seq(1000, 9000, 1000), seq(10000, 1e+05-1e+04, 10000), 
+            seq(1e+05, 1e+06-1e+05, 1e+05), seq(1e+06, 1e+07-1e+06, 1e+06), 
+            seq(1e+07, 1e+08-1e+07, 1e+07), seq(1e+08, 1e+09-1e+08, 1e+08))
+        range <- ylim[2] - ylim[1]
+        steps.p.m <- range/steps.p
+        best.step.size <- steps.p[which(abs(steps.p.m - 10) == 
+            min(abs(steps.p.m - 10)))]
+        plot.min <- floor(ylim[1]/best.step.size) * best.step.size
+        plot.max <- ylim[1] + 10 * best.step.size
+        y.levels <- seq(ylim[1], ylim[2], by = best.step.size)
+    }
+    if (is.null(ylim) == TRUE & is.null(y.levels) == FALSE) {
+        ylim <- c(min(y.levels), max(y.levels))
+    }
+    if (is.null(xlim)) {
+        xlim <- c(min(bean.loc) - 0.5, max(bean.loc) + 0.5)
+    }
+    if (is.null(xlab)) {
+        xlab <- iv.names[1]
+    }
+    if (is.null(ylab)) {
+        ylab <- dv.name
+    }
+    if (add == F) {
+        par(mar = c(5, 4, 4, 1) + 0.1)
+        plot(1, xlim = xlim, ylim = ylim, type = "n", xaxt = "n", 
+            yaxt = "n", xlab = ifelse(make.legend, NA, xlab), ylab = ylab, main = main, 
+            yaxt = yaxt)
+        if (is.null(yaxt)) {
+            axis(side = 2, at = y.levels, las = 1, lwd = 1, lwd.ticks = 1)
+        }
+        rect(-1000, -1000, 10000, 10000, col = back.col)
+        if (is.null(gl.col) == F) {
+            abline(h = seq(min(y.levels), max(y.levels), length.out = 21), 
+                lwd = c(0.75, 0.25), col = gl.col)
+        }
+    }
+
+	if( CI.type=="between" ){
+		if( is.na(grouping.var) ){
+			CIs <- tapply( data.2[,dv.name], data.2[,iv.names], sd ) / sqrt( table( data.2[,iv.names] ) ) * qt( mean(c(conf.level,1)), table( data.2[,iv.names] ) )
+		} else {
+			# First aggregate within the grouping var (because we want the SD of e.g. the subject means, not the SD of
+			#	all the datapoints)
+			groupmeans.aggr <- aggregate( data.2[,dv.name], data.2[,c(iv.names,grouping.var)], mean )
+	
+			#Then use the typical CI function: SD (tapply'ed so we get it for each condition) / sqrt(N) * critical t
+			CIs <- tapply( groupmeans.aggr$x, groupmeans.aggr[,iv.names], sd ) / sqrt(n.groups) * qt(mean(c(conf.level,1)), n.groups-1 )
+		}
+	} else {
+		# Figures out the Cousineau-Morey confidence intervals
+		CIs <- CMCI( formula, data.2, grouping.var )
+	}
+	# Figures out which condition corresponds to which "bean". This is
+	#	necessary because pirateplot doesn't use the same order as
+	#	factor(), whereas my CMCI function does.
+	tapply(data.2$bean.num, data.2[,iv.names], mean ) -> beantable
+
+    for (bean.i in 1:n.beans) {
+        dv.i <- data.2[data.2$bean.num == bean.i, dv.name]
+        fun.val <- line.fun(dv.i)
+        x.loc.i <- bean.mtx$x.loc[bean.i]
+        rect(x.loc.i - width.max, 0, x.loc.i + width.max, fun.val, 
+            col = bar.col[bean.i], border = bar.border.col[bean.i], 
+            lwd = 1)
+        {
+            if (length(dv.i) > 5) {
+                dens.i <- density(dv.i)
+                dens.y.i <- dens.i$y
+                dens.x.i <- dens.i$x
+                if (max(dens.y.i) < width.min) {
+                  dens.y.i <- dens.y.i/max(dens.y.i) * width.min
+                }
+                if (max(dens.y.i) > width.max) {
+                  dens.y.i <- dens.y.i/max(dens.y.i) * width.max
+                }
+                dens.x.plot.i <- dens.x.i
+                dens.y.plot.i <- dens.y.i
+                if (is.null(cut.min) == F) {
+                  dens.x.plot.i <- dens.x.i[dens.x.i > cut.min]
+                  dens.y.plot.i <- dens.y.i[dens.x.i > cut.min]
+                }
+                if (is.null(cut.max) == F) {
+                  dens.x.plot.i <- dens.x.i[dens.x.i < cut.max]
+                  dens.y.plot.i <- dens.y.i[dens.x.i < cut.max]
+                }
+                polygon(c(x.loc.i - dens.y.plot.i[1:(length(dens.x.plot.i))], 
+                  x.loc.i + rev(dens.y.plot.i[1:(length(dens.x.plot.i))])), 
+                  c(dens.x.plot.i[1:(length(dens.x.plot.i))], 
+                    rev(dens.x.plot.i[1:(length(dens.x.plot.i))])), 
+                  col = gray(1, alpha = bean.o), border = bean.border.col[bean.i], 
+                  lwd = 2)
+            }
+        }
+        segments(x.loc.i - width.max, fun.val, x.loc.i + width.max, 
+            fun.val, col = average.line.col[bean.i], lwd = line.lwd, 
+            lend = 3)
+        if (ci.o > 0) {
+		# Sets the upper and lower "hdi" limits to be the upper and lower
+		#	bounds of the CI
+            ci.lb <- fun.val - CIs[ which(beantable==bean.i) ]
+            ci.ub <- fun.val + CIs[ which(beantable==bean.i) ]
+            dens.ci.x <- dens.x.i[dens.x.i >= ci.lb & dens.x.i <= 
+                ci.ub]
+            dens.ci.y <- dens.y.i[dens.x.i >= ci.lb & dens.x.i <= 
+                ci.ub]
+            band.type <- "wide"
+            if (band.type == "constrained") {
+                polygon(c(x.loc.i - dens.ci.y, x.loc.i + rev(dens.ci.y)), 
+                  c(dens.ci.x, rev(dens.ci.x)), col = ci.band.col[bean.i], 
+                  border = NA, lwd = 2)
+            }
+            if (band.type == "wide") {
+                rect(x.loc.i - width.max, ci.lb, x.loc.i + width.max, 
+                  ci.ub, col = ci.band.col[bean.i], border = NA)
+            }
+        }
+        points(rep(x.loc.i, length(dv.i)) + rnorm(length(dv.i), 
+            mean = 0, sd = jitter.val), dv.i, pch = point.pch, 
+            col = point.col[bean.i], cex = point.cex, lwd = point.lwd)
+    }
+    if ( make.legend==F ) { mtext(bean.mtx[, 1], side = 1, at = bean.mtx$x.loc, line = 0.5)
+	} else {
+		# put a legend
+		legend( "top", legend=unique(bean.mtx[, 1]), fill=average.line.col )
+	}
+	
+    if (n.iv == 2) {
+        text.loc <- (iv.lengths[1] + 1)/2 * (2 * (1:iv.lengths[2]) - 
+            1)
+        mtext(text = paste(names(bean.mtx)[2], "=", unique(bean.mtx[, 
+            2])), side = 1, line = 2, at = text.loc)
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+# This is a function that calculates Cousineau-Morey within-subject CIs.
+#	formula: the formula describing what you want to plot, i.e.,
+#		DV ~ IV1 + IV2 ....
+#	data: the data frame
+#	grouping.var: defaults to "Subject". Don't include this in the
+#		formula.
+#	conf.level: confidence level for the CI. Defaults to .95
+#	correct: Correction to apply. Defaults to "Morey" to apply the Morey (2008)
+#		bias correction; it will also do this if correct==T. To not do the
+#		correction, set it to anything else (e.g. correct=="none" or
+#		correct==F)
+# The output of the function isn't actually a CI, it's the ranges from the mean.
+#	So an actual CI will be the mean +/- what is returned in this function.
+#	It returns the output in the table, with variables in the same order as
+#	what you get from tapply( DV, IVs, mean), so that is handy.
+CMCI <- function( formula, data, grouping.var="Subject", conf.level=.95, correct="Morey" ){
+
+        # Figure out the DV and the IVs.
+        # This doesn't use all.var() because that strips away functions,
+        #	whereas sometimes your formula might be like log(DV) ~
+        #	rather than just DV.
+        vars <- rownames(attr(terms(formula),"factors"))
+        DV <- vars[1]
+        IVs <- vars[-1]
+
+        data <- aggregate( data[,DV], data[,c(IVs,grouping.var)], mean )
+        data[,grouping.var] <- factor(data[,grouping.var])
+        colnames(data)[ length(colnames(data)) ] <- DV
+
+        # Get the means
+        means <- tapply( data[,DV], data[,IVs], mean, na.rm=T )
+
+        ## Get the 95% CIs using the Cousineau-Morey method (Morey, 2008)
+
+                # First find the mean for each participant
+                ptpmeans <- aggregate( data[,DV], list(data[,grouping.var]), mean, na.rm=T )
+                colnames(ptpmeans) <- c("Subject", "Mean")
+                rownames(ptpmeans) <- ptpmeans$Subject
+
+                # Scale the data by subtracting the participant mean and adding the grand mean
+                data$scaled_DV <- data[,DV] - ptpmeans[as.character(data[,grouping.var]),"Mean"] + mean(data[,DV])
+
+                # 
+                if( tolower(correct)=="morey" | correct==T ){
+                        # The number of conditions
+                        K <- sum( unlist( lapply( IVs, function(x){ length(levels(data[,x]))}) ) )
+
+                        # the Morey (2008) correction factor	
+                        correction_factor <- sqrt(K/(K-1))
+                } else {
+                        correction_factor <- 1
+                }
+                # The number of participants
+                N <- length(levels(data[,grouping.var]))
+
+
+                # Get the CIs
+                CIs <- tapply( data$scaled_DV, data[,IVs], sd ) / sqrt( N ) * qt(mean(c(conf.level,1)), N-1 ) * correction_factor
+
+        ## Done figuring out Cousineau-Morey CIs
+
+        return( CIs )
+
+}
+
+
+
+
+
+
+# do bootstrap confidence intervals
+# Right now this assumes normal confidence intervals rather than e.g. percentile or BCa intervals
+showBootCI <- function( model, conf=.95, nsim=500, verbose=F ){
+	# Input: some model object created by lme4:lmer()
+	# Output: a [kind of] pretty table showing the t-values and bootstrap confidence intervals for the effects in the model
+
+	require(lme4)
+	require(boot)
+
+	# Just a simple function to pull out the coefficients
+	mySumm <- function(.) {
+		s <- sigma(.)
+		c(beta =getME(., "beta"), sigma = s, sig01 = unname(s * getME(., "theta")))
+	}
+
+	# Do the bootstrapping (also spits out a report of how long it took. You can use more simulations, but with a large dataset and complicated model it will be slow)
+	time <- system.time( boo01 <- bootMer(model, mySumm, nsim = nsim) )
+	if( verbose ){ print(time) }
+
+	### The rest of the code just organizes the CIs into a nice table and spits them out
+
+	# Go through each effect in the model
+	for( effect in 1:length(fixef(model)) ){
+		
+		if(verbose){ print( paste( "Estimating confidence intervals for", names(fixef(model))[effect]) ) }
+
+		# If the table (called 'allconf') exists, add this effect's CIs as a new row in the table
+		if("allconf" %in% ls() ){
+			allconf_row <- boot.ci(boo01, conf=conf, index=effect, type=c("norm", "basic", "perc"))$normal
+			p <- ifelse( fixef(model)[effect] > 0, length(which(boo01$t[,effect]<=0)) / nsim, length(which(boo01$t[,effect]>=0)) / nsim ) * 2
+			allconf_row <- cbind( allconf_row, p )
+			allconf <- rbind( allconf, allconf_row )
+			rownames(allconf)[effect] <- names(fixef(model))[effect]
+		
+		# Otherwise, create the table (using this effect's CIs as the first row)
+		} else {
+			allconf <- boot.ci(boo01, conf=conf, index=effect, type=c("norm", "basic", "perc"))$normal
+			p <- ifelse( fixef(model)[effect] > 0, length(which(boo01$t[,effect]<=0)) / nsim, length(which(boo01$t[,effect]>=0)) / nsim ) * 2
+			allconf <- cbind( allconf, p )
+			rownames(allconf)[effect] <- names(fixef(model))[effect]
+		}
+	}
+
+	# Add the t-values from the original model summary
+	allconf <- data.frame( cbind( allconf, summary(model)$coefficients[,"t value"] ) )
+
+	# Give it column names
+	colnames( allconf ) <- c("Confidence Level", "Lower", "Upper", "p", "t")
+
+	# Add asterisks, because as much as Bates wants us to be good statisticians, some people just want to see stars
+	allconf$sig <- ifelse( sign(allconf$Lower)==sign(allconf$Upper), "*", "" )
+
+	# Spit it out to the screen
+	return( allconf )
+}
+
+
+
+
+loadlibrary <- function( package ){
+	errormessage <- paste0("R was unable to load the library ", package, "; please try installing manually.")
+	if( !( package %in% installed.packages()[,"Package"] ) ){
+		install.packages( package )
+
+	}
+	tryCatch( library( package, character.only=T ), error=function(c) errormessage, warning=function(c) errormessage, message=function(c) errormessage )
+}
+
+
+
+
+
+cleanUpFactors <- function( dataframe ){
+	for( col in colnames(dataframe) ){
+		if( class( dataframe[,col] )=="factor" ){
+			dataframe[,col] <- factor( dataframe[,col] )
+		}
+	}
+	return( dataframe )
+}
+
+
+
+
+
+
+
+# Plus-minus operator
+`%pm%` <- function(x,y){
+	result <- cbind( matrix(x)-matrix(y), matrix(x)+matrix(y) )
+	rownames(result) <- names(x)
+	colnames(result) <- c("lower","upper")
+	return(result)
+}
+
+

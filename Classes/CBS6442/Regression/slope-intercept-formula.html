@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>The slope-intercept formula</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>The slope-intercept formula (1 hour)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">Welcome to regression. This is the big one. All the statistical tests we've talked about in other modules (like
+	<em>t</em>-tests and ANOVA) are based on regression; in fact, they are just special versions of regression (the same way a square is
+	just a special version of a quadrilateral). If you know how to do regression, you know how to test pretty much any hypothesis you
+	will ever have.</p>
+<p class="centercol">Regression can get very complicated, but it's based on a few simple principles. We will start from the simple
+	principles and gradually add on the extra complications so we can handle more situations.</p>
+<p class="centercol">Regression is, essentially, about drawing a line that fits your data. Let's imagine a simple scenario first; we will
+	gradually extend this to more complicated scenarios.</p>
+<p class="centercol">Imagine you've done an experiment in which you let people see words and press a button in response, and you measure
+	how fast they respond to each word. Some of the words are more common (high-frequency) words, and some are less common
+	(low-frequency). You might get results like those shown in the figure below (data are from the
+	<span style="font-family: courier new, courier;">{languageR}</span> package in R). From this graph you can see that some words, like
+	<em>dog</em> and <em>cat</em> in the bottom right corner, are both very common (high-frequency) and responded to very quickly
+	(reaction time is low). Some words, like <em>gherkin</em> and <em>paprika</em> in the upper left, are uncommon (low-frequency) and
+	responded to slowly (reaction time is high). And there are lots in the middle.<em></em></p>
+<center><img src="regression1.png" alt="A scatterplot showing frequency on the x-axis and RT on the y-axis for different words. There is a negative association between frequency and RT: words with high frequency tend to have low RT." width=60% /></center>
+<p class="centercol">(If your own research does not fit this design, don't worry. This is just the simplest case; as I said, later we will
+	discuss how regression can handle other cases, like situations where your independent variable is categorical instead of something
+	numeric, or cases where you have more than just two variables. But you need to understand how this simple case works before you can
+	understand those other cases.)</p>
+<p class="centercol">To make things easier to see, from now on I will represent the data with just dots, rather than writing out the
+	words:</p>
+<center><img src="regression2.png" alt="Same scatterplot as before, except data points are represented as dots rather than being written out as whole words" width=60% /></center>
+<p class="centercol">You can probably see that there's a pattern here. The words with higher frequency tend to have lower reaction times
+	(i.e., more common words tend to be responded to faster); there's an overall downward trend in the graph. When we do a regression,
+	what we are actually doing is finding the line that fits through this cloud of data the best (i.e., the line that is as close as
+	possible to all the dots). Here's what that line looks like:</p>
+<center><img src="regression3.png" alt="Same scatterplot as before, with a downward-sloping regression line drawn through it" width=60% /></center>
+<p class="centercol">You can see here that the best-fitting line through the data is one that slopes downward. This confirms the
+	impression we had before: words with high frequency tend to have lower RT, and words with low frequency tend to have higher RT.</p>
+<p class="centercol">Regression is, ultimately, a form of prediction. The regression line is telling you the <em>predicted value</em> for
+	words with a given frequency. For example, if you put your finger at the point on the x-axis where the frequency is 5, then move your
+	finger directly up to the red line, you will find that the height of the red line is about 6.37. What that means is, if we find a new
+	word with frequency of 5 and we test it in an experiment like this, we would <em>predict</em> that its reaction time would probably
+	be 6.37, based on what we've seen in the data so far. Because the line is sloping down, our predictions for words with different
+	frequencies will be different: a word with a frequency of 8 is a word that we predict will have a lower RT than a word with a
+	frequency of 3. That is why regression is a statistical test: we are testing whether there's a relationship between frequency and RT.
+	If there is no relationship between frequency and RT, then the regression line would be horizontal and flat, and our predictions for
+	RT would be unaffected by frequency (the predicted RT for a word with a frequency of 3 would be the same as the predicted RT for a
+	word with a frequency of 8). The fact that this regression line is <em>not</em> flat, but is substantially sloped, tells us that
+	there is a relationship.</p>
+<p class="centercol">To be able to describe regression lines, we need to know how the <em>regression formula</em> works.
+	Do the activities below to learn more and practice.</p>
+
+
+		<center>
+
+
+		<button class="collapsible">How to describe a line</button>
+		<div class="content">
+			<p>A regression equation is expressed in slope-intercept form, as:</p>
+			<center><big>\(y=bx+a\)</big></center>
+			<p>I assume everyone has learned about this in secondary school math class; if you need a review, you can search for
+				"slope-intercept form" online or check videos such as this one:</p>
+			<center><iframe width="560" height="315" src="https://www.youtube.com/embed/IL3UCuXrUzE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
+			<p>The important thing to know is that the intercept (<em>a</em> in the above equation) tells how high the dependent
+				variable is when the independent variable equals zero, and the slope (<em>b</em> in the above equation) tells how
+				much the dependent variable goes up whenever the independent variable goes up by one point.</p>
+			<p>In regression, we usually express the same equation with slightly different notation:</p>
+			<center><big>\(\hat{Y}=b_0 + b_1X_1\)</big></center>
+			<p>This is the same equation, we're just using different letters to represent things. The <em>Y</em> has a circumflex (a
+				"hat") on top; in regression, "hat" means "predicted". In other words, <em>Y</em> is the dependent variable, and
+				\(\hat{Y}\) (pronounced "Y hat") is the predicted value of the dependent variable. (These are different; keep in mind
+				that in the example we saw before, lots of points were not exactly on the regression line. The regression line is the
+				predicted RT at any given level of frequency, but the real data are often a little bit above or below the prediction,
+				because real data are messy and variable.) The intercept is called <em>b<sub>0</sub></em> instead of <em>a</em>, and
+				the slope is called <em>b<sub>1</sub></em> instead of just <em>b</em>. (The fact that it's called
+				"<em>b<sub>1</sub></em>" foreshadows the fact that there can also be <em>b<sub>2</sub></em>, <em>b<sub>3</sub></em>,
+				etc.! Later we will see how this formula can be extended to accommodate more and more variables, but for now we'll
+				just think about this one.</p>
+			<p><strong>Draw three different lines (you can use software or you can just draw by hand), and for each one write down the
+				approximate regression equation using the slope-intercept formula.</strong> Your formula will have the same format as
+				the one above, except <em>b<sub>0</sub></em> and <em>b<sub>1</sub></em> will be replaced with actual numbers.</p>
+		</div>
+
+		<button class="collapsible">Drawing a line based on regression coefficients</button>
+		<div class="content">
+			<p>When you do regression analysis, what you are doing is figuring out the line that fits the data&mdash;in other words,
+				you are figuring out which numbers go in the regression formula.</p>
+			<p>Let's consider the reaction time data we were looking at before (shown again here):</p>
+			<center><img src="regression3.png" alt="Same scatterplot as before, with a downward-sloping regression line drawn through it" width=60% /></center>
+			<p>When you actually run a regression analysis in statistical software, what you will usually see is a set of numbers.
+				Here are the numbers I got for this regression line in R:</p>
+			<p><span style="font-family: courier new, courier;">Coefficients:</span><br /><span style="font-family: courier new, courier;">(Intercept)&nbsp;&nbsp;&nbsp; Frequency &nbsp;</span><br /><span style="font-family: courier new, courier;">&nbsp;&nbsp;&nbsp; 6.58878&nbsp;&nbsp;&nbsp;&nbsp; -0.04287</span></p>
+			<p>To understand what these mean, think back to the regression equation:</p>
+			<center><big>\(\hat{Y}=b_0 + b_1X_1\)</big></center>
+			<p><em>b</em><sub>0</sub> and <em>b</em><sub>1</sub> are <em>coefficients</em>. You can see that the R results above tell
+				me the numerical values for these coefficients. <em>b</em><sub>0</sub> is traditionally the intercept.
+				<em>b</em><sub>1</sub> is, in this example, the coefficient for the Frequency variable (i.e., it's how much the
+				reaction time goes up whenever frequency increases by 1 point). So we can plug these numbers into the regression
+				equation to get the line described by the following equation:</p>
+			<center><big>\(\hat{Y}=6.58878 - 0.04287X_1\)</big></center>
+			<p>It should be clear by now that this is a line in slope-intercept form. 6.58878 is the intercept (where the line crosses
+				the y-axis, or, in other words, the reaction time we would expect for a word with a frequency of zero). The fact that
+				the Frequency coefficient is negative tells us that the line is sloping down. Specifically, it tells us that for
+				every 1 point of frequency, reaction time goes down by 0.04287.</p>
+			<p><strong>Imagine you instead got the following regression results: Intercept = 3, Frequency = 0.25. Draw what the new
+				regression line would look like.</strong></p>
+		</div>
+
+
+		</center>
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			"<a href="multiple-independent-variables.html">Multiple independent variables</a>".</p>
+
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-16. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+
+

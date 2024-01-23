@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<style type="text/css">
+.txtUpsideDown 
+{
+	filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=2);  /* IE6,IE7 */
+	ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)"; /* IE8 */
+	-moz-transform: rotate(-180deg);  /* FF3.5+ */
+	-o-transform: rotate(-180deg);  /* Opera 10.5 */
+	-webkit-transform: rotate(-180deg);  /* Safari 3.1+, Chrome */
+	position: absolute; 
+}
+</style>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Doing basic phonological analysis</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Doing basic phonological analysis (3 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+		<p class="centercol">Figuring out how the mind organizes different sounds into categories is what <em>phonology</em>
+			is all about. The study of phonology gives us some useful techniques to figure out a solution to this problem.
+			To see how it works, let's do a phonological analysis of the sounds of a language you probably don't know:
+			Maasai (a language spoken in Kenya and Tanzania). This dataset and analysis is adapted from Bruce Hayes'
+			book <em>Introductory Phonology</em>.</p>
+	
+
+		<center>
+
+		<button class="collapsible">Listing environments</button>
+		<div class="content">
+<p>Below is a set of words from Maasai, written phonetically. You don't need to know the language to do this analysis;
+	these words are just some data for us to work with.</p>
+<table border=0>
+<tr><td>[sarkin]</td><td><i>intermarriage taboo</i></td></tr>
+<tr><td>[e&#x014b;gila]</td><td><i>little garment</i></td></tr>
+<tr><td>[imbok]</td><td><i>you clean ceremonially</i></td></tr>
+<tr><td>[ijjook]</td><td><i>we</i></td></tr>
+<tr><td>[olkila]</td><td><i>garment</i></td></tr>
+<tr><td>[imba&#x0263;i&beta;ak]</td><td><i>you are restless </i></td></tr>
+<tr><td>[olpurkel]</td><td><i>dry steppes</i></td></tr>
+<tr><td>[ko&#x0263;oo]</td><td><i>grandmother</i></td></tr>
+<tr><td>[e&#x014b;goo]</td><td><i>advise him</i></td></tr>
+<tr><td>[ilarak]</td><td><i>murderers</i></td></tr>
+<tr><td>[ke&beta;er]</td><td><i>heaven</i></td></tr>
+<tr><td>[ilkeek]</td><td><i>trees</i></td></tr>
+<tr><td>[po&#x0263;ira]</td><td><i>all</i></td></tr>
+<tr><td>[e&#x014b;gamani&#x0263;i]</td><td><i>name of age-set</i></td></tr>
+<tr><td>[e&#x014b;o&#x0263;i]</td><td><i>sin</i></td></tr>
+<tr><td>[olki&#x0263;uei]</td><td><i>thorn</i></td></tr>
+<tr><td>[ka&#x0263;e]</td><td><i>but</i></td></tr>
+<tr><td>[ol&#x0257;u&#x0263;a]</td><td><i>shop</i></td></tr>
+</table>
+<p>For this analysis, I want to concentrate first on the velar sounds. If you look at the above word list (feel free to consult
+	an IPA table if there are letters you don't recognize), you can see that Maasai has three velar consonants: [k] (voiceless
+	velar stop), [g] (voiced velar stop), and [&#x0263;] (voiced velar fricative). Based on what you learned in the Phonetics
+	module, you should be able to pronounce any of these sounds to see what they sound like, even if you don't know this language.</p>
+<p>Now I want you to list the <em>environments</em> in which each sound appears. So, for example, the first word is [sarkin]. I
+	see that this word includes a [k], I also see that there's an [r] before the [k], and an [i] after the [k]. So when I list
+	all the environments where [k] appears, I can record this as "r_i" (indicating that I found a "k", and it's between an "r"
+	and an "i". When I want to list the environments where [g] appears, the first one I will see is the word [e&#x014b;gila],
+	so for the environments where [g] appears I can write down "&#x014b;_i" (indicating that I found a "g", and it was in between
+	a "&#x014b;" and a "i").</p>
+<p>Go through the whole list, and find all the environments where [k] appears, find all the environments where [g] appears, and
+	all the environments where [&#x0263;] appears. It's useful to list these in columns rather than rows (i.e., make one vertical
+	column listing all the environments where [k] appears, make another vertical column listing all the environments where [g]
+	appears, etc.). Write your answers down.</p>
+		</div>
+
+		<button class="collapsible">Making generalizations</button>
+		<div class="content">
+<p>Here are the environments I found for each sound. The ones you found in the previous question should look similar to this.
+	(I used "#" to indicate the beginning or end of a word.)</p>
+<table border=0 width=100%>
+<tr>
+	<td><b><u><big>k</big></u></b></td>
+	<td><b><u><big>g</big></u></b></td>
+	<td><b><u><big>&#x0263;</big></u></b></td>
+</tr>
+<tr><td>r_i</td><td>&#x014b;_i</td><td>a_i</td></tr>
+<tr><td>o_#</td><td>&#x014b;_o</td><td>o_o</td></tr>
+<tr><td>o_#</td><td></td><td>o_i</td></tr>
+<tr><td>l_i</td><td></td><td>i_i</td></tr>
+<tr><td>a_#</td><td></td><td>i_i</td></tr>
+<tr><td>r_e</td><td></td><td>o_i</td></tr>
+<tr><td>#_o</td><td></td><td>i_u</td></tr>
+<tr><td>a_#</td><td></td><td>a_e</td></tr>
+<tr><td>#_e</td><td></td><td>u_a</td></tr>
+<tr><td>l_e</td><td></td><td></td></tr>
+<tr><td>e_#</td><td></td><td></td></tr>
+<tr><td>l_i</td><td></td><td></td></tr>
+<tr><td>#_k</td><td></td><td></td></tr>
+</table>
+<p>Now, see if you can make any generalizations. For example, look at the environments where [&#x0263;] occurs. Is there anything you
+	can say about these environments? Does [&#x0263;] only occur in a particular situation? Is there any situation where [&#x0263;]
+	never occurs? What pattern do you see? What is in common across all the environments where [&#x0263;] occurs?</p>
+<p>Try the same thing for [g]. Is there any pattern?</p>
+<p>And finally, for [k]. Is there any pattern, or it is pretty random/unsystematic?</p>
+<p>Describe your generalizations.</p>
+		</div>
+
+		<button class="collapsible">Complementary distributions</button>
+		<div class="content">
+<p>From the previous dataset, you should have been able to notice the following generalizations:</p>
+<ul>
+<li>[&#x0263;] only ever occurs in between two vowels. It does not occur in any other situations.</li>
+<li>[g] only ever occurs after a nasal, [&#x014b;]. It does not occur in any other situation.</li>
+<li>[k] occurs anywhere <em>else</em>. It never occurs in the situation where [&#x0263;] occurs (between two vowels),
+	and it never occurs in the situation where [g] occurs (after [&#x014b;]). But it can occur in any other situation.</li>
+</ul>
+<p>This is a special kind of situation in phonology called <em>complementary distribution</em>: we have several sounds that
+	never occur in the same situation. This gives us reason to suspect that they might not be different sounds; they might
+	be different <em>versions</em> of the same sound.</p>
+<p>To see what I mean by this, think about superheroes (see the picture below for examples).
+<img src="superheroes.png" alt="Two rows of photos of people. The top row shows Bruce Wayne, Peter Parker, and Clark Kent. The bottom row shows their superhero personas Batman, Spiderman, and Superman." width=80% /></p>
+<p>In the classic superhero movies, superheros usually had a secret identity. (I'm not sure if they still work this way in the
+	new Marvel movies, because I don't watch them.) For example, Batman's real identity is the businessman Bruce Wayne, but
+	people don't know that; when he goes out to fight the bad guys, he puts on his Batman mask so that people won't recognize
+	him. Spiderman's real identity is the student Peter Parker, but people don't know that; he wears the Spiderman mask so people
+	can't recognize him. Superman's real identity is the journalist Clark Kent (he doesn't wear a mask, but when he's not being
+	Superman he just puts on glasses and apparently people don't recognize him anymore? it's pretty stupid!)</p>
+<p>Or, if you're not a fan of superheroes, think of some of the classic form-changing heroes and monsters of Chinese literature
+	and movies. For example, <a href="https://en.wikipedia.org/w/index.php?title=A_Chinese_Odyssey&oldid=1000599627">&#x5927;&#x8a71;&#x897f;&#x6e38;</a>
+	has two &#x5996;&#x602a;s (evil spirits), who normally look like women but sometimes turn into their monster forms:</p>
+<img src="dwsy.png" alt="Two rows of photos of people. The top row is the actresses Yammy Lam and Karen Mok (I forget their characters' names), and the bottom row is their &#x5996;&#x602a; versions, some spider and Bai Gujing" width=80% /></p>
+<p>e.g., &#x767d;&#x9aa8;&#x7cbe; usually looks like Karen Mok, but during the full moon or whatever she turns into a creepy ghost.</p>
+<p>The bottom line is, each of these people has two <em>versions</em>. Batman sometimes looks like Batman and sometimes looks like
+	a normal businessman. &#x767d;&#x9aa8;&#x7cbe; sometimes looks like Karen Mok and sometimes looks like a creepy ghost.</p>
+<p>Because these are two versions of the same person, you will never see both of them together in the same place. You won't see
+	Karen Mok standing around talking to ghost &#x767d;&#x9aa8;&#x7cbe;; you won't see Batman standing around talking to businessman
+	Bruce Wayne. It's impossible, because they're the same person. In fact, that's sometimes how others figure out who they are;
+	in one of the movies a bad guy figured out Batman's true identity, because he noticed that Batman and Bruce Wayne are never in
+	the same place, and based on that information he deduced that they're just two different versions of the same person.</p>
+<p>How does this all relate back to phonology? The same logic applies: e.g., we notice that [g] and [&#x0263;] never appear in the
+	same places, so we should be suspicious that they might just be <em>two different versions of the same sound</em>. Just like
+	Batman and Bruce Wayne aren't different people (Bruce Wayne is the way he looks when he goes to the company, and Batman is the
+	way he looks when he goes to fight weird bad guys in the street), we might also conclude that [g] and [&#x0263;] are not
+	actually different sound categories in this language: they're two different versions of the same sound category, and [g] is
+	just the way it happens to be pronounced when it comes after a nasal, and [&#x0263;] is just the way it happens to be
+	pronounced when it comes in between two vowels. And [k] is just the way this same sound happens to be pronounced in every
+	other context.</p>
+<p>Thinking back to the image shown at the end of the previous activity: these are all physically different sounds, but in your
+	mind a circle has been drawn around them because they're all part of the same "group".</p>
+<p>One way to express these relationships is to assume that a given sound changes its pronunciation when it's put into a certain
+	context. For example, [k] is normally pronounced [k] in this language. But if you put it after a nasal, it turns into [g].
+	Or if you put it in between two vowels, it turns into [&#x0263;]. These patterns are called <em>phonological rules</em>:
+	descriptions of how sounds change as a result of their context. A phonological rule can be expressed in plain English, like
+	I just did above: you say <em>what sound</em> changes into <em>what other sound</em>, in <em>what context</em>. There is also
+	a formal notation for phonological rules, which looks like this:</p>
+<p>k &rarr; g / &#x014b;_</p>
+<p>In a phonological rule notation like this, "&rarr;" means "changes into" or "is pronounced as", and "/" means "in the context
+	of..." or "in the context where..." or even just "when". So the above rule could be read out loud as "k is pronounced as
+	g when it appears after &#x014b;"</p>
+<p>Another way to express phonological rules formally is like this:</p>
+<p>&#x014b;k &rarr; &#x014b;g</p>
+<p>This can be read out loud as "&#x014b;k is pronounced as &#x014b;g".</p>
+<p>Just now I have shown you two different ways to formally represent the relationship between [k] and [g]. Now, use at least
+	one of these methods to formally describe the relationship between [k] and [&#x0263;].</p>
+		</div>
+
+	<button class="collapsible">Analyze some more sounds</button>
+	<div class="content">
+<p>In the activities so far you have encountered several important concepts from phonology. Now let's give names to these concepts.</p>
+<ul>
+<li><em>Phone</em>: A phone is a speech sound&mdash;any sound. As we've seen, people make many different sounds (phones).</li>
+<li><em>Phoneme</em>: A phoneme is an abstract sound category. A phoneme is not actually a sound; it's an abstract grouping
+	in a person's mind. You will never actually hear or say a phoneme, because a phoneme is an abstract category.</li>
+<li><em>Allophone</em>: An allophone is a way of pronouncing a phoneme. Some phonemes only have one allophone (i.e., some
+	phonemes can only be pronounced in one way). Other phonemes have many allophones (i.e., they can be pronounced in many
+	different ways). In the Maasai example we just discussed, we saw a phoneme with three allophones: an abstract sound
+	category that can be pronounced as [k], or as [g], or as [&#x0263;], depending on the context.</li>
+</ul>
+<p>To take another example, think back to the issue with <em>symphony</em> we discussed in the previous activity. Bilabial
+	[m] and labiodental [&#x0271;] are different <em>phones</em>: they're different sounds that are pronounced in different
+	ways. However, English speakers treat them as the same. They are probably two different <em>allophones</em> of the same
+	<em>phoneme</em>. In other words, there is some abstract sound category in English, which is pronounced as [m] most of
+	the time, but it's pronounced as [&#x0271;] if it appears before an [f] sound (remember the example words <em>symphony</em>,
+	<em>comfort</em>, and <em>nymph</em>; these all have an [f] sound just after the [&#x0271;] sound).</p>
+<p>In the previous questions I gave you a set of Maasai words and had you find out the relationships between the velar sounds [k],
+	[g], and [&#x0263;]. Now let's look at some more patterns of the language. Here is a list of more words:</p>
+<table border=0>
+<tr><td>[emburuo]</td><td><i>smoke</i></td></tr>
+<tr><td>[po&#x0263;ira]</td><td><i>all</i></td></tr>
+<tr><td>[pus]</td><td><i>light colored</i></td></tr>
+<tr><td>[imbala]</td><td><i>papers</i></td></tr>
+<tr><td>[imba&#x0263;i&beta;ak]</td><td><i>you are restless</i></td></tr>
+<tr><td>[ilpa&beta;it]</td><td><i>hairs</i></td></tr>
+<tr><td>[olporror]</td><td><i>age set</i></td></tr>
+<tr><td>[olpul]</td><td><i>slaughtering place</i></td></tr>
+<tr><td>[embi&#x0283;an]</td><td><i>bravery</i></td></tr>
+<tr><td>[olpurkel]</td><td><i>dry steppes</i></td></tr>
+<tr><td>[endorop]</td><td><i>bribe him</i></td></tr>
+<tr><td>[endulelei]</td><td><i>apple</i></td></tr>
+<tr><td>[endu&beta;ei&eth;ai]</td><td><i>Taveta woman</i></td></tr>
+<tr><td>[e&#x014b;giru&eth;o&eth;o]</td><td><i>fright</i></td></tr>
+<tr><td>[imbok]</td><td><i>you clean ceremonially</i></td></tr>
+<tr><td>[ke&beta;er]</td><td><i>heaven</i></td></tr>
+<tr><td>[ol&#x0283;i&beta;et]</td><td><i>stake</i></td></tr>
+<tr><td>[enai&beta;o&#x0283;a]</td><td><i>Naivasha Lake</i></td></tr>
+<tr><td>[taru]</td><td><i>sin</i></td></tr>
+<tr><td>[tasat]</td><td><i>disabled</i></td></tr>
+<tr><td>[tisila]</td><td><i>sift it</i></td></tr>
+<tr><td>[ti&#x0283;ila]</td><td><i>scrutinize it</i></td></tr>
+<tr><td>[ke&beta;er]</td><td><i>heaven</i></td></tr>
+<tr><td>[oltaa]</td><td><i>lamp</i></td></tr>
+<tr><td>[iltooi]</td><td><i>barrel</i></td></tr>
+<tr><td>[indai]</td><td><i>you (plural)</i></td></tr>
+<tr><td>[endaara&eth;a]</td><td><i>fight each other</i></td></tr>
+</table>
+<p><strong>Following the same procedures as we used before, consider the labial sounds: [p] (voiceless bilabial stop), [b]
+	(voiced bilabial stop), and [&beta;] (voiced bilabial fricative). List all the environments where each sound occurs,
+	look for generalizations, and then write phonological rules (using formal notation or just plain English) describing
+	how the sounds are related. You don't need to show all the environments here; just write the rules you come up with
+	at the end.</strong></p>
+<p><strong>Then repeat those procedures to analyze the alveolar sounds: [t] (voiceless alveolar stop), [d] (voiced alveolar stop),
+	and [&eth;] (voiced dental/alveolar fricative). Write down the rules you discover.</strong></p>
+	</div>
+
+		</center>
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			<a href="higher-level-phonological-analysis.html">"Higher-level phonological analysis: natural classes"</a>.</p>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-04-19. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+

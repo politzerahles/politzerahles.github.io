@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+
+
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>What's a stronger alternative?</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body>
+
+
+
+		<h2>What's a stronger alternative?</h2>
+
+		<p class="centercol"><a href="../index.html">&#x21B5; Back to class homepage</a></p>
+
+		<p class="centercol">As we saw in the module on <a href="../WeakStrong/">weak and
+			strong implicatures</a>, a certain kind of implicature (specifically,
+			implicatures based on the maxim of quantity) is based on reasoning about
+			"stronger alternatives" a person could have said. For example, "<em>Josh
+			is smart</em>" may be taken to imply that Josh is not brilliant, because
+			"<em>Josh is brilliant</em>" is a stronger alternative that the speaker
+			could have said but chose not to say.</p>
+		<p class="centercol">But what exactly counts as a "stronger alternative"?</p>
+		<p class="centercol">In the abovementioned example, the "alternative" is
+			an utterance we get by replacing one word. The only difference between
+			"<em>Josh is smart</em>" and "<em>Josh is brilliant</em>" is a single
+			word. So, the alternative is an utterance that's as similar as possible
+			to the actual utterance, just with one word changed.</p>
+		<p class="centercol">But alternatives don't have to be like that. An alternative
+			could be much shorter than the actual utterance. For example, as we saw
+			in <a href="../DisjunctionIgnorance/">the previous module</a>, "<em>There's
+			a prize behind Door #1 or Door #2</em>" implies that the speaker does not
+			know there's a prize behind Door #1. So in this case, the alternative
+			(<em>There's a prize behind Door #1</em>) is shorter than the actual
+			utterance (<em>There's a prize behind Door #1 or Door #2</em>).</p>
+		<p class="centercol">An alternative can also be much longer than the actual
+			utterance. For example, if you ask me what countries I have lived in,
+			and I say "<em>I've lived in the USA and the UAE</em>", I imply that
+			I haven't lived in any other countries. In this case, the alternatives
+			that are ruled out by the quantity implicature are hundreds of
+			possible utterances like "<em>I've lived in the USA, the UAE, and France</em>",
+			"<em>I've lived in the USA, the UAE, and Ghana</em>", "<em>I've lived
+			in the USA, the UAE, France, and Ghana</em>", and so on and so forth. (In
+			fact, assuming there are 195 countries in the world, then the number of
+			possible alternatives for this sentence is about ten octodecillion&mdash;that's
+			a one with 58 zeroes after it.)</p>
+		<p class="centercol">So it's not clear that we can systematically figure out
+			what the possible alternatives are just by their surface similarity
+			to the actual utterance. As we've seen above, alternatives can be
+			shorter than, longer than, or about the same length as the actual
+			utterance.</p>
+		<p class="centercol">To have a more formal idea of what counts as a stronger
+			alternative, we need to use the concept of <em>entailment</em>.</p>
+
+		<h3 class="centercol">Entailment and alternatives</h3>
+		<p class="centercol">We briefly discussed entailment at the end of the
+			"<a href="../TruthConditions1/">Truth-conditional semantics</a>" module.
+			Recall that one proposition entails another if the first proposition
+			being true guarantees that the second is true. For example, "<em>That's
+			a cat</em>" entails "<em>That's an animal</em>", because if the first
+			one is true then the second one is definitely also true (because all
+			cats are animals).</p>
+		<p class="centercol">With the concept of entailment, we can formally define
+			what makes an alternative "stronger". For some utterance A, B is a
+			"stronger" (or "more informative") alternative if B entails A and
+			A does not entail B. That probably sounds a little abstract, so let's
+			apply it to the examples we saw above.</p>
+		<ul class="center">
+			<li>Scalar implicature (the speaker doesn't believe Josh is brilliant)</li>
+				<ol style="list-style-type: upper-alpha;">
+					<li>Utterance: <em>Josh is smart.</em></li>
+					<li>Alternative: <em>Josh is brilliant.</em></li>
+				</ol>
+			<li>Ignorance implicature (the speaker doesn't know there's a prize behind Door #1)</li>
+				<ol style="list-style-type: upper-alpha;">
+					<li>Utterance: <em>There's a prize behind Door #1 or Door #2.</em></li>
+					<li>Alternative: <em>There's a prize behind Door #1.</em></li>
+				</ol>	
+			<li>Ad-hoc implicature (the speaker hasn't lived in France)</li>
+				<ol style="list-style-type: upper-alpha;">
+					<li>Utterance: <em>I've lived in the USA and the UAE</em></li>
+					<li>Alternative: <em>I've lived in the USA, the UAE, and France</em></li>
+				</ol>
+		</ul>
+		<p class="centercol">It should be clear that each of the B propositions
+			above entails the corresponding A proposition, but not vice versa.
+			If Josh is brilliant, it's guaranteed that he is smart (under the
+			literal, logical interpretation of <em>smart</em> as meaning
+			something like "at least smart, and maybe even brilliant"). But
+			if Josh is smart, it's not guaranteed that he's brilliant (maybe
+			he's just somewhat smart but not a super genius). Likewise, if
+			it's true that there's a prize behind Door #1, then it's
+			certainly true that "there's a prize	behind Door #1 or there's
+			a prize behind Door #2". (This is the rule of logical disjunction,
+			which you have probably learned about in math or philosophy
+			classes before; logically, "<em>P or Q</em>" is true as long
+			as either [or both] P is true or Q is true.) And if
+			if it's true that I've lived in the USA, UAE, and France, then
+			it's certainly true that I've lived in the USA and UAE; but if
+			it's true that I've lived in the USA and UAE then there's no
+			guarantee that I've also lived in France.</p>
+		<p class="centercol">So on this basis we can formally identify what
+			counts as a stronger (or more informative) alternative. Another
+			way to think about this same concept is to think about what
+			situations each proposition is true in. For example, the set of
+			situations in which "<em>That's a cat</em>" is true is a smaller
+			subset of [i.e., completely enclosed within] the set of situations
+			in which "<em>That's an animal</em>" is true, as shown in the picture
+			below:</p>
+<center><a href="https://www.hawaiitribune-herald.com/2018/10/25/hawaii-news/bill-seeks-to-address-issues-with-feral-cats-other-animals-at-county-transfer-stations/"><img src="catsanimals.png" alt="A picture of several cats, bigs, and birds. A circle labelled \"cats\" is drawn around just the cats, and a larger circle labelled \"animals\" is drawn around the whole picture." /></a></center>
+		<p class="centercol">Something that's true in a smaller set of situations
+			is stronger (more informative) than something that's true in a
+			bigger set of situations, because it provides the hearer with
+			a more specific view of what's going on.</p>
+		<p class="centercol">(This is in fact the same thing as entailment,
+			it's just another way to understand the same concept.)</p>
+		<p class="centercol">This conception also helps explain why implicatures
+			very similar to the examples above do not arise in certain
+			contexts, such as downward-entailing environments. (A detailed
+			explanation of downward entailment is something you'll find in
+			a semantics class, but here's a quick one: an upward-entailing
+			environment is one where specific subsets entail more general
+			sets, and a downward-entailing environment is one where general
+			sets entail specific subsets. For instance, "<em>That's a cat</em>"
+			entails "<em>That's an animal</em>" [upward entailment]; but
+			"<em>That's not an animal</em>" entails "<em>That's not a cat</em>"
+			[downward entailment]). Compare the two examples below:</p>
+		<ul class="center">
+			<li>Upward-entailing environment:</li>
+				<ul>
+					<li>"<em>Josh is smart.</em>"</li>
+					<li><strong>usually implies:</strong> It is not true that Josh is brilliant (i.e., "Josh is not brilliant")</li>
+				</ul>
+			<li>Downward-entailing environment:</li>
+				<ul>
+					<li>"<em>Josh is not smart.</em>"</li>
+					<li><strong>usually <em>does not</em> imply:</strong> It is not true that Josh is not brilliant (i.e., "Josh is brilliant")</li>
+				</ul>
+		</ul>
+		<p class="centercol">For the first example, the alternative ("Josh is
+			brilliant") entails the original utterance ("Josh is smart");
+			the set of brilliant people is smaller than (and is completely
+			contained within) the set of smart people. Hence, the implicature
+			goes through. On the other hand, for the second example, the
+			apparent alternative ("Josh is not brilliant") actually is
+			entailed <em>by</em> the original utterance ("Josh is not
+			smart"); the set of people who are not brilliant is bigger
+			than (and completely contains) the set of people who are
+			not smart. (The set of people who are not brilliant contains
+			both average people and dummies; the set of people who are
+			not even smart contains just the dummies.) Hence, "<em>Josh
+			is not brilliant</em>" is not actually a stronger alternative,
+			and thus it doesn't trigger any quantity implicature.</p>
+
+
+		<h3 class="centercol">Problems</h3>
+		<p class="centercol">Our analysis of alternatives so far still leaves
+			some issues unsolved. Here we'll discuss two.</p>
+		<p class="centercol">First of all, so far we have been looking at
+			examples where a quantity implicature involves <em>denying</em>
+			a stronger alternative. But there are many cases in which
+			we implicate that a stronger alternative is true. Levinson
+			(chapter 3.2.4) discusses several examples; here we'll just
+			review the case of generalized conversational implicatures
+			with "<em>and</em>".</p>
+		<p class="centercol">As we've seen in previous modules, <em>X and
+			Y</em> generally implicates <em>X and then Y</em> (e.g.,
+			"<em>Sammy and Chris fell in love and got married</em>" suggests
+			that they fell in love first and got married second). We could
+			go even further; "<em>X and Y</em>" often implies that X
+			<em>caused</em> Y to happen.</p>
+		<p class="centercol">Consider, for instance, a
+			sentence like "<em>I slammed the door and the picture fell off
+			the wall</em>". There are several alternatives that the
+			speaker could have uttered:</p>
+		<ol class="center">
+			<li><em>I slammed the door and then the picture fell off the
+				wall.</em></li>
+			<li><em>I slammed the door and that made the picture fall
+				off the wall.</em> (Or some synonymous paraphrase of
+				this, like <em>I slammed the door, causing the picture
+				to fall off the wall</em>.)</li>
+		</ol>
+		<p class="centercol">These alternatives are progressively
+			stronger. (1) entails the original utterance and the original
+			utterance doesn't entail it, so (1) is a stronger alternative.
+			Furthermore, (2) entails (1) and (1) does not entail (2), so
+			(2) is even stronger than (1). According to the analysis
+			we've done so far, a person uttering "<em>I slammed the door
+			and the picture fell off the wall</em>" should be
+			understood as implying that his slamming the door did not
+			cause the picture to fall off the wall. But that analysis is
+			clearly wrong; in fact we will usually interpret the utterance
+			as meaning (2). So, there must be some other mechanism that
+			causes the implicature in (2) to arise; furthermore, there
+			must be some explanation of why a quantity implicature
+			doesn't arise in this example.</p>
+		<p class="centercol">Competence-based strong implicatures, which
+			we discussed in the "<a href="../WeakStrong/">Weak and strong
+			implicatures</a>" module, are a similar example. Just like
+			the previous example, these implicatures involve going from
+			a weaker proposition ("the speaker doesn't believe <em>P</em>")
+			to a stronger one ("the speaker believes &#x00AC;<em>P</em>"),
+			rather than denying the stronger proposition.</p>
+		<p class="centercol">The second problem is how to decide which
+			alternatives are relevant to the conversation. As we've
+			seen above, an utterance can have many alternatives. For
+			an utterance like "<em>I have lived in the USA and the UAE</em>",
+			there are nearly 200 other countries I could have mentioned
+			(depending on what we count as a "country"), plus over 18,000
+			possible combinations of two other countries, plus over a
+			million possible combinations of three other countries, etc.,
+			such that the total number of alternatives is over 10,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000.
+			(Geurts, chapter 6, suggests a way to avoid this problem by
+			considering speakers' "intentional state" rather than
+			specific alternatives they could have said, but I am not
+			convinced that his approach solves the problem.)</p>
+		<p class="centercol">In fact,
+			for any given utterance or proposition, there are an
+			infinite number of propositions that entail it (for example,
+			"<em>That's a cat</em>" is entailed by "<em>That's a cat
+			and I like ice cream</em>", "<em>That's a cat and I like
+			ice cream and snails are slow</em>", etc.). Therefore,
+			any utterance has an infinite number of alternatives.
+			But it is clear that uttering that utterance does not
+			imply the denial of most of these alternatives; if I
+			point at a cat and say "<em>That's a cat</em>" then no
+			one would think I am implying "It is not true that [that's
+			a cat <em>and</em> I like ice cream]". So, people must
+			have some way of deciding which alternatives are
+			relevant (and thus might be denied, via quantity
+			implicatures) and which are not. We will turn to this
+			issue in the next module.</p>
+
+
+		<h3 class="centercol">Video summary</h3>
+		<center><iframe width="560" height="315" src="https://www.youtube.com/embed/ol-Wo7-QO7o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
+
+
+		
+
+					
+
+
+		<h3 class="centercol">In-class activities</h3>
+
+		<center>
+
+		<button class="collapsible">Brainstorming</button>
+		<div class="content">
+		<p>Have students think of another quantity implicature not discussed
+			here and figure out what alternative it is based on, and how
+			that alternative is stronger.</p>
+		</div>
+
+		<button class="collapsible">Trying and succeeding</button>
+		<div class="content">
+		<p>Saying someone "<em>tried</em>" to do something often implicates that
+			they didn't succeed at doing it; for example, "<em><a href="https://www.quotes.net/show-quote/11809">I
+			tried to save him</a></em>" suggests that the speaker didn't succeed at saving the person he was trying
+			to save.</p>
+		<p>At first this seems like a scalar implicature, just like how "<em>Josh is smart</em>" can suggest that
+			Josh is not brilliant. It seems like <em>succeeded</em> is a stronger alternative to <em>tried</em>,
+			so a speaker uttering "<em>I tried to X</em>" conversationally implicates that they don't believe
+			they succeeded at X.</p>
+		<p>There is a problem, though. Remember that in the module we said a "stronger alternative" is one that
+			entails the expression which was uttered (e.g., <em>brilliant</em> is a stronger alternative for
+			<em>smart</em> because <em>brilliant</em> entails <em>smart</em>). <em>succeed</em>, however, does
+			not seem to entail <em>try</em>; as Huang (2014, section 2.2.2) points out, we can say "<em>He
+			succeeded without even trying!</em>" and it's
+			not a contradiction. This would not be possible if <em>succeed</em> entailed <em>try</em> (compare
+			to, e.g., "<em>He saw a black cat without seeing any cats</em>", which is self-contradictory).</p>
+		<p>Have students discuss how the implicature (i.e., the interpretation of <em>tried</em> as meaning
+			"did not succeed") arises. Off the top of my head we have a few possibilities:</p>
+		<ul>
+			<li>We could say it's a different kind of implicature than the other examples in this module, and
+				it doesn't arise based on alternatives but instead arises based on something else. This is
+				sort of the approach that traditional neo-Gricean theory takes (see the discussion in
+				Huang for more details&mdash;basically, the claim is that scalar implicatures,
+				<a href="../Clausal/">clausal implicatures</a>, and so-called "alternative implicatures" like
+				this one are three different sub-categories of quantity implicature), but it seems unsatisfactory
+				to me because it treats this implicature as somehow different from scalar implicatures, whereas
+				they seem almost exactly the same to me (at least to my naive intuition, which is not saying much)
+				and it's not clear to me that they really behave in different ways other than with respect to this
+				one detail about how the alternative doesn't entail the utterance.</li>
+			<li>We could instead say that it's still the same type of implicature, but our definition of "alternatives"
+				is flawed; i.e., alternatives aren't based on entailment, but on something else. Then, though,
+				we will need to figure out how we can describe what counts as an alternative, in a way that
+				can handle all the above sorts of examples (e.g. scalar implicatures, ignorance implicatures,
+				and ad-hoc implicatures) as well as this example. That will be quite a challenge! (It may
+				be worthwhile, though; for example, Huang [2014, chapter 5.2.3] describes how the meanings
+				of alternatives like <em>come</em> and
+				<em>go</em>, and <em>this</em> and <em>that</em>, could be explained as implicatures based
+				on alternatives; these words don't seem to have entailment relationships to me, so if an
+				implicature-based account of them is successful then that would be good motivation for why
+				the concept of alternatives is useful beyond just entailment scales.)</li>
+			<li>We could try to find a way to claim that <em>succeed</em> actually does entail <em>try</em>,
+				and that the lack of contradiction in Huang's example ("<em>He succeeded without even trying</em>")
+				is not due to lack of entailment but is an illusion caused by something else, like an implicature.
+				It is not clear to me that this is possible, though, because it doesn't seem like
+				bona fide implicatures can cause that sort of apparent contradiction in other examples
+				(consider, e.g., "<em>He ate all the cookies without eating some of them</em>"; this
+				seems like a contradiction to me, so the fact that the &lt;<em>all</em>, <em>some</em>&gt;
+				scale can cause a contradiction in this way whereas the putative &lt;<em>succeed</em>,
+				<em>try</em>&gt; scale does not cause any contradiction does seem like a serious challenge
+				to anyone attempting to say that these are both the same sort of "alternatives").</li>
+		</ul>
+		</div>
+
+		</center>
+
+		
+
+		
+	<hr>
+	<div style="width: 55%; margin-left: auto; margin-right: auto;">
+		<div style="float: left;"><a href="../Clausal/">&#x27f5; Clausal implicature</a></div>
+		<div style="text-align: right;"><a href="../AlternativesContext/">Alternatives and context &#x27f6;</a></div>
+	</div>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2022-03-24. CC-BY-4.0.</p>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+    </body>
+</html>

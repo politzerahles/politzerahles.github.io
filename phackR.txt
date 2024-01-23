@@ -1,0 +1,52 @@
+phackR <- function( cond2, cond1, alternative="greater" ){
+
+	par(mfrow=c(2,2))
+	ttest <- t.test( cond2, cond1, paired=T )
+	matplot( rbind(cond1,cond2), type="o", pch=1, col="black",  lty=1, xlim=c(0,3), xaxt="n", ylab="y", main="Data (all subjects)" ); axis(1, at=c(1,2), labels=c("cond1", "cond2") )
+	plot( jitter(rep(0,N)), cond2-cond1, xlim=c(-.25,.25), xaxt="n", xlab=NA, main=paste0("All subjects: t(", ttest$parameter, ")=", round(ttest$statistic,2), ", p=", round(ttest$p.value,2) ), ylab="Pairwise difference" ); lines(c(-100,100), c(0,0))
+
+	if (alternative=="greater") {
+		good <- which(cond2-cond1 > 0)
+	} else {
+		good <- which(cond2-cond1 < 0 )
+	}
+	newttest <- t.test( cond2[good], cond1[good], paired=T )
+	matplot( rbind(cond1[good],cond2[good]), type="o", pch=1, col="black",  lty=1, xlim=c(0,3), xaxt="n", ylab="y", main="Data (good subjects)" ); axis(1, at=c(1,2), labels=c("cond1", "cond2") )
+	plot( jitter(rep(0,length(good))), cond2[good]-cond1[good], xlim=c(-.25,.25), xaxt="n", xlab=NA, ylab="Pairwise difference", main=paste0("Good subjects: t(", newttest$parameter, ")=", round(newttest$statistic,2), ", p=", round(newttest$p.value,2) ) ); lines(c(-100,100), c(0,0))
+
+
+	reasons <- c(
+		"Maybe the good subjects are morning people and the bad subjects are night people.",
+		"Maybe the good subjects are cat people and the bad subjects are dog people.",
+		"Maybe the good subjects did the study between Monday and Wednesday, and the bad subjects between Thursday and Saturday.",
+		"Maybe the good subjects are P600 subjects and the bad subjects are N400 subjects.",
+		"Maybe the good subjects had high accuracy and the bad subjects had low accuracy.",
+		"Maybe the good subjects are women and the bad subjects are men.",
+		"Maybe the good subjects have familial sinistrality and the bad subjects don't.",
+		"Maybe the good subjects are monolingual and the bad subjects are multilingual.",
+		"Maybe the good subjects are science majors and the bad subjects are humanities majors.",
+		"Maybe the good subjects are from rural backgrounds and the bad subjects are from urban backgrounds.",
+		"Maybe the good subjects power-posed and the bad subjects didn't.",
+		"Maybe the good subjects were less aware of the experimental manipulation and the bad subjects were more aware.",
+		"Maybe the good subjects have ESP and the bad subjects don't.",
+		"Maybe the good subjects come from high elevations and the bad subjects from low elevations.",
+		"Maybe the good subjects listened to the Beatles this morning and the bad subjects listened to 'Hot Potato'.",
+		"Maybe the good subjects eat Chinese-American takeout with chopsticks and the bad subjects with forks.",
+		"Maybe the good subjects like rap music and the bad subjects like country.",
+		"Maybe the good subjects have high working memory and the bad subjects have low working memory.",
+		"Maybe the good subjects have wasted money on 'brain training' apps and the bad subjects haven't.",
+		"Maybe the good subjects were spanked as children and the bad subjects weren't.",
+		"Maybe the good subjects read The New Yorker and the bad subjects read The Atlantic.",
+		"Maybe the good subjects have bigger arms and the bad subjects have smaller arms.",
+		"Maybe the good subjects have siblings and the bad subjects don't.",
+		"Maybe the good subjects are local students and the bad subjects are international students."
+	)
+
+	cat( paste0( "You can get a result of p=", newttest$p.value, " if you use only the following ", length(good), " good subjects:\n\n" ) )
+	cat( good )
+	cat( "\n\n" )
+	cat( paste0( "A potential explanation for the result is:\n", sample(reasons,1), " You should look into it.\n" ) )
+	cat( "\t(or, better yet, read http://www.nature.com/neuro/journal/v10/n1/full/nn0107-3.html)\n" )
+	
+}
+

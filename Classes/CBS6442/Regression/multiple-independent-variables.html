@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Multiple independent variables</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Multiple independent variables (2 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">In the previous example we considered a study in which you examine the relationship between word frequency and
+	reaction time. Now let's consider you have another factor you also care about: word length (measured here in number of letters).</p>
+<p class="centercol">I would expect that longer words take more time to respond to. It would be easy to make a graph of this. But imagine
+	you want to examine how both frequency <em>and</em> word length influence reaction time. For that, you will need a three-dimensional
+	graph. (In reality we almost never make graphs like this, because they are super hard to read, but I will include some here just for
+	illustration.) Here's what the data look like:</p>
+<center><img src="scatter.gif" alt="A rotating 3-d scatterplot showing word frequency (x-axis), word length (y-axis), and reaction time (z-axis)" width=70% /></center>
+<p class="centercol">As you watch this spin you can notice a few things. First of all, words with higher frequency are responded to faster;
+	this is the pattern we already observed in the previous section. But also, longer words are responded to more slowly. (You may need
+	to watch for a minute or two to be able to see this.)</p>
+<p class="centercol">Now imagine we want to draw a regression line through this. What we'll actually need is a regression <em>plane</em>.
+	At every frequency, we'll need a line showing the relationship between length and RT. (Or, to think of it another way: at every
+	length, we'll need a line showing the relationship between frequency and RT.) Putting all those lines together will make a
+	2-dimensional plane. (When we had two variables and made a 2-dimensional graph, we could draw a 1-dimensional regression line through
+	it. When we have three variables and make a 3-dimensional graph, we need a 2-dimensional plane through it. See the pattern?) Here is
+	what it looks like (but I've removed the dots for the individual words, to make the regression plane easier to see):</p>
+<center><img src="surface.gif" alt="Same graph as before, but showing a 2-d regression plane (surface) rather than a scatter" width=70% /></center>
+<p class="centercol">You can see the same pattern here as we did in the scatterplot, but more clearly. High-frequency words have faster
+	RTs than low-frequency words; short words have faster RTs than long words.</p>
+<p class="centercol">This is just like the previous regression example we saw, but with an extra independent variable added. Remember that
+	for the previous example, we could describe the line with a slope-intercept formula:</p>
+<center><big>\(\hat{Y}=b_0 + b_1X_1\)</big></center>
+<p class="centercol">where <em>X</em><sub>1</sub> represents a given word's frequency, <em>b</em><sub>0</sub> represents the intercept,
+	and <em>b</em><sub>1</sub> represents the coefficient (slope) for frequency. Likewise, for the new dataset, we can describe the plane
+	with a bigger slope-intercept formula:</p>
+<center><big>\(\hat{Y}=b_0 + b_1X_1 + b_2X_2\)</big></center>
+<p class="centercol">where <em>X</em><sub>2</sub> represents the word length and <em>b</em><sub>2</sub> represents the coefficient for
+	length.</p>
+<p class="centercol">These are the coefficients I got for this regression model in R:</p>
+<p style="text-align: center;">&nbsp;<span style="font-family: courier new, courier;">(Intercept)&nbsp;&nbsp;&nbsp; Frequency&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Length </span><br /><span style="font-family: courier new, courier;">&nbsp;6.505755965 -0.037028265&nbsp; 0.009347907</span></p>
+<p class="centercol">Plugging them into the new regression formula gives us the following:</p>
+<center><big>\(\hat{Y}=6.505755965 - 0.037028265X_1 + 0.009347907X_2\)</big></center>
+<p class="centercol">What does this mean? Let's think of it by comparing to what we did in the previous example. In the previous example,
+	we used the regression line as a way to predict what a given word's reaction time would be: if we have a word with a frequency of 6,
+	we can look at the graph (or put the frequency into the regression equation) to know what the expected reaction time would be. That's
+	exactly what we do with this bigger equation, as well. Imagine we test a word with a frequency of 4 and a length of 6 letters long.
+	We can plug those numbers into the equation to find the expected reaction time:</p>
+<center><big>\(\hat{Y}=6.505755965 - 0.037028265\times 4 + 0.009347907\times 6 = 6.41373\)</big></center>
+<p class="centercol">Now, by itself, just predicting the reaction time of a word is not particularly interesting. The thing that makes
+	this kind of regression useful is that we can disentangle the effects of different variables. What do I mean by that? Well, think
+	about the relations between frequency, word length, and reaction time. In English, frequent/common words like "the" and "of" probably
+	tend to be shorter than rare words like "paprika". Therefore, if I just examine the relationship between frequency and RT, like I did
+	in the initial example of this module, I may be left with a confound: if high-frequency words like "cat" are responded to faster than
+	low-frequency words like "paprika", is that really evidence that frequency is related to reaction time, or is it actually just a
+	length effect? (In other words, is "cat" responded to faster than "paprika" <em>because</em> it's more common, or just because it's
+	shorter?) Including both frequency and length in the regression model allows us to separate these effects. Imagine that you take the
+	second graph above (the one of the regression plane) and "slice" it anywhere along the length axis. You would get a cross-section,
+	showing the relationship between frequency and RT <em>just</em> for words of that particular length. That is exactly what the
+	regression equation does. If I put in some number for length (<em>X</em><sub>2</sub>), but leave frequency (<em>X</em><sub>1</sub>)
+	as a variable, then I will get a regression line showing the frequency effect at that particular length. In other words, I can
+	examine the relationship between frequency and RT while holding length constant. And, as you can see from the regression equation I
+	got here, there is still a relationship between frequency and RT (higher-frequency words get lower RTs) even when length is being
+	accounted for.</p>
+<p class="centercol">This ability is one of the most useful features of regression. It allows you to test hypotheses of interest while
+	accounting for (also known as "regressing out") potentially confounding factors. Of course, the best way to test things is to control
+	the confounds (e.g., to get low- and high-frequency words with the same lengths), but that is not always possible or feasible. (For
+	example, think about research on language in children with and without ASD. Children with ASD often have lower scores on tests of
+	certain kinds of "language ability" than children in the same age range but without ASD. This kind of research sometimes includes
+	two different kinds of control groups of children without ASD: "age-matched controls" [children who are the same age as the children
+	with ASD, but who have higher scores on tests of language ability] and "language-matched controls" [children who get the same scores
+	on the language test as the children with ASD, but are younger]. Because ASD tends to affect language, it's pretty much impossible
+	to get a control group of children without ASD who have the same age <em>and</em> same language test scores as the children with ASD.)
+	In situations like that, where perfect control is not possible, regression is a powerful alternative.</p>
+<p class="centercol">Accounting for new variables in the model can even substantially change, or even reverse, the effects of other
+	variables. See <a href="https://www.researchgate.net/post/Which_output_do_you_report_if_you_get_two_contradicting_results_in_regressions">this
+	ResearchGate thread</a> for an example. (This example includes a categorical variable, so it may be easier to understand if you revisit
+	it after reading the later sections in this module about categorical variables.)</p>
+<p class="centercol">What we have looked at here is an example with two independent variables, leading to a three-dimensional graph. The
+	regression model can be extended indefinitely, to include more and more variables. Of course, for any more than we have here, it
+	becomes difficult to visualize, because it would require a four-dimensional (or more) graph, and humans aren't capable of seeing in
+	four dimensions. (Although you can read the novel &#x6b7b;&#x795e;&#x6c38;&#x751f; [<em>Death's End</em>, the final book in Liu Cixin's
+	"Three-Body" trilogy] for an interesting exploration of what it would be like if we could see and move in four dimensions. That novel is
+	a real slog, though.) However, the same logic as what we've seen above still applies.</p>
+<!--<p class="centercol">For a very brief overview of some of the same concepts, in a more technical form, see&nbsp;<a alt="" href="https://learn.polyu.edu.hk/bbcswebdav/pid-4556831-dt-content-rid-26414804_1/xid-26414804_1" target="_blank" rel="noopener">this chapter from Rasinger's <em>Quantitative Linguistics</em></a>.</p>-->
+
+
+		<center>
+
+
+		<button class="collapsible">Brainstorm a use for regression</button>
+		<div class="content">
+			<p>Describe a situation in your own research area where multiple regression could be used to examine the effect of the
+				variable you're interested in while accounting for the confounding effects of one or more other variables.</p>
+		</div>
+
+
+		</center>
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			"<a href="interactions.html">Interactions</a>".</p>
+
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-16. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+
+

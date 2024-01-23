@@ -1,0 +1,192 @@
+#!/usr/local/bin/perl
+#strokecounter.pl
+#Counts character strokes
+#Author: Stephen Politzer-Ahles
+#Last modified: 2012-06-10
+#You are free to use or modify this code as you see fit, but please credit accordingly and do not redistribute for profit.
+
+use CGI qw( :standard );                                   	#Modules
+use Encode;
+
+open totalstrokes, "< totalstrokes.txt";			#Open the data (a table with the stroke count for every Unihan character)
+while( chomp( $line = <totalstrokes> ) ){			#Populate %strokecount hash (the same table from above, in hash format)
+			 ($c, $s) = split(/\t/, $line);
+			 $strokecount{ $c } = $s;
+}
+close totalstrokes;
+
+								### The next bit does the actual counting
+if( $ENV{'CONTENT_LENGTH'} > 0 ){				#If input has been entered in the web page, get counts for the input......
+    $hanstr = param( "hanstr" );				#Get the input from a web form
+    chomp( $hanstr );						#  and store in the variable $hanstr
+
+    $decodedstr = decode( "utf8", $hanstr );			#Decode characters from text into binary
+		
+		$perchar_strokes = "";				#Set up variables to keep track of the stroke counts as we get them. $perchar_strokes
+		$total_strokes = 0;				#  is a string with the stroke count of each character, and $total_strokes is an int
+								#  with the total stroke count for the word
+		
+    while( $x = chop( $decodedstr ) ){				#Take one character at a time off the end of the string
+        $hex = dec_to_hex( ord($x) );				#Turn the Unicode decimal into hex (see dec_to_hex() function below)
+								# $strokecount{ $hex } is the stroke count for this character (from the %strokecount hash)
+								#Increment the total strokes by the stroke count of the current character
+				$total_strokes += $strokecount{ $hex };
+								#Add the stroke count for this character to the string of $perchar_strokes
+				$perchar_strokes = $strokecount{ $hex } . " " . $perchar_strokes;
+    }
+}
+else{ $hanstr=""; }						#If input has not been entered, $hanstr is an empty string (so don't do anything, just show the website)
+
+								### The next bit shows the website
+print <<HTML1;
+Content-Type: text/html; charset=UTF-8
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Han character stroke counter</title>
+        <link rel="stylesheet" type="text/css" href="/~sjpa/stevetools_stylesheet.css" />
+    </head>
+
+    <body>
+       
+        <h2>Han character stroke counter</h2>
+        <p class="center">This tool counts the total number of strokes in a single character or a string of
+                       characters (useful for getting the number of strokes in a multi-character word such as
+                       &#x7B14;&#x753B;). The data come from the
+                       <a href="http://www.unicode.org/charts/unihan.html">Unihan database</a>.</p>
+        <p class="center">It can only count the strokes in Chinese characters (hanzi, kanji, hanja); feeding it
+                       characters from any other scripts will only confuse it.</p>
+        <p class="center">Looking up stroke counts for a lot of words one at a time can be tedious (and <a
+			href="http://linuxcommand.org/learning_the_shell.php">why should you do tedious work that a
+			computer can do for you</a>?). If you need stroke counts for a lot of words, see the
+			instructions below</p>        
+
+        <hr>
+
+        <form method="post" action="http://people.ku.edu/~sjpa/cgi-bin/strokecounter.pl">
+           <p class="center"><b><u>Type or paste a string of characters into the box and click submit.</u></b></p>
+           <p class="center"><input type="text" name="hanstr" value="$hanstr"> <input type="submit" value="submit"></center>
+        </form>
+HTML1
+
+if( $ENV{'CONTENT_LENGTH'} > 0 ){				#If input has been entered, then show the results in the website
+print <<HTMLresults;
+    <center>
+        <table width="50%" border="0">
+            <tr>
+                <th>Total count</th>
+                <th>Count per character</th>
+            </tr>
+            <tr>
+                <td><textarea cols=50 name="total_strokes">$total_strokes</textarea></td>
+                <td><textarea cols=50 name="perchar_strokes">$perchar_strokes</textarea></td>
+        </table>
+    </center>
+HTMLresults
+
+}
+								#Regardless of whether or not input has been entered, show the footer of the website
+print <<HTMLfooter;
+	<hr>
+	<h3><a name="batch">How to run this in batch mode</a></h3>
+	<ol class="center">
+		<li>Since this is a Perl script, you will need to have Perl installed; you can get it at <a href="http://www.perl.org/">http://www.perl.org/</a>.</li>
+		<li>Download and unzip <a href="/~sjpa/strokecounter_batchmode.zip">strokecounter_batchmode.zip</a>. This includes the script, the raw data (totalstrokes.txt), and a sample input file.</li>
+		<li>Create a text file with the list of characters or words you would like stroke counts for. Each word or character should be on its own line. You can use datatocount.txt as a sample and overwrite it with your own file when you are done.
+		<li>Run strokecounter_batchmode.pl from the command line. It will create a new output, strokecounts.txt, containing the total stroke count for each word you gave it. (If you gave it a multi-character string it will total the stroke count over all the characters; if you would like different behavior you can modify the script.)</li>
+	</ol>
+
+        <hr>
+        <p class="mini">Script by <a href="/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2009-11-18. If you experience
+                                 an error, contact me at politzerahless <img src="/~sjpa/at.jpg" alt="(at)"
+                                 height="10px" width="10px"> gmail <img src="/~sjpa/dot.jpg" alt="(dot)"
+                                 height="10px" width="10px"> com.
+                                 <span style="float:right"><a href="/~sjpa/chinesetools.html">back to 
+                                 Chinese tools</a></span>
+				<dl class="mini">Version history:
+					<dd><a href="/~sjpa/strokecounter_code_20091118.txt">Created</a></dd>
+					<dd><a href="/~sjpa/strokecounter_code_20120305.txt">Added instructions for using as a batch</a></dd>
+				</dl>
+	</p>
+
+    </body>
+</html>
+HTMLfooter
+
+sub hex_to_dec{
+		#Function documentation
+		#Takes a hex number and turns it into a decimal number, which is returned
+
+		$hex = shift();					#Get the argument
+		$dec = 0;					#Initialize the $dec variable to 0	
+
+		$pos = 0;					#The place (start at ones place, then go up to 10s, 100s, etc.)
+		
+		while( $hex ){		
+  			$digit = numberify( chop( $hex ) );	#Get the last hex digit from the number and convert it to decimal
+			$dec += $digit*( 16**$pos );		#Add that to $dec
+			$pos += 1;				#Go up to the next place
+		}
+		
+		return $dec;
+}
+
+sub dec_to_hex{
+		#Function documentation
+		#Takes a decimal number and turns it into a decimal number, which is returned
+
+		$dec = shift();					#Get the argument
+		$hex = '';					#Initialize the $hex variable to an empty string
+		
+		while( $dec ){
+			$digit = hexnumberify( $dec % 16 );	#Get the last bit of the decimal (using modulus division) and convert it into a hex digit
+			$hex = $digit . $hex;			#Add the digit to $hex
+			$dec = int( $dec/16 );			#Go up to the next place of the decimal (by removing the part from the end that was just converted to hex)
+		}
+
+		return $hex;
+}
+
+sub numberify{
+		#Function documentation
+		#Takes a single hex digit in string format (from 1 to F) and converts it to a decimal number
+    		$x = shift();					#Get the argument
+		
+		if( $x eq "1" ){ $x = 1; }			#Take the hex digit and convert it to a decimal number
+		elsif( $x eq "2" ){ $x = 2; }
+		elsif( $x eq "3" ){ $x = 3; }
+		elsif( $x eq "4" ){ $x = 4; }
+		elsif( $x eq "5" ){ $x = 5; }
+		elsif( $x eq "6" ){ $x = 6; }
+		elsif( $x eq "7" ){ $x = 7; }
+		elsif( $x eq "8" ){ $x = 8; }
+		elsif( $x eq "9" ){ $x = 9; }
+		elsif( $x eq "A" ){ $x = 10; }
+		elsif( $x eq "B" ){ $x = 11; }
+		elsif( $x eq "C" ){ $x = 12; }
+		elsif( $x eq "D" ){ $x = 13; }
+		elsif( $x eq "E" ){ $x = 14; }
+		elsif( $x eq "F" ){ $x = 15; }
+		
+		return $x
+}
+
+sub hexnumberify{
+		#Function documentation
+		#Takes a decimal number below 16 in number format and converts it to a hex digit
+    		$x = shift();					#Get the argument
+		
+		if( $x < 10 ){ }				#If the decimal is below 10, do nothing
+		elsif( $x == 10 ){ $x = 'A'; }			#If the decimal is above 10, turn it into one of the hex letters
+		elsif( $x == 11 ){ $x = 'B'; }
+		elsif( $x == 12 ){ $x = 'C'; }
+		elsif( $x == 13 ){ $x = 'D'; }
+		elsif( $x == 14 ){ $x = 'E'; }
+		elsif( $x == 15 ){ $x = 'F'; }
+		
+		return $x
+}
+
+exit;

@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<style type="text/css">
+.txtUpsideDown 
+{
+	filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=2);  /* IE6,IE7 */
+	ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)"; /* IE8 */
+	-moz-transform: rotate(-180deg);  /* FF3.5+ */
+	-o-transform: rotate(-180deg);  /* Opera 10.5 */
+	-webkit-transform: rotate(-180deg);  /* Safari 3.1+, Chrome */
+	position: absolute; 
+}
+</style>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Phonetic description of tone</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Phonetic description of tone (1 hour)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+		<p class="centercol">So far we have only discussed how to describe <em>consonants</em> phonetically.
+			What about Chinese tones?</p>
+		<p class="centercol">All the problems we saw for describing vowels and consonants (in the first activity of this module)
+			also exist for describing tones. For many Chinese languages, the tones do have names or labels (such as "tone 1",
+			"tone 2", etc., or the more classical labels like &#x9634;&#x5e73;&#x3001;&#x9633;&#x5e73;&#x3001;&#x4e0a;&#x58f0;&#x3001;&#x53bb;&#x58f0;&#x3001;
+			etc.). But these category labels cannot describe subtle differences in pronunciation. For example, think about the
+			Mandarin pronunciation of &#x99ac; when it's spoken by itself, vs. when it's spoken as the first syllable of a
+			compount word (like &#x99ac;&#x8def;). These are both "Tone 3", but many people pronounce them differently&mdash;when
+			pronouncing &#x99ac; by itself their pitch goes down and then back up, whereas when pronouncing it within the word
+			&#x99ac;&#x8def; their pitch just goes down and doesn't rise again, like in this example:
+			<audio controls="controls"><source src="ma.wav" type="audio/wav" /></audio></p>
+		<p class="centercol">So, just like for consonants and vowels, we also need a phonetic way to describe tone. Go through the
+			activities below to learn how we can do that.</p>
+	
+
+		<center>
+
+		<button class="collapsible">Chao letters and Mandarin</button>
+		<div class="content">
+			<p>A common way of representing tones, especially among Chinese researchers, is the system called
+				<em>Chao letters</em>, named after Yuen Ren Chao (&#x8d99;&#x5143;&#x4efb;). You use a scale from 1 to 5,
+				where 1 represents the lowest pitch and 5 represents the highest pitch. Then, you describe any tone by
+				describing its start and end pitch (and, if necessary, the middle pitch). For example, Tone 1 in Standard
+				Mandarin (e.g. the tone of &#x6536;) is "55": it starts very high and it ends very high. Tone 2 (e.g., the tone
+				of &#x719f;) is 35: it starts medium, and then it rises and ends high. Tone 3 (e.g., the tone of &#x624b;)
+				is 213: it starts kind of low, gets even lower, and then it rises up again.</p>
+			<p>(I don't know why they're called "Chao letters", since they're numbers, but whatever! I think the original
+				version of this system used musical notes [like C, B, etc.] instead of numbers.)</p>
+			<p><strong>Based on the above description, how would you represent Mandarin Tone 4 using Chao letters?</strong></p>
+			<p><strong>And what about&nbsp;&#x99ac; when it's in front of another syllable (as in <strong>&#x99ac;</strong>&#x8def;),
+				discussed at the beginning of this activity; how would you represent that?</strong></p>
+		</div>
+
+		<button class="collapsible">Chao letters and Cantonese</button>
+		<div class="content">
+			<p>Describe the six tones of Cantonese (specifically, the variety of Cantonese spoken in Hong Kong) using
+				Chao letters. If you speak Cantonese, you can try figuring them out on your own. If you don't speak
+				Cantonese, you can ask a Cantonese-speaking friend to pronounce the tones for you, or you can look up
+				examples online and listen to them.</p>
+			<p>(Note: some people say Cantonese has six tones, and some people say it has nine. The correct answer is six.
+				To understand why, we'll need concepts from phonology, so we'll talk more about this in the Phonology module.)</p>
+		</div>
+
+		</center>
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			<a href="phonetic-description-signed-languages.html">"Phonetic description in signed languages"</a>.</p>
+
+
+<p class="txtUpsideDown">Answers for Mandarin practice: Tone 4 is canonically '51'. &#x99ac; in &#x99ac;&#x8def; is 21.
+<br /><br />Answers for Cantonese: The canonical tones are 55 (&#x5206;), 35 (e.g. &#x7c89;), 33 (e.g. &#x8a13;), 21 (e.g. &#x711a;), 12 (e.g. &#x596e;), and 22 (e.g. &#x4efd;).
+<br /><br /><br /><br /></p>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-04-18. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+

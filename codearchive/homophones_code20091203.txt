@@ -1,0 +1,361 @@
+#!/usr/local/bin/perl
+#homophones.pl
+#Displays data about homophony for user-entered Chinese characters
+#Author: Stephen Politzer-Ahles
+#Last modified: 2009-12-03
+#You are free to use or modify this code as you see fit, but please credit accordingly and do not redistribute for profit.
+
+
+use Encode;								#Modules
+use CGI qw( :standard );
+
+open data, "< homophones_without_trad.txt";
+#This file was created from the pronunciation data in Da Jun's text corpus. There are characters and readings 
+#  present in the Unihan database that are not present in this corpus, but many of them are so infrequent, or
+#  not Chinese, that using Da's corpus gives a more accurate reflection of actually recognizable homophony (and
+#  even the corpus has a large number of extremely infrequent characters). By way of example, only 2 characters
+#  with pronunciation geng4 appear in the dictionary http://www.nciku.com. Da's corpus includes 1 character with this
+#  pronuncation; the Unihan database includes 12. For the pronunciation ge4, Da's corpus includes 20 characters,
+#  while Unihan includes 80. Thus, it is clear that the corpus is a more accurate reflection of a Chinese speaker's
+#  lexicon, whereas the Unihan database is more comprehensive.
+
+%homophony = {};							#Initialize hash %homophony, which will hold all the data from the textfile
+while( chomp( $line = <data> ) ){					#Read the data into %homophony.
+	($pron, $words) = split(/\t/, $line);
+	$homophony{ $pron } = $words;					#Keys are Pinyin pronunciations; values are lists of characters (Unicode) that have that pronunciation. Each list is also prefaced with a number indicating how many words there are for this pronunciation
+}	
+close data;
+
+open variants, "< variants.txt";
+#This file was created from the Unihan database; it matches hex codes of traditional characters to those of
+#  corresponding simplified characters.
+%variants = ();
+while( chomp( $line = <variants> ) ){					#Create a mapping of traditional to simplified characters in %variants
+	($trad, $simp) = split( /\t/, $line );
+	$variants{ $trad } = $simp;					#Keys are Unicode points of traditional characters; values are Unicode points for corresponding simplified characters
+}
+close variants;
+
+									### The next bit does the actual counting
+if( $ENV{'CONTENT_LENGTH'} > 0 ){					#If input has been entered in the web page, get counts for the input......
+	$char = param( "char" );					#Get the input from a web form
+	chomp( $char );							#  and store it in the variable $char
+	$code = convert( $char );					#Convert to Unicode hex
+
+	if( exists $variants{ $code } ){				#If user entered a traditional character:
+		$code = $variants{ $code };				#  convert to simplified
+									#  and then re-encode the character (so that it can be displayed on the website)
+		$char = encode("utf8", chr( hex_to_dec($code) ) );
+	}
+
+	@matches = ();	 			 			#An empty array to store pronunciations that match
+
+	foreach $pron ( keys(%homophony) ){				#Go through each of the pronunciations in %homophony
+		if( $homophony{$pron} =~ m/$code/ ){			#If the query word is one of the words that has this pronunciation
+			push( @matches, $pron );			#  add this pronunciation to the list of matches
+		}
+	}
+									#An output string to feed back to the website later
+	$output = "<u>Homophone data for </u><span class=\"underlinedchinese\">$char</span><br /><br />\n" . " "x26;
+	$totalhomophones = 0;						#A variable that will keep track of how many homophones this word has
+					
+	foreach $pron (@matches){					#Go through all the pronunciations and format them and add them to $output so they can be displayed later
+									#Convert the Pinyin with numbers (for this pronunciation) to Pinyin with diacritics for prettier display on the site
+		$pronunciation_diacritics = add_diacritics( $pron );
+		$info = $homophony{ $pron };				#All the characters that correspond to this pronunciation
+		$info =~ s/(\d+) +(.+)/\2/;				#Strip off the count from the beginning of the character list
+		$count = $1 - 1; 					#Subtract 1 from the count (because this character is one of the characters, and it's not its own homophone)
+		$info =~ s/( )?$code//;					#Remove this character from the list of characters with this pronunciation (it's not its own homophone)
+		$info =~ s/^ +(.+)/\1/;					#Strip whitespace from front of the list
+		$totalhomophones += $count;				#Increment the total number of homophones
+		$words = $info;	 					#Remaining info in $info is just the list of homophonous words	
+									#To the $output string, append the info (count) for this pronunciation	
+		$output = $output . "<em>$pronunciation_diacritics</em> pronuncation: <b>$count</b> matches<br/>\n" . " "x26 . "<span class=\"chinese\">";
+
+									###To the $output string, append the list of words for this pronunciation
+		@words = split(/ /, $words);				#Split up the word list
+		foreach (@words){
+									#Re-encode each word, and add it to the $output string
+			$word = encode("utf8", chr( hex_to_dec($_) ) );
+			$output = $output . "$word ";
+		}
+									#put a <br /> in the $output string, to free up space for the next pronunciation
+		$output = $output . "</span><br />\n" . " "x26 . "<br />\n" . " "x26;
+	}
+									#Finally, concatenate the total homophone count to the $output string
+	$output = $output . "Total homophones for $char: <b>$totalhomophones</b><br />\n" . " "x8;
+}
+
+									### The next bit shows the website
+print <<HTML1;
+Content-Type: text/html; charset=UTF-8
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Han character homophone counter</title>
+        <link rel="stylesheet" type="text/css" href="/projects/politzer-ahles/stevetools_stylesheet.css" />
+    </head>
+
+    <body>
+       
+        <h2>Han character homophone counter</h2>
+        <p class="center">This tool will return the number of homophones for a given Chinese character. It considers
+                          all pronunciations&mdash;for example, for <span class="chinese">&#x8FD8;</span>, it will
+                          list homophones of <em>ha&#x0301;i</em>, <em>hua&#x0301;n</em>, and <em>hua&#x0300;n</em>.
+                          Only Standard Mandarin pronunciations are considered.</p>
+        <p class="center">The data for this tool come from <a href="http://lingua.mtsu.edu/chinese-computing/">
+                          Da Jun's character corpus</a> and from the <a href="http://www.unicode.org/charts/unihan.html">
+                          Unihan database</a>.</p>
+        <hr>
+
+        <form method="post" action="http://www.nyu.edu/cgi-bin/cgiwrap/spa268/homophones.pl">
+           <p class="center"><b><u>Type or paste a single character into the box and click submit.</u></b></p>
+           <p class="center"><font color="red">Please note:</font> The tool currently only works with single
+                          characters, not compound words; if you enter more than one character, it will only
+                          process the first. Currently it is only equipped to handle simplified characters. If you
+                          enter a traditional character, the tool may convert it to simplified and proceed as
+                          normal if you're lucky, or it may just say there are 0 matches. So, it's better to just
+                          enter simplified characters.</p>
+           <p class="center"><input type="text" name="char"> <input type="submit" value="submit"></center>
+        </form>
+HTML1
+
+									### Show the results (the $output string that was generated above)
+print <<HTMLresults;
+        <p class="center">$output</p>
+HTMLresults
+
+									#Regardless of whether or not input has been entered, show the footer of the website
+print <<HTMLfooter;
+        <hr>
+
+        <p class="mini">Script by <a href="/projects/politzer-ahles/">Stephen Politzer-Ahles</a>. Last modified on <a href=
+                        "/projects/politzer-ahles/codearchive/homophones_code20091204">2009-12-03</a> If you experience an error, contact
+                        me at politzerahless <img src="/projects/politzer-ahles/at.jpg" alt="(at)" height="10px" width="10px"> gmail
+                        <img src="/projects/politzer-ahles/dot.jpg" alt="(dot)" height="10px" width="10px"> com.</p>
+HTMLfooter
+
+
+sub convert{
+		#Function documentation
+		#Takes a Chinese character and decodes it into its Unicode hex point
+
+		$chars = shift();					#Get the argument
+		
+		$decoded = decode( "utf8", $chars );			#Decode characters from text into binary
+		$hex = dec_to_hex( ord($decoded) );			#Turn the Unicode decimal into hex (see dec_to_hex() function below)
+		
+		return $hex;
+
+}
+
+sub hex_to_dec{
+		#Function documentation
+		#Takes a hex number and turns it into a decimal number, which is returned
+
+		$hex = shift();						#Get the argument
+		$dec = 0;						#Initialize the $dec variable to 0	
+
+		$pos = 0;						#The place (start at ones place, then go up to 10s, 100s, etc.)
+		
+		while( $hex ){		
+  			$digit = numberify( chop( $hex ) );		#Get the last hex digit from the number and convert it to decimal
+			$dec += $digit*( 16**$pos );			#Add that to $dec
+			$pos += 1;					#Go up to the next place
+		}
+		
+		return $dec;
+}
+
+sub dec_to_hex{
+		#Function documentation
+		#Takes a decimal number and turns it into a decimal number, which is returned
+
+		$dec = shift();						#Get the argument
+		$hex = '';						#Initialize the $hex variable to an empty string
+		
+		while( $dec ){
+			$digit = hexnumberify( $dec % 16 );		#Get the last bit of the decimal (using modulus division) and convert it into a hex digit
+			$hex = $digit . $hex;				#Add the digit to $hex
+			$dec = int( $dec/16 );				#Go up to the next place of the decimal (by removing the part from the end that was just converted to hex)
+		}
+
+		return $hex;
+}
+
+sub numberify{
+		#Function documentation
+		#Takes a single hex digit in string format (from 1 to F) and converts it to a decimal number
+    		$x = shift();						#Get the argument
+		
+		if( $x eq "1" ){ $x = 1; }				#Take the hex digit and convert it to a decimal number
+		elsif( $x eq "2" ){ $x = 2; }
+		elsif( $x eq "3" ){ $x = 3; }
+		elsif( $x eq "4" ){ $x = 4; }
+		elsif( $x eq "5" ){ $x = 5; }
+		elsif( $x eq "6" ){ $x = 6; }
+		elsif( $x eq "7" ){ $x = 7; }
+		elsif( $x eq "8" ){ $x = 8; }
+		elsif( $x eq "9" ){ $x = 9; }
+		elsif( $x eq "A" ){ $x = 10; }
+		elsif( $x eq "B" ){ $x = 11; }
+		elsif( $x eq "C" ){ $x = 12; }
+		elsif( $x eq "D" ){ $x = 13; }
+		elsif( $x eq "E" ){ $x = 14; }
+		elsif( $x eq "F" ){ $x = 15; }
+		
+		return $x
+}
+
+sub hexnumberify{
+		#Function documentation
+		#Takes a decimal number below 16 in number format and converts it to a hex digit
+    		$x = shift();						#Get the argument
+		
+		if( $x < 10 ){ }					#If the decimal is below 10, do nothing
+		elsif( $x == 10 ){ $x = 'A'; }				#If the decimal is above 10, turn it into one of the hex letters
+		elsif( $x == 11 ){ $x = 'B'; }
+		elsif( $x == 12 ){ $x = 'C'; }
+		elsif( $x == 13 ){ $x = 'D'; }
+		elsif( $x == 14 ){ $x = 'E'; }
+		elsif( $x == 15 ){ $x = 'F'; }
+		
+		return $x
+}
+
+sub add_diacritics{
+	#Function documentation
+	#Takes Pinyin written with numbers (e.g. zhong1) and converts it to Pinyin written with diacritics (e.g. zhong with a macron over the o)
+
+	$num_to_dia_str = shift();					#Get the argument
+
+    NUM_TO_DIA_CONVERSION: {
+
+	@syllables = ();						#List of syllables in the input (starts off empty)
+									#Segment the text
+	while( $num_to_dia_str ){
+		$laststr = $num_to_dia_str;
+									#Splits the input into stuff before the Pinyin, onset, nucleus, code, tone number, and following space. Basically grabs the first thing that could be a syllable
+		$num_to_dia_str =~ s/(['.;!?,-])?([bcdfghjklmnpqrstwxyz]+)?([aeiouv]+)((?:ng|n)+)?(\d)?([\s.;!?,-]+)?//i;
+		($preceder, $onset, $nucleus, $coda, $tone, $space) = ($1, $2, $3, $4, $5, $6);
+									#Error handler. Goes off if the string was unable to be split
+		if( $laststr eq $num_to_dia_str ){ $outputstr = "Conversion aborted because of an error. You may have entered unrecognizable input. Please try again."; last NUM_TO_DIA_CONVERSION; }
+		$syll = $preceder . $onset . $nucleus . $coda . $tone . $space;
+		push( @syllables, $syll );				#Add this syllable to the list of syllables
+	}
+
+	$outputstr = "";						#This will be the string of Pinyin with diacritics (starts off as an empty string)
+
+									###The actual conversion
+	foreach $syllable (@syllables){				#Go through each syllable
+									#Split up the syllable again
+		$syllable =~ s/(['.;!?,-])?([bcdfghjklmnpqrstwxyz]+)?([aeiouv]+)((?:ng|n)+)?(\d)?([\s.;!?,-]+)?//i;
+		($preceder, $onset, $nucleus, $coda, $tone, $space) = ($1, $2, $3, $4, $5, $6);
+				
+		$diacritic = num_to_dia( $tone );			#Find the combining diacritic for this tone (see the num_to_dia() function below)
+
+									###Figures out which letter to put the diacritic over. This is needed since
+									###  Pinyin has rules about where the diacritic goes in the case of diphthongs
+									###  (e.g., goes over the e in both "mei" and "mie", goes over the i in "dui",
+									###  over the u in "diu", etc.). 
+									###This just concatenates the $preceder, $onset, nucleus with diacritic added, and $coda;
+									###  leaving off the tone number
+		if( $nucleus eq "a" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "a" . "&#x$diacritic;" . $coda . $space;	}
+			else{ $outputstr = $outputstr . $preceder . $onset . "a" . $coda . " "; }
+		}
+		elsif( $nucleus eq "ai" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "a" . "&#x$diacritic;" . "i" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "a" . "i" . $coda . $space; }
+		}
+		elsif( $nucleus eq "ao" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "a". "&#x$diacritic;" . "o" . $coda . $space;	}
+			else{ $outputstr = $outputstr . $preceder . $onset . "a". "o" . $coda . $space;	}
+		}
+		elsif( $nucleus eq "e" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "e" . "&#x$diacritic;" . $coda . $space;	}
+			else{ $outputstr = $outputstr . $preceder . $onset . "e" . $coda . $space;	}
+		}
+		elsif( $nucleus eq "ei" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "e" . "&#x$diacritic;" . "i" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "e" . "i" . $coda . $space; }
+		}
+		elsif( $nucleus eq "i" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "i" . "&#x$diacritic;" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "i" . $coda . $space; }
+		}
+		elsif( $nucleus eq "ia" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "i" . "a" . "&#x$diacritic;" . $coda . $space; }
+			 else{ $outputstr = $outputstr . $preceder . $onset . "i" . "a" . $coda . $space; }
+		}
+		elsif( $nucleus eq "ie" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "i" . "e" . "&#x$diacritic;" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "i" . "e" . $coda . $space; }
+		}
+		elsif( $nucleus eq "io" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "i" . "o" . "&#x$diacritic;" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "i" . "o" . $coda . $space; }
+		}
+		elsif( $nucleus eq "iu" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "i" . "u" . "&#x$diacritic;" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "i" . "u" . $coda . $space; }
+		}
+		elsif( $nucleus eq "iao" ){
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "i" . "a" . "&#x$diacritic;" . "o" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "i" . "a" . "o" . $coda . $space; }
+		}
+		elsif( $nucleus eq "o" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "o" . "&#x$diacritic;" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "o" . $coda . $space; }
+		}
+		elsif( $nucleus eq "ou" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "o" . "&#x$diacritic;" . "u" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "o" . "u" . $coda . $space; } 
+		}
+		elsif( $nucleus eq "u" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "u" . "&#x$diacritic;" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "u" . $coda . $space; }
+		}
+		elsif( $nucleus eq "ua" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "u" . "a" . "&#x$diacritic;" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "u" . "a" . $coda . $space; } 
+		}
+		elsif( $nucleus eq "ui" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "u" . "i" . "&#x$diacritic;" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "u" . "i" . $coda . $space; }
+		}
+		elsif( $nucleus eq "uo" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "u" . "o" . "&#x$diacritic;" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "u" . "o" . $coda . $space; }
+		}
+		elsif( $nucleus eq "v" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "&#x00FC;" . "&#x$diacritic;" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "&#x00FC;" . $coda . $space; }
+		}
+		elsif( $nucleus eq "ve" ){ 
+			if( $diacritic ){ $outputstr = $outputstr . $preceder . $onset . "&#x00FC;" . "e" . "&#x$diacritic;" . $coda . $space; }
+			else{ $outputstr = $outputstr . $preceder . $onset . "&#x00FC;" . "e" . $coda . $space; }
+		}
+	}
+    }
+
+	return $outputstr;
+}
+
+sub num_to_dia{
+	#Function documentation
+	#Takes a number from 1 to 4 (i.e., a Pinyin tone number) and returns the corresponding combining diacritical mark to make a Pinyin tone diacritic
+
+		$num = shift();						#Get the input
+		
+		if( $num == 1 ){ return "0304"; }
+		elsif( $num == 2 ){ return "0301" ; }
+		elsif( $num == 3 ){ return "030C"; }
+		elsif( $num == 4 ){ return "0300"; }
+		else{ return; }
+
+}
+
+end;

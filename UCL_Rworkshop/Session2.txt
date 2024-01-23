@@ -1,0 +1,337 @@
+##########################
+### WHY MIXED EFFECTS? ###
+##########################
+
+### Look at trial-order effects in implicit priming data to see how these vary across subjects
+
+# Load the data
+load( url( "http://users.ox.ac.uk/~cpgl0080/UCL_Rworkshop/implicitpriming.RData" ) )
+
+N <- length(levels(trim$Subject)) 
+
+# make a scatterplot of log RT by order in experiment
+plot(log(RT) ~ I(jitter(NumInSet,1)), trim, pch=16, cex=.5 )
+
+# plot its regression line
+abline( lm(log(RT) ~ NumInSet, trim), col="red", lwd=3 )
+
+# show the model
+summary( lm(log(RT) ~ NumInSet, trim) )
+
+# plot the scatter for different participants
+plot(log(RT) ~ I(jitter(NumInSet,1)), trim, pch=16, cex=.5, col=rainbow( N )[trim$Subject], main="Different subjects plotted in different colors" )
+
+library(lme4)
+
+# get different random intercepts effects for each subject
+model <- lmer( log(RT) ~ NumInSet + (1|Subject), trim )
+
+# plot a few subjects' regression lines
+plot(log(RT) ~ I(jitter(NumInSet,1)), trim, pch=16, cex=.5, col=rainbow( N )[trim$Subject], main="Different subjects plotted in different colors" )
+for(subj in seq(1,N,length.out=6) ){
+	abline( fixef(model)[1] + ranef(model)$Subject[subj,1], fixef(model)[2], col=rainbow( N )[subj], lwd=3 ) 
+}
+
+# and now a model with random slopes as well
+model <- lmer( log(RT) ~ NumInSet + (NumInSet||Subject), trim )
+
+# plot a few subjects' regression lines
+plot(log(RT) ~ I(jitter(NumInSet,1)), trim, pch=16, cex=.5, col=rainbow( N )[trim$Subject], main="Different subjects plotted in different colors" )
+for(subj in seq(1,N,length.out=6) ){
+	abline( fixef(model)[1] + ranef(model)$Subject[subj,1], fixef(model)[2] + ranef(model)$Subject[subj,2], col=rainbow( N )[subj], lwd=3 ) 
+}
+
+
+
+
+
+
+
+
+
+
+### Look at subject and item effects in self-paced reading data
+
+# Load the data
+load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/File_S2.RData" ) )
+
+# Load some custom functions (including the CIpirateplot function we'll use for plotting)
+source( url( "http://www.polyu.edu.hk/cbs/sjpolit/Steve_functions.txt" ) )
+
+# Pull out just the critical (non-filler) conditions from the critical region
+crit <- RTdata[ RTdata$RegionNum==8 & RTdata$Quantifier!="filler", ]
+
+# Clean up factors (remove empty levels)
+crit$Quantifier <- factor( crit$Quantifier )
+crit$Boundedness <- factor( crit$Boundedness )
+crit$Item <- factor( crit$Item )
+
+# Show that we can collapse over items to get subj means per condition
+tapply( crit$RT, crit[c("Boundedness","Quantifier","Subject")], mean )
+
+# Show that we can also collapse over subjects to get item means per condition
+tapply( crit$RT, crit[c("Boundedness","Quantifier","Item")], mean )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###########################################
+### SIGNIFICANCE IN MIXED-EFFECT MODELS ###
+###########################################
+
+
+
+### Plot two t-distributions
+par(mfrow=c(1,2))
+
+for( dfs in c(4, 199) ){
+	dist <- density( rt( 100000, dfs ) )
+	plot( dist, main=bquote(italic(t)~distribution~with~df==.(dfs)), lwd=3, xlim=c(-6,6) )
+	tval <- 2
+	polygon( c( dist$x[ dist$x > tval], rev( dist$x[ dist$x > tval] ) ), c( dist$y[dist$x>tval], rep(0, length(dist$y[dist$x>tval]) ) ), col="red" )
+	polygon( c( dist$x[ dist$x < -tval], rev( dist$x[ dist$x < -tval] ) ), c( dist$y[dist$x < -tval], rep(0, length(dist$y[dist$x < -tval]) ) ), col="red" )
+	text( 4.25, .15, bquote(italic(p)==.( round(2 * (1 - pt(tval, dfs)),3) ) ), col="red", cex=1.5)
+
+
+}
+
+
+
+
+
+
+
+### Try a few ways to get significance in self-paced reading data
+
+# Load the data
+load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/File_S2.RData" ) )
+
+# Load some custom functions (including the CIpirateplot function we'll use for plotting)
+source( url( "http://www.polyu.edu.hk/cbs/sjpolit/Steve_functions.txt" ) )
+
+# Pull out just the critical (non-filler) conditions from the critical region
+crit <- RTdata[ RTdata$RegionNum==8 & RTdata$Quantifier!="filler", ]
+
+# Clean up factors (remove empty levels)
+crit$Quantifier <- factor( crit$Quantifier )
+crit$Boundedness <- factor( crit$Boundedness )
+crit$Item <- factor( crit$Item )
+
+# Make a model, with sum-coded factors
+model <- lmer( RT ~ Quantifier*Boundedness + (1|Subject) + (1|Item), crit, contrasts=list( Quantifier=contr.sum(2)/2, Boundedness=contr.sum(2)/2 ) )
+
+
+
+
+	### Call anything |t|>2 significant
+	
+	# Get the fixed effects summary
+	fix <- summary(model)$coefficients
+
+	# An asterisk for each significant effect
+	sig <- ifelse( abs(fix[,"t value"])>2, "*", "" )
+
+	# Show significance with fixed effects table
+	data.frame( fix, sig )
+
+
+
+	### Estimate p-values from model
+	
+	# Observations in model
+	n_obs <- nrow( model@frame )
+
+	# Number of fixed effects
+	n_parameter <- dim( fix )[1]
+
+	# p-values
+	p <- 2 * ( 1 - pt( fix[,"t value"], n_obs - n_parameter ) )
+
+	# Show estimated p-values with fixed effects table
+	# WARNING: this might show p-values of "0" or of "1" or more. Use common sense and truncate these
+	#	to e.g. "<.001" or ">.999"
+	data.frame( fix, p )
+
+
+	### Approximate p-values using {lmerTest}
+
+	# load the library
+	library( lmerTest )
+
+	# re-run the model fresh
+	model <- lmer( RT ~ Quantifier*Boundedness + (1|Subject) + (1|Item), crit, contrasts=list( Quantifier=contr.sum(2)/2, Boundedness=contr.sum(2)/2 ) )
+
+	# Show the fixed effects table with approximated p-values in it
+	summary( model )
+
+
+
+
+
+
+	### Bootstrap CIs
+
+	# Define a function for grabbing the important values from each model
+	mySumm <- function(.) { s <- sigma(.)
+		c(beta =getME(., "beta"), sigma = s, sig01 = unname(s * getME(., "theta"))) }
+
+	# Run a bunch of bootstrap models
+	system.time( boo01 <- bootMer(model, mySumm, nsim = 500) )
+
+	# Bootstrap CI for the 'index'th (i.e., the 4th: the interaction term, in this model) fixed effect
+	library(boot)
+	(bCI.1 <- boot.ci(boo01, index=4, type=c("perc")))# beta
+
+	# Use a custom wrapper function to show all the CIs
+	source( url( "http://www.polyu.edu.hk/cbs/sjpolit/Steve_functions.txt" ) )
+	showBootCI( model )
+
+
+
+
+
+	### Model comparison
+	
+	# The model with the effect we're interested in testing
+	model_with_effect <- lmer( weight ~ Diet + (1|Chick), ChickWeight )
+	
+	# A maximally similar model without that effect but with everything else. In this case,
+	#	that leaves only the intercept
+	model_without_effect <- lmer( weight ~ 1 + (1|Chick), ChickWeight )
+
+	# Compare their fits
+	# Note: convention is to put the 'smaller' model first. anova() is usually pretty good at figuring
+	#	out the correct order by itself, but I usually just don't tempt fate.
+	anova( model_without_effect, model_with_effect )
+
+
+
+
+	### Example of using yesterday's interaction coding tricks to help with model comparison
+
+	# Get the self-paced reading data from all regions (except the first two regions, which are full sentences), so we have a 3-way interaction to test
+	crit_allregions <- RTdata[ RTdata$RegionNum>2 & RTdata$Quantifier!="filler", ]
+
+	# Clean up factors (remove empty levels)
+	crit_allregions$Quantifier <- factor( crit_allregions$Quantifier )
+	crit_allregions$Boundedness <- factor( crit_allregions$Boundedness )
+	crit_allregions$Item <- factor( crit_allregions$Item )
+
+	# Treat 'region' as a factor
+	crit_allregions$RegionNum <- factor( crit_allregions$RegionNum )
+
+	# Make a model with the three-way interaction we care about
+	model_with_effect <- lmer( log(RT) ~ RegionNum / (Quantifier/Boundedness) + (1|Subject) + (1|Item), crit_allregions )
+
+	# Make a maximally similar model, with all effects EXCEPT the three-way interaction
+	# Here we can use the (...)^2 trick that gives us all main effects and 2-way interactions
+	model_without_effect <- lmer( log(RT) ~ (RegionNum+Quantifier+Boundedness)^2 + (1|Subject) + (1|Item), crit_allregions )
+
+	# Note: another way to do this would have been e.g. 'RegionNum*Quantifier*Boundedness - RegionNum:Quantifier:Boundedness'
+
+	# Do model comparison
+	anova( model_without_effect, model_with_effect )
+
+	model_with_effect_crossed <- lmer( log(RT) ~ RegionNum*Quantifier*Boundedness + (1|Subject) + (1|Item), crit_allregions )
+
+
+
+	### Examples of model comparisons that don't work
+
+	# Make one model, and the same model on an equal but different object
+	modelA <- lmer( log(RT) ~ RegionNum / (Quantifier/Boundedness) + (1|Subject) + (1|Item), crit_allregions )
+	crit_allregions_copy <- crit_allregions
+	modelB <- lmer( log(RT) ~ RegionNum / (Quantifier/Boundedness) + (1|Subject) + (1|Item), crit_allregions_copy )
+
+	# Doesn't work:
+	anova( modelB, modelA )
+
+	# Make models with separate effects (as if you wanted to see whether Quantifier alone or Boundedness alone has a bigger effect)
+	modelA <- lmer( log(RT) ~ Quantifier + (1|Subject) + (1|Item), crit_allregions )
+	modelB <- lmer( log(RT) ~ Boundedness + (1|Subject) + (1|Item), crit_allregions )
+
+	# Works, but is not valid
+	anova( modelB, modelA )
+
+
+
+
+
+	### Illustrate a few quick and easy ways to do multiple model comparisons
+	
+	# Make a model
+	chickmodel <- lmer( weight ~ Time*Diet + (1|Chick), ChickWeight )
+
+
+	# Anova() function from {car}
+	library( car )
+	Anova( chickmodel )
+
+	# anova() function overloaded from {lmerTest}
+	library( lmerTest )	
+	anova( chickmodel )
+
+	# Since Diet had quite different p-values in these, we'll do a classic, reliable model comparison to see which was more reasonable
+	# First construct a maximally similar model with no main effect of Diet
+	chickmodel_without_diet <- lmer( weight ~ Time*Diet - Diet + (1|Chick), ChickWeight )
+
+	# Then test it with model comparison, so we can compare its real p-value to the estimates from Anova() and anova()
+	anova( chickmodel_without_diet, chickmodel )
+
+
+
+
+
+
+
+
+
+
+
+
+####################################
+### RANDOM EFFECTS AND CONFOUNDS ###
+####################################
+
+library(languageR)
+
+par(mfrow=c(2,2) )
+for( confounder in c("Frequency", "FamilySize", "Length", "DerivEntropy") ){
+	plot(density( lexdec[,confounder] ), lwd=3, type="n", main=confounder )
+	lines( density( lexdec[lexdec$Class=="animal",confounder] ), lwd=2, col="red" )
+	lines( density( lexdec[lexdec$Class=="plant",confounder] ), lwd=2, col="green" )
+	legend( "topright", legend=c("animal","plant"), lty=1, lwd=2, col=c("red","green") )
+}
+
+
+tapply( lexdec$RT, lexdec$Class, mean ) 
+summary( lmer( RT ~ Class + (1|Subject) + (1|Word), lexdec ) )$coefficients
+
+
+
+
+
+
+
+
+### Figure out a good random effects specification for the tone data
+
+# Load the data
+load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/implicitpriming.RData" ) )
+
+
+
+

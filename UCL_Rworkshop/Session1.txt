@@ -1,0 +1,581 @@
+# Run this to make sure you have the latest version of R and all the packages we'll use:
+#if( !( "installr" %in% installed.packages()[,"Package"] ) ){ install.packages("installr") } 
+#library(installr); updateR()
+pkgs <- c( "lme4", "languageR", "devtools", "vioplot", "lmerTest", "car", "multcomp", "e1071" )
+pkgs <- pkgs[ !(pkgs %in% installed.packages()[,"Package"]) ]
+if( length(pkgs)>0 ){ install.packages( pkgs[ !(pkgs %in% installed.packages()[,"Package"]) ] ) }
+if( !( "yarrr" %in% installed.packages()[,"Package"] ) ){ library(devtools); install_github("ndphillips/yarrr") }
+
+
+
+
+
+
+
+################################
+### THE GENERAL LINEAR MODEL ###
+################################
+
+
+
+library(lme4)
+
+
+### Simple example from Chick data
+
+# Let's just look at diets 1 and 2
+cw <- data.frame( ChickWeight[ ChickWeight$Diet %in% c(1,2), ] )
+
+# I'm not sure why they have this var as an ordered factor; make it unordered
+class(cw$Chick) <- "factor"
+
+# Fix the "weight" column name, I find it annoying that it's lowercase and the rest are capital
+colnames(cw)[ colnames(cw)=="weight" ] <- "Weight"
+
+# Make a linear model
+summary( mod <- lmer( Weight ~ Time + (1|Chick), cw ) )$coefficients
+
+# Plot the scatter
+plot( Weight ~ Time, cw, xaxs="i", yaxs="i", pch=16, ylim=c(0,350) )
+
+# Plot the regression line
+abline( fixef(mod)[1], fixef(mod)[2], lwd=2, col="red" )
+
+# Show the regression formula
+text( 8, 300, bquote( hat(italic(y))==.( round( fixef(mod)[1], 2 ) )~+~.( round( fixef(mod)[2], 2 ) )*italic(x)[time] ), col="red", cex=2 )
+
+
+
+
+
+
+
+
+
+
+
+### Simple example with a categorical predictor
+
+# Let's just look at diets 1 and 2
+cw <- data.frame( ChickWeight[ ChickWeight$Diet %in% c(1,2), ] )
+
+# I'm not sure why they have this var as an ordered factor; make it unordered
+class(cw$Chick) <- "factor"
+
+# Fix the "weight" column name, I find it annoying that it's lowercase and the rest are capital
+colnames(cw)[ colnames(cw)=="weight" ] <- "Weight"
+
+# Make a linear model
+summary( mod <- lmer( Weight ~ Diet + (1|Chick), cw ) )$coefficients
+
+# Plot the scatter (note that here I'm suppressing the normal x-axis and making a new one)
+plot( as.numeric( cw$Diet), cw$Weight, type="p", xaxt="n", col=rainbow(2)[cw$Diet], xlab=NA, pch=16, ylim=c(0,450) )
+axis( 1, at=1:2, label=c("          Diet 1 (coded as \"0\")", "Diet 2 (coded as \"1\")          ") )
+
+# Plot the regression line for the intercept (Month 5)
+abline( fixef(mod)["(Intercept)"], 0, lwd=2, col=rainbow(2)[1] )
+
+# Plot the regression line for the other months
+for( diet in 2:2 ){
+	abline( fixef(mod)["(Intercept)"] + fixef(mod)[paste0("Diet",diet)], 0, lwd=2, col=rainbow(2)[ diet ] )
+}
+
+# Show the regression formula
+text( 1.5, 200, bquote( hat(italic(y))==.( round( fixef(mod)[1], 2 ) )~+~.( round( fixef(mod)[2], 2 ) )*italic(x)[diet2] ), col="purple", cex=2 )
+
+
+
+
+
+
+
+
+
+### Simple example with a polytomous categorical predictor
+
+# Let's look at all the diets
+cw <- data.frame( ChickWeight )
+
+# I'm not sure why they have this var as an ordered factor; make it unordered
+class(cw$Chick) <- "factor"
+
+# Fix the "weight" column name, I find it annoying that it's lowercase and the rest are capital
+colnames(cw)[ colnames(cw)=="weight" ] <- "Weight"
+
+# Show the contrast matrix in the command window 
+contrasts( cw$Diet )
+
+# Make a linear model
+summary( mod <- lmer( Weight ~ Diet + (1|Chick), cw ) )$coefficients
+
+# Plot the scatter (note that here I'm suppressing the normal x-axis and making a new one)
+plot( jitter( as.numeric( cw$Diet), .25 ), cw$Weight, type="p", xaxt="n", col=rainbow(4)[cw$Diet], xlab=NA, pch=16, ylim=c(0,450), cex=.5 )
+axis( 1, at=1:4, label=paste0( "Diet", 1:4 ) )
+
+# Plot the regression line for the intercept (Diet 1)
+abline( fixef(mod)["(Intercept)"], 0, lwd=2, col=rainbow(4)[1] )
+
+# Plot the regression line for the other diets
+for( diet in 2:4 ){
+	abline( fixef(mod)["(Intercept)"] + fixef(mod)[paste0("Diet",diet)], 0, lwd=2, col=rainbow(4)[ diet ] )
+}
+
+# Show the regression coefficients
+text( 2.5, 400, paste0( names(fixef(mod)), ": ", round( fixef(mod), 2 ), collapse="\n" ), adj=1, cex=1.25 )
+
+
+
+
+
+
+
+
+### Example with a categorical*continuous interaction
+
+# Let's just look at diets 1 and 2
+cw <- data.frame( ChickWeight[ ChickWeight$Diet %in% c(1,2), ] )
+
+# I'm not sure why they have this var as an ordered factor; make it unordered
+class(cw$Chick) <- "factor"
+
+# Fix the "weight" column name, I find it annoying that it's lowercase and the rest are capital
+colnames(cw)[ colnames(cw)=="weight" ] <- "Weight"
+
+# Make a linear model
+summary( mod <- lmer( Weight ~ Time*Diet + (1|Chick), cw ) )$coefficients
+
+# Plot the scatter
+plot( Weight~Time, cw, col=c("red","blue")[cw$Diet], pch=16 )
+
+# Plot the regression line for the baseline condition
+abline( fixef(mod)["(Intercept)"], fixef(mod)["Time"], lwd=3, col="red" )
+
+# Plot the regression line for the nonbaseline condition
+abline( fixef(mod)["(Intercept)"] + fixef(mod)["Diet2"], fixef(mod)["Time"] + fixef(mod)["Time:Diet2"], lwd=3, col="blue" )
+
+# add a legend
+legend( "left", legend=paste0( "Diet", 1:2 ), col=c("red","blue"), pch=16, lty=1, lwd=3, inset=.1)
+
+# Show the regression formula
+text( 8, 300, bquote( hat(italic(y))==.( round( fixef(mod)["(Intercept)"], 2 ) )~+~.( round( fixef(mod)["Diet2"], 2 ) )*italic(x)[diet2]~+~.( round( fixef(mod)["Time"], 2 ) )*italic(x)[time]~+~.( round( fixef(mod)["Time:Diet2"], 2 ) )*italic(x)[diet2%*%time] ), col="purple", cex=1 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Example with a categorical*continuous interaction, centered continuous IV
+
+# Let's just look at diets 1 and 2
+cw <- data.frame( ChickWeight[ ChickWeight$Diet %in% c(1,2), ] )
+
+# I'm not sure why they have this var as an ordered factor; make it unordered
+class(cw$Chick) <- "factor"
+
+# Fix the "weight" column name, I find it annoying that it's lowercase and the rest are capital
+colnames(cw)[ colnames(cw)=="weight" ] <- "Weight"
+
+# center the continuous IV
+cw$cTime <- cw$Time - mean(cw$Time)
+
+# Make a linear model
+summary( mod <- lmer( Weight ~ cTime*Diet + (1|Chick), cw ) )$coefficients
+
+# Plot the scatter
+plot( Weight~cTime, cw, col=c("red","blue")[cw$Diet], pch=16 )
+
+# Plot the regression line for the baseline condition
+abline( fixef(mod)["(Intercept)"], fixef(mod)["cTime"], lwd=3, col="red" )
+
+# Plot the regression line for the nonbaseline condition
+abline( fixef(mod)["(Intercept)"] + fixef(mod)["Diet2"], fixef(mod)["cTime"] + fixef(mod)["cTime:Diet2"], lwd=3, col="blue" )
+
+# add a legend
+legend( "left", legend=paste0( "Diet", 1:2 ), col=c("red","blue"), pch=16, lty=1, lwd=3, inset=.1)
+
+# Show the regression formula
+text( 8-10.6359, 300, bquote( hat(italic(y))==.( round( fixef(mod)["(Intercept)"], 2 ) )~+~.( round( fixef(mod)["Diet2"], 2 ) )*italic(x)[diet2]~+~.( round( fixef(mod)["cTime"], 2 ) )*italic(x)[time]~+~.( round( fixef(mod)["cTime:Diet2"], 2 ) )*italic(x)[diet2%*%time] ), col="purple", cex=1 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+########################################
+### INTERACTIONS AND CONTRAST CODING ###
+########################################
+
+
+### Crossed interaction
+
+# Let's look at all the diets
+cw <- data.frame( ChickWeight )
+
+# I'm not sure why they have this var as an ordered factor; make it unordered
+class(cw$Chick) <- "factor"
+
+# Fix the "weight" column name, I find it annoying that it's lowercase and the rest are capital
+colnames(cw)[ colnames(cw)=="weight" ] <- "Weight"
+
+# center the continuous IV
+cw$cTime <- cw$Time - mean(cw$Time)
+
+# peek at a model with a crossed interaction
+summary( mod <- lmer( Weight ~ cTime*Diet + (1|Chick), cw ) )$coefficients
+
+# set up the space for plotting it
+plot( Weight ~ cTime, cw, type="n" )
+
+# Plot the regression line for the intercept (Diet 1)
+abline( fixef(mod)["(Intercept)"], fixef(mod)["cTime"], lwd=2, col=rainbow(4)[1] )
+
+# Plot the regression line for the other diets
+for( diet in 2:4 ){
+	abline( fixef(mod)["(Intercept)"] + fixef(mod)[paste0("Diet",diet)], fixef(mod)["cTime"] + fixef(mod)[paste0("cTime:Diet",diet)], lwd=2, col=rainbow(4)[ diet ] )
+}
+
+# add a legend
+legend( "topright", legend=paste0( "Diet", 1:4 ), col=rainbow(4), lty=1, lwd=3, inset=.1)
+
+# Show the regression coefficients
+text( 8-10.6359, 250, paste0( names(fixef(mod)), ": ", round( fixef(mod), 2), ifelse( summary(mod)$coefficients[,"t value"]>=2,"*",""), collapse="\n" ), adj=1, cex=1.25 )
+
+
+
+
+
+
+
+
+
+### Nested interaction
+
+# Let's look at all the diets
+cw <- data.frame( ChickWeight )
+
+# I'm not sure why they have this var as an ordered factor; make it unordered
+class(cw$Chick) <- "factor"
+
+# Fix the "weight" column name, I find it annoying that it's lowercase and the rest are capital
+colnames(cw)[ colnames(cw)=="weight" ] <- "Weight"
+
+# center the continuous IV
+cw$cTime <- cw$Time - mean(cw$Time)
+
+# peek at a model with a nested interaction
+summary( mod <- lmer( Weight ~ Diet/cTime + (1|Chick), cw ) )$coefficients
+
+# set up the space for plotting it
+plot( Weight ~ cTime, cw, type="n" )
+
+# Plot the regression line for the intercept (Diet 1)
+abline( fixef(mod)["(Intercept)"], fixef(mod)["Diet1:cTime"], lwd=2, col=rainbow(4)[1] )
+
+# Plot the regression line for the other diets
+for( diet in 2:4 ){
+	abline( fixef(mod)["(Intercept)"] + fixef(mod)[paste0("Diet",diet)], fixef(mod)[paste0("Diet",diet,":cTime")], lwd=2, col=rainbow(4)[ diet ] )
+}
+
+# add a legend
+legend( "topright", legend=paste0( "Diet", 1:4 ), col=rainbow(4), lty=1, lwd=3, inset=.1)
+
+# Show the regression coefficients
+text( 8-10.6359, 250, paste0( names(fixef(mod)), ": ", round( fixef(mod), 2), ifelse( summary(mod)$coefficients[,"t value"]>=2,"*",""), collapse="\n" ), adj=1, cex=1.25 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################
+### EXAMPLE TO WORK TOGETHER ###
+################################
+
+# Load the data
+load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/File_S2.RData" ) )
+
+# Load some custom functions (including the CIpirateplot function we'll use for plotting)
+source( url( "http://www.polyu.edu.hk/cbs/sjpolit/Steve_functions.txt" ) )
+
+# Pull out just the critical (non-filler) conditions from the critical region
+crit <- RTdata[ RTdata$RegionNum==8 & RTdata$Quantifier!="filler", ]
+
+# Clean up factors (remove empty levels)
+crit$Quantifier <- factor( crit$Quantifier )
+crit$Boundedness <- factor( crit$Boundedness )
+crit$Item <- factor( crit$Item )
+crit$RegionNum <- factor( crit$RegionNum )
+
+# make a plot
+CIpirateplot( log(RT) ~ Boundedness+Quantifier, crit, bar.o=.1, ci.o=.25, make.legend=T )
+
+
+### We'll make some models together here...
+
+
+
+### Illustrating how nested interactions can be useful
+
+# Pull out all regions of just the critical (non-filler) conditions
+crit_all <- RTdata[ RTdata$Quantifier!="filler", ]
+
+# Clean up factors (remove empty levels)
+crit_all$Quantifier <- factor( crit_all$Quantifier )
+crit_all$Boundedness <- factor( crit_all$Boundedness )
+crit_all$Item <- factor( crit_all$Item )
+
+# Treat REgionNum as a factor
+crit_all$RegionNum <- factor( crit_all$RegionNum )
+
+# crossed interaction
+summary( lmer( RT ~ RegionNum*Quantifier*Boundedness + (1|Subject) + (1|Item), crit_all ) )$coefficients
+
+# nested interaction
+summary( lmer( RT ~ RegionNum/(Quantifier/Boundedness) + (1|Subject) + (1|Item), crit_all ) )$coefficients
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###########################
+### DUMMY VS SUM CODING ###
+###########################
+
+# Make an interaction model, with dummy coding
+summary( dummy_model <- lmer( RT ~ Quantifier*Boundedness + (1|Subject) + (1|Item), crit ) )
+
+# Show what the condition means are
+( means <- tapply( crit$RT, crit[,c("Boundedness","Quantifier")], mean ) )
+
+# show the main effects, so we can see that these do not correspond to the dummy-coded terms
+summary( dummy_model )$coefficients
+( quanteffect <- colMeans(means)[2] - colMeans(means)[1] )
+( boundeffect <- rowMeans(means)[2] - rowMeans(means)[1] )
+
+
+
+
+
+
+### Now we'll make a model with deviation coding
+
+# Deviation-code Quantifier
+contrasts(crit$Quantifier) <- rbind(-1, 1)
+colnames(contrasts(crit$Quantifier)) <- levels(crit$Quantifier)[2]
+contrasts( crit$Quantifier )
+
+# And deviation-code Boundedness
+contrasts(crit$Boundedness) <- rbind(-1, 1)
+colnames(contrasts(crit$Boundedness)) <- levels(crit$Boundedness)[2]
+contrasts(crit$Boundedness)
+
+# Then redo our model, this time on deviation-coded data
+summary( deviation_model <- lmer( RT ~ Quantifier*Boundedness + (1|Subject) + (1|Item), crit ) )
+
+# Use model comparison to prove that the models have the same fit
+anova( dummy_model, deviation_model )
+
+# Peek at the main effects again to see that these correspond to the sum-coded terms
+summary( deviation_model )$coefficients
+quanteffect
+boundeffect
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#################################
+### INTERACTION CODING TRICKS ###
+#################################
+
+# Load the data
+load( url( "http://www.polyu.edu.hk/cbs/sjpolit/UCL_Rworkshop/individualdifferences.RData" ) )
+
+### We'll try coding a few complicated interactions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##############################
+### CUSTOM CONTRAST CODING ###
+##############################
+
+### This is a total hack, because I still don't really get non-orthogonal contrast coding,
+###	so for a 1*n design I instead just construct a dummy-coded model with no intercept
+###	(so that each coefficient is a condition mean) and then use glht contrasts to
+###	compare conditions
+
+# Make a dummy-coded model WITH NO INTERCEPT from the chick data
+model <- lm( weight ~ 0+Diet, ChickWeight )
+
+# Set up a contrast
+contrast <- rbind(
+	c( 0, -.5, 1, -.5 ), # Diet 3 vs. mean( Diet2, Diet4 )
+	c(1,0,0,-1), # Diet 1 vs. Diet 4
+	c(0,1,0,-1)
+)
+
+
+# use glht to do the comparison
+library(multcomp)
+summary( glht( model, linfct=contrast ) )
+
+# Look at the condition means to see that this test corresponds to our complex comparison
+( means <- tapply( ChickWeight$weight, ChickWeight$Diet, mean ) )
+means[3] - mean( means[c(2,4)] )
+means[1] - means[4]
+
+
+### Caveats!!!
+### This method requires doing multiple contrasts; if your 'contrast' matrix has only one row
+###	it crashes (this wasn't the case in the past). So if you only have one contrast you care
+###	about, you need to add in some junk contrast in addition.
+### It corrects the p-values for multiple comparisons. So if you want raw, uncorrected p-values,
+###	you can't get them from here. The estimates, SDs, and t-values, however, are unchanged,
+###	so you can get p-values from them in most of the other ways we will discuss.
+
+
+
+### Now an example with orthogonal contrasts, done within the model instead of via glht
+
+# Set up a contrast matrix. First column compares avg(1,2) vs. avg(3,4). Second column compares
+#	1 vs 2, and third column compares 3 vs 4
+m <- cbind( rbind(1,1,-1,-1), rbind(1,-1,0,0), rbind(0,0,1,-1) )
+
+# Show that the contrasts are orthogonal (the sum of the row products is 0)
+apply(m,1,prod)
+
+# Show the model, feeding our contrast matrix in instead of the normal contrasts
+coefficients( lm( weight~Diet, ChickWeight, contrasts=list(Diet=m) ) )
+
+
+# Show the means
+means <- tapply( ChickWeight$weight, ChickWeight$Diet, mean ) )
+
+# Notice that the first coefficient corresponds to half the difference between (1,2) and (3,4)
+(mean(means[1:2]) - mean(means[3:4]) )/2
+
+# and the second coefficient corresponds to half the difference between 1 and 2
+(means[1] - means[2] )/2
+
+
+# and the third, h alf the difference between 3 and 4
+(means[3] - means[4] )/2
+
+
+### This can get much more complicated. For example, for a 3-level factor you can set up an interesting
+###	orthogonal contrast matrix:
+### 1		0
+### -.5		1
+### -.5		-1
+### The first column compares level 1 vs. the mean of levels 2 and 3. The second compares level 2 to level
+###	3. However, the coefficients get rather complicated since they're not all +-1.
+
+
+
+  
+
+
+
+
+
+###############################################
+### DIRECT COMPARISON OF MODEL COEFFICIENTS ###
+###############################################
+
+# The indices of the two coefficients to compare. 'ref' is the baseline/control/one that will be subtracted
+refcoef <- 2
+comparecoef <- 4
+
+# Gets the variance-covariance matrix
+varcov <- vcov(model)
+
+# numerator of the t-test (i.e., the difference)
+t_numerator <- fixef(model)[comparecoef] - fixef(model)[refcoef]
+
+# denominator of the t-test (i.e., the pooled variance)
+t_denominator <- sqrt(varcov[comparecoef,comparecoef] + varcov[refcoef,refcoef] - 2*varcov[comparecoef,refcoef])
+
+# t
+( t <- t_numerator / t_denominator )
+
+# A p-value (approximated from an estimate of the dfs; we'll discuss p-values more next session
+( p <- 2 * ( 1 - pt( abs(t), length(fixef(model))-2 ) ) )
+
+
+

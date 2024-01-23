@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .bigsource, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+	width:65%;
+	margin-left:auto; margin-right:auto;
+	border:1px solid #ccc;
+	overflow:auto;
+	background-color: #FFFFFF;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Coding schemes for categorical variables in regression</title>
+        <link rel="stylesheet" type="text/css" href="stevetools_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body>
+
+
+	<h1 class="centercol">Coding schemes for categorical variables in regression</h2>
+        <p class="centercol">The interpretation of factorial regression output with categorical variables (e.g., from an <code>lmer</code> model in R) depends very much on how the variables
+		are coded. This is particularly relevant in psycholinguistic studies, where <code>lmer</code> models are frequently used to analyze data
+		in categorical factorial designs. As I am frequently asked about this topic, I am providing the below tutorial for reference; for much more detailed
+		discussion of coding schemes for categorical variables, see e.g. <a href="https://stats.oarc.ucla.edu/r/library/r-library-contrast-coding-systems-for-categorical-variables/">http://www.ats.ucla.edu/stat/r/library/contrast_coding.htm</a>
+		and <a href="http://web.archive.org/web/20190718084823/talklab.psy.gla.ac.uk/tvw/catpred">http://talklab.psy.gla.ac.uk/tvw/catpred/</a>.</p>
+
+	<p class="centercol">The quick take-home message is: <strong>if you want to talk about simple effects, use dummy coding; if you want to talk about main effects, use deviation coding</strong>.
+		For an explanation of why, keep reading.</p>
+
+	<h2 class="centercol">The data</h3>
+	<p class="centercol">For this tutorial I am using a subset of the data from <a href="pubs/Politzer-AhlesZhang_2014_JCL.pdf">Politzer-Ahles & Zhang (in press).</a> Several conditions
+		have been removed to end up with a long-format data frame consisting of repeated-measures data from 25 subjects in a 2\(\times\)2 factorial design comparing reaction times
+		in a paradigm including the factors Condition (Unrelated vs. Homogeneous word sets) and Tone (Rising Tone vs. Low Tone sets). The data are available as an
+		.RData file, and this tutorial uses <a href=https://www.r-project.org/>R</a> (and requires that you have the <code>lme4</code> package installed). Run the below code
+		to read in and plot the data.</p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Clear the workspace</span>
+<span class="hl kwd">rm</span><span class="hl std">(</span><span class="hl kwc">list</span><span class="hl std">=</span><span class="hl kwd">ls</span><span class="hl std">())</span>
+
+<span class="hl com"># Load the libraries we will need</span>
+<span class="hl kwd">library</span><span class="hl std">(lme4)</span>
+
+<span class="hl com"># Read the data</span>
+<span class="hl kwd">load</span><span class="hl std">(</span> <span class="hl kwd">url</span><span class="hl std">(</span><span class="hl str">&quot;http://people.ku.edu/~sjpa/data.RData&quot;</span><span class="hl std">) )</span>
+
+
+
+<span class="hl com">### MAKING A BARPLOT WITH 95% CIs</span>
+
+        <span class="hl com"># Get the means</span>
+        <span class="hl std">means</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">tapply</span><span class="hl std">( data</span><span class="hl opt">$</span><span class="hl std">RT,</span> <span class="hl kwd">list</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Condition, data</span><span class="hl opt">$</span><span class="hl std">Tone), mean )</span>
+
+        <span class="hl com">## Get the 95% CIs using the Cousineau-Morey method (Morey, 2008)</span>
+
+                <span class="hl com"># First find the mean for each participant</span>
+                <span class="hl std">ptpmeans</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">aggregate</span><span class="hl std">( data</span><span class="hl opt">$</span><span class="hl std">RT,</span> <span class="hl kwd">list</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Subject), mean )</span>
+                <span class="hl kwd">colnames</span><span class="hl std">(ptpmeans)</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Subject&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Mean&quot;</span><span class="hl std">)</span>
+                <span class="hl kwd">rownames</span><span class="hl std">(ptpmeans)</span> <span class="hl kwb">&lt;-</span> <span class="hl std">ptpmeans</span><span class="hl opt">$</span><span class="hl std">Subject</span>
+
+                <span class="hl com"># Scale the data by subtracting the participant mean and adding the grand mean</span>
+                <span class="hl std">data</span><span class="hl opt">$</span><span class="hl std">scaled_RT</span> <span class="hl kwb">&lt;-</span> <span class="hl std">data</span><span class="hl opt">$</span><span class="hl std">RT</span> <span class="hl opt">-</span> <span class="hl std">ptpmeans[</span><span class="hl kwd">as.character</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Subject),</span><span class="hl str">&quot;Mean&quot;</span><span class="hl std">]</span> <span class="hl opt">+</span> <span class="hl kwd">mean</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">RT)</span>
+
+                <span class="hl com"># The number of conditions</span>
+                <span class="hl std">K</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">length</span><span class="hl std">(</span><span class="hl kwd">levels</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Condition))</span> <span class="hl opt">+</span> <span class="hl kwd">length</span><span class="hl std">(</span><span class="hl kwd">levels</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Tone))</span>
+
+                <span class="hl com"># The number of participants</span>
+                <span class="hl std">N</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">length</span><span class="hl std">(</span><span class="hl kwd">levels</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Subject))</span>
+
+                <span class="hl com"># Get the CIs (using 2 as our estimated t-value, since degrees of freedom for a mixed model are not clear anyway)</span>
+                <span class="hl std">CIs</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">tapply</span><span class="hl std">( data</span><span class="hl opt">$</span><span class="hl std">scaled_RT,</span> <span class="hl kwd">list</span><span class="hl std">( data</span><span class="hl opt">$</span><span class="hl std">Condition, data</span><span class="hl opt">$</span><span class="hl std">Tone), sd )</span> <span class="hl opt">/</span> <span class="hl kwd">sqrt</span><span class="hl std">( N</span><span class="hl opt">-</span><span class="hl num">1</span> <span class="hl std">)</span> <span class="hl opt">*</span> <span class="hl num">2</span> <span class="hl opt">*</span> <span class="hl kwd">sqrt</span><span class="hl std">( K</span><span class="hl opt">/</span><span class="hl std">(K</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">) )</span>
+
+        <span class="hl com">## Done figuring out Cousineau-Morey CIs</span>
+
+        <span class="hl com">## Barplot</span>
+
+                <span class="hl com"># Find the ideal y limits</span>
+                <span class="hl std">ymin</span> <span class="hl kwb">&lt;-</span> <span class="hl num">.9</span> <span class="hl opt">*</span> ( <span class="hl kwd">min</span><span class="hl std">(means)</span><span class="hl opt">-</span><span class="hl kwd">min</span><span class="hl std">(CIs)</span> )
+                <span class="hl std">ymax</span> <span class="hl kwb">&lt;-</span> <span class="hl num">1.1</span> <span class="hl opt">*</span> ( <span class="hl kwd">max</span><span class="hl std">(means)</span><span class="hl opt">+</span><span class="hl kwd">max</span><span class="hl std">(CIs)</span> )
+                
+                <span class="hl com"># Make the barplot</span>
+                <span class="hl std">xvals</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">barplot</span><span class="hl std">( means,</span> <span class="hl kwc">beside</span><span class="hl std">=T,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;indianred&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;cadetblue&quot;</span><span class="hl std">),</span> <span class="hl kwc">ylim</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(ymin, ymax),</span> <span class="hl kwc">xpd</span><span class="hl std">=F )</span>
+
+                <span class="hl com"># Legend</span>
+                <span class="hl kwd">legend</span><span class="hl std">(</span> <span class="hl str">&quot;topright&quot;</span><span class="hl std">,</span> <span class="hl kwc">inset</span><span class="hl std">=</span><span class="hl num">.05</span><span class="hl std">,</span> <span class="hl kwc">legend</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Unrelated&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Homogeneous&quot;</span><span class="hl std">),</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;indianred&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;cadetblue&quot;</span><span class="hl std">) )</span>
+
+                <span class="hl com"># Error bars for confidence intervals</span>
+                <span class="hl kwd">arrows</span><span class="hl std">( xvals, means</span><span class="hl opt">-</span><span class="hl std">CIs, xvals, means</span><span class="hl opt">+</span><span class="hl std">CIs,</span> <span class="hl kwc">angle</span><span class="hl std">=</span><span class="hl num">90</span><span class="hl std">,</span> <span class="hl kwc">code</span><span class="hl std">=</span><span class="hl num">3</span> <span class="hl std">)</span>
+        <span class="hl com">## Done with barplot</span>
+
+<span class="hl com">### DONE PLOTTING</span>
+</pre></div><div class="rimage center"><center><img src="figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></center></div>
+
+</div>
+
+
+
+	<p class="centercol">You should notice a clear main effect of Condition (such that Unrelated sets elicited slower responses than Homogeneous sets), and
+		an apparent interaction (such that the effect of Condition is much larger in Rising-Tone than Low-Tone sets). In what follows, we will
+		analyze these data with linear mixed models, using both <strong>dummy coding</strong>
+		(the default) and <strong>deviation coding</strong> (the coding scheme which approximates ANOVA results output).</p>
+
+	<h2 class="centercol">Dummy coding</h3>
+	<p class="centercol">Calculate a typical linear mixed model using <code>lmer</code>, per the code below. If you are a longtime user of <code>lme4</code> this
+		will look very familiar.</p>
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">dummy_model</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">lmer</span><span class="hl std">( RT</span> <span class="hl opt">~</span> <span class="hl std">Condition</span><span class="hl opt">*</span><span class="hl std">Tone</span> <span class="hl opt">+</span> <span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">|</span><span class="hl std">Subject)</span> <span class="hl opt">+</span> <span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">|</span><span class="hl std">Item)</span><span class="hl std">, data )</span>
+</pre></div>
+</div></div>
+
+	<p class="centercol">If you inspect this model (<code>summary(dummy_model)</code>) you will see the following fixed effects in the output:</p>
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(dummy_model)</span><span class="hl opt">$</span><span class="hl std">coefficients</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##                                Estimate Std. Error   t value
+## (Intercept)                   859.49323   33.14933 25.927918
+## ConditionHomog                -61.12232   26.39940 -2.315292
+## ToneRisingTone                 68.07547   35.01643  1.944101
+## ConditionHomog:ToneRisingTone -50.30980   36.79587 -1.367267
+</pre></div>
+</div></div>
+
+	
+	<p class="centercol">What do these effects mean? To interpret them, you need to understand what dummy coding is and understand the regression equation (i.e., the
+		general linear model.)</p>
+
+	<p class="centercol"><strong>Dummy coding</strong> (also called <strong>treatment coding</strong>) represents the various levels of a factor with 1s and 0s. You can inspect the coding for a factor by running, e.g.,
+		<code>contrasts(data$Condition)</code> or <code>contrasts(data$Tone)</code>. This will give you the following output, letting you know that your variables are dummy-coded:</p>
+
+<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">contrasts</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Condition)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##       Homog
+## Unrel     0
+## Homog     1
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">contrasts</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Tone)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##            RisingTone
+## LowTone             0
+## RisingTone          1
+</pre></div>
+</div></div>
+
+	<p class="centercol">Recall that the regression formula for a model like this, which represents the predicted reaction time for a datapoint as a function of that datapoint's
+		associated Condition, Tone, and Condition\(\times\)Tone interaction, is: \(\hat Y_i = b_0 + b_1 X_{1i} + b_2 X_{2i} \ldots + b_n X_{ni}\). In other words, for any given observation \(i\), you start with the
+		Intercept \(b_0\), then add -61.12 \((b_1)\) times the associated value for Condition (\(X_{1}\)), etc., to reach the predicted value \(\hat Y\) for that observation. Since the value for Condition (\(X_1\)) is either 0 (Unrelated) or 1 (Homogeneous), this amounts
+		to saying that if this datapoint is from the Unrelated condition you add nothing (\(0\times-61.12\)), and if it's from the Homogeneous you subtract 61.12 (\(1\times-61.12\)). The same applies to the effect of Tone.
+		Thus, the Intercept, which is the predicted value for a datapoint for which Condition==Unrelated and Tone==LowTone, corresponds exactly to the predicted
+		value (i.e., the mean, with the additional influence of random effects) for the Unrelated-LowTone condition. The coefficient for ConditionHomog, then, represents how much
+		different the Homogeneous-LowTone condition is from the Intercept (the Unrelated-LowTone condition). Crucially, it should be clear now that <strong>this coefficient does
+		not represent a main effect</strong>. It represents a <em>simple effect</em>: the effect of <em>Condition</em> within <em>Low Tone</em> sets only. Thus, it would be
+		<em>incorrect</em> to cite this coefficient as evidence for a main effect of Condition; this coefficient only shows the simple effect, not the main
+		effect. As you can see from the bar plot, this simple effect will <em>underestimate</em> the main effect in this dataset (in other datasets it might instead overestimate&mdash;for
+		fun, you can look at the barplot and see if you can tell whether the coefficient for Tone in this model will underestimate or overestimate the main effect of Tone).
+		To test a main effect, you need to either conduct model comparison (using e.g. a log-likelihood test), or use <strong>deviation coding</strong>,
+		described below.</p>
+
+	<p class="centercol">Similarly, for a higher-order design (such as 2\(\times\)2\(\times\)2), then a lower-order interaction term (such as a two-way interaction term) does not represent
+		a true interaction in dummy coding; it represents that interaction at only one level of the third factor. For example, if we added a third factor to the experiment, Lexicality,
+		with words as the baseline level and nonwords as the next level, then a Condition\(\times\)Tone interaction term would not represent a true Condition\(\times\)Tone interaction regardless of
+		Lexicality (like it would in an ANOVA); rather, it would represent the Condition\(\times\)Tone interaction for words only, and not for nonwords. This happens for the same reason that a
+		Condition term (for example) represents only the Condition simple effect for LowTone, rather than a Condition main effect across both Tones. In short, then, if you want to test
+		any effects of a lower order than the highest-order interaction in the design (e.g., if you want to test main effects in a 2\(\times\)2 design, if you want to test main effects
+		or two-way interactions in a 2\(\times\)2\(\times\)2, etc.), then you need to either conduct model comparison or use <strong>deviation coding</strong>.</p>
+
+	 <h2 class="centercol">Deviation coding</h3>
+	<p class="centercol">In <strong>deviation coding</strong>, the contrasts between levels of a [two-level] factor are represented not as 0s and 1s, but as -.5s and .5s. (You may also
+		hear about <strong>sum coding</strong> or <strong>effect coding</strong>, which is the same except that it uses -1s and 1s rather than -.5s and .5s; that scheme is sometimes also called deviation
+		coding, which can be confusing.) Thus, there is no longer any one condition that is represented by all 0s; therefore, the Intercept in a model does not represent the baseline condition (like it did
+		in a dummy-coded model), but it now represents the grand mean. For reasons we will see below, this makes
+		deviation coding appropriate for testing main effects of two-level factors.</p>
+
+	<p class="centercol">First, convert the factors from dummy-coded factors to deviation-coded factors. You can do so using the following code:</p>
+
+<div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">contrasts</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Tone)</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">rbind</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl num">.5</span><span class="hl std">)</span>
+<span class="hl kwd">colnames</span><span class="hl std">(</span><span class="hl kwd">contrasts</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Tone))</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">levels</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Tone)[</span><span class="hl num">2</span><span class="hl std">]</span>
+
+<span class="hl kwd">contrasts</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Condition)</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">rbind</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl num">.5</span><span class="hl std">)</span>
+<span class="hl kwd">colnames</span><span class="hl std">(</span><span class="hl kwd">contrasts</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Condition))</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">levels</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Condition)[</span><span class="hl num">2</span><span class="hl std">]</span>
+</pre></div>
+</div></div>
+
+	<p class="centercol">Then compute a model using the same regression formula used above:</p>
+<div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">deviation_model</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">lmer</span><span class="hl std">( RT</span> <span class="hl opt">~</span> <span class="hl std">Condition</span><span class="hl opt">*</span><span class="hl std">Tone</span> <span class="hl opt">+</span> <span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">|</span><span class="hl std">Subject)</span> <span class="hl opt">+</span> <span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">|</span><span class="hl std">Item)</span><span class="hl std">, data )</span>
+</pre></div>
+</div></div>
+
+	<p class="centercol">When you inspect this model (<code>summary(deviation_model)</code>) you will see the following fixed effects in the output. Notice that the coefficients
+		for Intercept, Condition, and Tone are <em>different</em> than the corresponding coefficients in the dummy-coded model.</p>
+<div class="chunk" id="unnamed-chunk-7"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(deviation_model)</span><span class="hl opt">$</span><span class="hl std">coefficients</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##                                Estimate Std. Error   t value
+## (Intercept)                   850.39235   26.61432 31.952431
+## ConditionHomog                -86.27722   18.41457 -4.685268
+## ToneRisingTone                 42.92057   29.69130  1.445560
+## ConditionHomog:ToneRisingTone -50.30980   36.79587 -1.367267
+</pre></div>
+</div></div>
+
+	<p class="centercol">This model is essentially the same model as that we computed with dummy coding (you can confirm using model comparison, with
+		<code>anova(deviation_model,dummy_model)</code>, that the two models have the exact same fit); the difference is in what the coefficients represent.
+		Whereas in the dummy-coded model the intercept represented the mean for the baseline condition and the next two coefficients represented
+		simple effects (the difference between one particular condition and the baseline), in the deviation-coded model the intercept
+		represents the grand mean (across all conditions) and the coefficients can be interpreted directly as main effects. Specifically, because each
+		observation of data has a value of either -.5 or .5 for Condition, the coefficient for Condition means that Homogeneous observations are
+		(\(.5 \times -86.28 = -43.14\))&nbsp;ms slower than the grand mean, and Unrelated observations are (\(-.5\times-86.28 = 43.14\))&nbsp;ms slower; by extension
+		this means that the difference between Homogeneous and Unrelated observations is (\(-43.14 - 43.14 = -86.28\))&nbsp;ms, exactly that reported in the
+		model coefficient. The same logic can be used to show that the model coefficient for Tone corresponds to the main effect of Tone.</p>
+
+	<p class="centercol">(Note that these reported main effects will not correspond exactly to the difference in the raw means of the respective conditions&mdash;that
+		is to say, while the model reports a -86.28&nbsp;main effect of Condition, the difference between the actual means (which can be seen with
+		<code>tapply(data$RT,data$Condition,mean)</code>) will likely not be this exact value. This is because the model is also accounting for
+		random effects (repeated measures), which a raw mean is not accounting for. If you calculated a deviation-coded OLS regression with no
+		random effects (e.g., with a fully between-subjects design where each subject only contributed one observation), the coefficient for Condition should indeed equal the difference between the predicted values for Unrelated and
+		Homogeneous conditions. As for actually demonstrating that this is the case, I will leave that as a fun exercise for the reader.)</p>
+
+	<h2 class="centercol">Conclusion</h2>
+	<p class="centercol">As we have seen above, <strong>dummy coding reveals simple effects</strong> and <strong>deviation coding reveals main effects</strong>.
+		Thus, when you interpret (and report) models, especially from a factorial design, it is important to understand the coding scheme you used for categorical predictors. Depending on the situation and
+		the research question of interest, one scheme or another might be more appropriate. For instance, if you want to report mixed-effect model results
+		the same way you would report analysis of variance (ANOVA) results, deviation coding is ideal. On the other hand, dummy coding may be ideal when
+		you are interested in simple effects. For example, a useful trick is to use dummy-coded factors that are nested, rather than crossed, in which case
+		the model coefficients will give the simple effect of the nest<em>ed</em> factor at each level of the nest<em>ing</em> factor; the following code,
+		for instance, will return coefficients giving the Condition effect for each tone:</p>
+<div class="chunk" id="unnamed-chunk-8"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Convert Tone back to dummy coding</span>
+<span class="hl kwd">contrasts</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Tone)</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">rbind</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">)</span>
+<span class="hl kwd">colnames</span><span class="hl std">(</span><span class="hl kwd">contrasts</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Tone))</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">levels</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Tone)[</span><span class="hl num">2</span><span class="hl std">]</span>
+
+<span class="hl com"># Convert Condition back to dummy coding</span>
+<span class="hl kwd">contrasts</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Condition)</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">rbind</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">)</span>
+<span class="hl kwd">colnames</span><span class="hl std">(</span><span class="hl kwd">contrasts</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Condition))</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">levels</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Condition)[</span><span class="hl num">2</span><span class="hl std">]</span>
+
+<span class="hl com"># Calculate a nested model</span>
+<span class="hl std">nested_dummy_model</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">lmer</span><span class="hl std">( RT</span> <span class="hl opt">~</span> <span class="hl std">Tone</span><span class="hl opt">/</span><span class="hl std">Condition</span> <span class="hl opt">+</span> <span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">|</span><span class="hl std">Subject)</span> <span class="hl opt">+</span> <span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">|</span><span class="hl std">Item)</span><span class="hl std">, data )</span>
+</pre></div>
+</div></div>
+
+	<p class="centercol">After confirming that this model has the exact same fit as the other models (<code>anova(dummy_model,nested_dummy_model)</code>),
+		you can inspect the model to see that it gives a separate Condition coefficient for each level of Tone. (This model doesn't provide any coefficient
+		that directly reports and tests the significance of the interaction, though; with this coding scheme, the interaction must be tested with model comparison.
+		This is in fact the exact scheme I used to analyze and report these data in <a href="pubs/Politzer-AhlesZhang_2014_JCL.pdf">Politzer-Ahles & Zhang, in press</a>, as well as
+		similar data in <a href="http://www.plosone.org/article/info:doi/10.1371/journal.pone.0063943">Politzer-Ahles & Fiorentino, 2013</a>.)</p>
+
+<div class="chunk" id="unnamed-chunk-9"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(nested_dummy_model)</span><span class="hl opt">$</span><span class="hl std">coefficients</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##                                 Estimate Std. Error   t value
+## (Intercept)                    859.49323   33.14933 25.927918
+## ToneRisingTone                  68.07547   35.01643  1.944101
+## ToneLowTone:ConditionHomog     -61.12232   26.39940 -2.315292
+## ToneRisingTone:ConditionHomog -111.43211   25.65605 -4.343307
+</pre></div>
+</div></div>
+	
+	<p class="centercol">Finally, note that this example used the simplest possible factorial design, 2\(\times\)2. The presentation and interpretation of model
+		coefficients will be more complicated than this if the design includes any polytomous factors (i.e., factors with more than two levels).
+		See the links provided at the top of this article for more detailed discussion, including examples, of how these coding schemes work in
+		such designs. For polytomous factors, most of the discussion above is moot, since once you include a polytomous factor in your design then you have left the world of
+		making broad claims about main effects and interactions via model coefficients (since any such main effects and interactions will have multiple coefficients
+		associated with them) and entered the world where model comparison is necessary.</p>
+
+
+	<hr>
+	<p class="mini">by <a href="/~sjpa/">Stephen Politzer-Ahles</a>. Last modified on 2015-12-22.</p>
+
+
+
+    </body>
+</html>

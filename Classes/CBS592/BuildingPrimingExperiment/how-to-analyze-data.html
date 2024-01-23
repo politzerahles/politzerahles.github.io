@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>How to analyze data</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>How to analyze data (1-3 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">Once you have some data (from yourself, from some friends you tested the experiment on, etc.), you can try analyzing it.</p>
+<p class="centercol">The easiest way to analyze data is to load it into Excel. Once you have it in Excel, Excel provides a lot of options that can streamline your data analysis.</p>
+
+<h4 class="centercol">Importing data to Excel</h4>
+<p class="centercol">See the video below to see how to import your data. Your Excel interface may look slightly different from mine, depending on your Excel version and your settings. If you cannot or don't
+	want to watch the video, read the instructions below the video.</p>
+<center><iframe width="700" height="394" src="https://www.youtube.com/embed/07ngeE-7Gss?si=4cn4TddO9KjwhLV3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></center>
+<ul class="center">
+	<li>Click a cell in Excel (I usually click the top-left corner cell, A1)</li>
+	<li>Click on the "Data" tab in the ribbon near the top, then click "From text" or "Get data from text".</li>
+	<li>In the window that pops up, navigate to the folder where your results file is kept. If you don't see anything, you may need to click on the drop-down menu that says "Text files", and instead select "All files".</li>
+	<li>Double-click to open the appropriate results file.</li>
+	<li>In the "import wizard" that opens up, maybe sure "Delimited" (<em>not</em> "Fixed width") is selected. Click "Next."</li>
+	<li>Set the delimiter to "Space".</li>
+	<li>Click "Finish" and click "OK" to import the data. You should now see your data in Excel, with the codes and the reaction times in separate columns.</li>
+	<li>Optionally: delete the extra rows and columns above and to the left of your actual data.</li>
+</ul>
+
+<h4 class="centercol">Organizing data in Excel</h4>
+<p class="centercol">Once your data are in Excel, you can calculate the averages you need for each condition. Excel has some powerful features you can take advantage of. If you want to do advanced Excel
+	stuff, first complete the below worksheet to get familiar with the basics of how Excel works (including cell addresses, formulae, and dynamic and static references).</p>
+<ul class="center">
+	<li><a href="Excel worksheet.pdf">Excel worksheet.pdf</a></li>
+	<li><a href="Excel worksheet hints.pdf">Excel worksheet hints.pdf</a></li>
+	<li><a href="Excel data.xlsx">Excel data.xlsx</a></li>
+</ul>
+<p class="centercol">Once you have finished the worksheet and are familiar with the foundational concepts of Excel, there are many ways you can use Excel to analyze your data. Below I describe three different
+	approaches/methods you can use. The first method is simplest (i.e., it involves the least learning about Excel techniques) but most labor-intensive (you have to do more work by hand); the last is most
+	complicated (i.e., you need to understand some complicated Excel concepts) but saves the most time later (once you've invested time in learning Excel, the method can automate most of the other work for
+	you). You can choose whichever method you are most comfortable with. For each method I have posted a video demonstration as well as a written explanation.</p>
+
+<p class="centercol"><em>Method 1: Manual calculation<br /></em></p>
+<center><iframe width="700" height="394" src="https://www.youtube.com/embed/pVoKF73Iwow?si=velQ3SGRK7JygdPM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></center>
+<p class="centercol">This method consists of just manually averaging together the appropriate reaction times from the "related" condition, and again manually averaging together the appropriate reaction times
+	rom the "unrelated" condition. To create an average, click on any empty cell in the Excel sheet, and type <span style="color: #339966;"><strong><span style="font-family: courier new, courier;">=AVERAGE(</span></strong></span> .
+	This will create a formula. After that, click on each reaction time you want to include (to include multiple reaction times, you should either hold the "Ctrl" key while clicking them, or you should type a
+	comma after each one.) Once finished, click Enter to see the average. Repeat this process again to get the unrelated reaction times.</p>
+<p class="centercol"></p>
+<p class="centercol"><em>Method 2: Manual sorting and then manual calculation</em></p>
+<center><iframe width="700" height="394" src="https://www.youtube.com/embed/WAUFV8ZjXWM?si=pNqZGNkMrWsOVDcL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></center>
+<p class="centercol">(Note: because of a recording problem, you can't see some of the dialog windows that open during this video. But you can still hear the narration explaining what is happening.)</p>
+<p class="centercol">This is similar to Method 1, but you can first rearrange the data to make the process more efficient. Select your two columns of data and then click the "Data" tab and click "Sort". Then,
+	sort the data (based on the column that has the codes, not the column that has the reaction times). After this, all the "100s" will be together, all the "200s" will be together, etc. Then you can manually
+	calculate the reaction times in essentially the same way as shown in Method 1, but now it will be easier and faster to do that.</p>
+<p class="centercol"></p>
+<p class="centercol"><em>Method 3: Formula-based calculation</em></p>
+<center><iframe width="700" height="394" src="https://www.youtube.com/embed/XUIZM0fbHeM?si=_p_4C-S22xKtzXii" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></center>
+<p class="centercol">If you get good with using Excel formulae, you can set up formulae that will do all this work automatically. The procedure shown in the video is just one example.</p>
+<p class="centercol">In this example, we use the <strong><span style="color: #339966; font-family: courier new, courier;">=IF()</span></strong> formula to select sets of trials that meet a certain condition
+	(such as having appropriate codes for "related" pairs). An <span style="color: #339966; font-family: courier new, courier;"><strong>=IF()</strong></span> formula is formatted as follows:
+	<strong>=IF( <em>condition</em>, <em>value if true</em>, <em>value if false</em> )</strong>. What that means is, Excel will check to see if a certain condition that you specify is true. If the condition
+	is true, it will show &lt;<em>value if true</em>&gt; in that cell, otherwise it will show &lt;<em>value if false</em>&gt;. We can take advantage of this to create a column that consists only of "related"
+	trial reaction times (and another that consists only of "unrelated" trial reaction times), and get the average for it.<br />(In this example, I am assuming that the trial codes are in Column A, and
+	reaction times in Column B)<br /><br /></p>
+<ul class="center">
+	<li>In a new column (e.g., in cell C2), type <span style="font-family: courier new, courier;"><strong><span style="color: #339966;">=IF( AND(A2&gt;100,A2&lt;200), B2, "" )</span></strong></span>.
+		<ul>
+			<li>This will check if two conditions are true: is the value in A2 (i.e., the trial code for this row) greater than 100, AND is A2 less than 200? (If it's greater than 100 and less than 200, that means it's in the range 101-199, i.e., it's a "related" trial.)</li>
+			<li>If the trial code is in the appropriate range, then this cell will now show the value of B2, i.e., the reaction time for this trial.</li>
+			<li>If the trial code is not in the appropriate range, then this cell will now show nothing ("" is an empty string, i.e., just a word that is 0 characters long).</li>
+		</ul>
+	</li>
+	<li>Click on the cell where you just put this formula (cell C2). You should see a thin green box appear around the cell, with a green square in the bottom-right corner. Click on that green square and,
+		holding the button down, "drag" the formula all the way down the column. (A quicker way to do the same thing is to just double-click the square). Once you've done this, column C should consist of
+		all the reaction times for "related" trials, and no other reaction times.</li>
+	<li>Click on any free empty cell (I like to use one in column C, above or below the data), type <span style="font-family: courier new, courier; color: #339966;"><strong>=AVERAGE(</strong></span> , and
+		select the numbers in column C (I like to hold SHIFT so I can click and drag to select a whole range of cells, e.g., from C2 down to the end of the data). Click Enter, and the average will appear.</li>
+	<li>Repeat this process to get the averages for the "unrelated" trials. You will have to do it in a new column this time, and your formula will have to be slightly modified (instead of checking to see if
+		the trial code is in the 101-199 range, you should check to see if it is in the 201-299 range.</li>
+</ul>
+
+<hr />
+<p class="centercol"><em><span style="text-decoration: underline;"><strong>Important</strong></span><strong><span style="text-decoration: underline;"> reminder!</span></strong></em> Don't leave negative
+	numbers in your data when you do data analysis! (If you aren't sure why, review the discussion of this issue from the "Priming" module; in the data analysis step of that module, we discussed why you
+	shouldn't include negative numbers in your analysis.) Before doing the data analysis, you should choose what to do about negative numbers in your results.</p>
+<hr />
+
+<p class="centercol">You don't need to submit anything for this task; this is just to prepare you for what you will need to do later. When you are confident that you are able to analyze datasets you get
+	from DMDX, continue on to the next section: "<a href="how-to-make-statistical-conclusions.html">How to make statistical conclusions</a>".</p>
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-07-12. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+

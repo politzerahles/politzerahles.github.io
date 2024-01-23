@@ -1,0 +1,584 @@
+\documentclass[letterpaper,12pt]{article}
+%\pagestyle{empty}
+\usepackage[margin=1in,
+vmargin={22pt,.6in},
+includefoot,includehead]{geometry}
+\usepackage{gb4e}	%for numbered examples
+\let\eachwordone=\sl
+\usepackage{qtree}	%for trees
+\usepackage{tree-dvips}
+\usepackage[normalem]{ulem}	%for strikethrough
+\usepackage{tipa}
+\usepackage{soul}
+%\usepackage{achicago}
+\pagestyle{empty}
+%\usepackage{setspace}
+%\usepackage{lsalike}
+\usepackage{times}
+%\usepackage{sectsty}
+%\sectionfont{\normalsize}
+\usepackage{chicago}
+\usepackage{sectsty}
+\allsectionsfont{\normalsize}
+%\pagestyle{fancy}
+%\headheight 35pt
+%\lhead{Kansas Working Papers in Linguistics, Volume 32, ??-??}
+
+
+
+\newcommand{\poss}[2]{\textsc{agr}.{\footnotesize #1}#2}
+\newcommand{\posst}{\textsc{agr}}
+\newcommand{\gen}{\textsc{gen}}
+\newcommand{\pl}{\textsc{pl}}
+\newcommand{\trace}[1]{$\langle$#1$\rangle$}
+\newcommand{\feat}[1]{{\scriptsize [#1]}\normalsize}
+\newcommand{\strutt}[1]{\rule[-#1]{0cm}{1cm}}
+
+\title{\large \textbf{A Minimalist analysis of Uyghur genitives}}
+\author{\textit{Stephen Politzer-Ahles}\\
+\textit{University of Kansas}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\thispagestyle{empty}
+\pagestyle{empty}
+
+
+\begin{abstract}
+\noindent This paper investigates the syntactic structure of so-called genitive-possessive DPs in Uyghur, a Turkic language. Uyghur genitive-possessives bear suffixes on both the ``possessing'' entity (comparable to the Saxon genitive \emph{'s} in English)
+and the ``possessed'' one. The suffix on the ``possessor'', \textsl{-ning}, is considered a genitive case marker; the suffix on the ``possessed'' has multiple allomorphs and is considered an agreement marker that agrees in person and number with the ``possessor''. Based on the multiplicity of semantic roles that the ``possessing'' object may bear, and the observation that it may be dropped from the DP, an analogy is made between genitive-possessive DPs and finite TPs. It is
+proposed that ``possessors'' behave in a manner parallel to that of subjects of TPs: they are introduced by a quasi-functional
+head \textit{n} or within a gerund, and raise to [Spec,DP] to receive genitive case from D. The agreement suffix, on the other hand, is treated as the phonological realization of an Agr head that is introduced with unvalued \emph{phi}-features, features
+which are valued when the ``possessing'' entity passes through the specifier of AgrP. Adopting this structure can explain data on the realization of definiteness in genitive and non-genitive DPs, and the distribution of adverbials within gerunds.
+\end{abstract}
+
+\section*{Introduction}
+%\renewcommand{\baselinestretch}{2}
+One of the key components to a theory of noun phrase structure is an explanation of how possessive marking is carried out within the DP. For example, a theory of
+English DPs owes an explanation of where the \textit{'s} comes from in phrases like ``John's book'', and how case-checking is done in such a phrase. Turkic
+languages present an interesting case with regards to DPs, since they include what are called ``genitive-possessive'' constructions: both the \textit{possessor} and the
+\textit{possessed} objects bear affixes. Thus, in these languages, DPs must have the proper apparatus to produce not just one, but two morphological realizations of possession. This paper addresses that issue in one Turkic language, Uyghur, which is spoken in western China and Central Asia. 
+
+\S 1 presents the basic properties of genitive-possessive DPs in Uyghur.
+\S 2 offers a  proposal for how case and agreement checking is carried out within these DPs.
+\S 3 demonstrates how this analysis can account for deverbal, argument-selecting nouns.
+%\S 4 considers the interaction between possessive marking and structural/semantic case on the DP.
+\S 4 offers some brief conclusions, and identifies topics for future study.
+
+\section{Syntactic and semantic properties}
+\subsection{Morphological marking and agreement}
+In Uyghur genitive-possessive DPs, both the ``possessor'' and the ``possessed'' bear affixes. The ``possessor'' bears the general affix \textsl{-ning}, which is traditionally analyzed as a Genitive Case suffix. The ``possessed'' bears a suffix which agrees in person and number with the possessor, and has been called an ``\textit{ownership-dependent} category marker''~\cite[p. 51]{Tomur}, a ``\textit{possessive} suffix''~\cite[p. 26]{deJong,Dede}, or an ``\textit{agreement} suffix''~\cite[p. 243]{vandeCraats}. The
+behavior of this suffix (glossed as \posst{} throughout this paper) is illustrated below. Examples~(1a-c) demonstrate that the \posst{} suffix must agree with the possessor.
+Example~(1d) demonstrates that it does not agree in number with the possessed---in other words, that if the possessor is singular and the possessed is plural, the
+\posst{} suffix is singular. Examples~(2a-c) demonstrate the same points using a different pronoun, and example~(3) demonstrates its use when the possessor is a full
+noun:\footnote{Uyghur phonology has a complicated system of vowel changes including vowel reduction, vowel deletion, epenthesis, and vowel harmony. Therefore, in the examples throughout this paper, sometimes root forms will change slightly depending on the suffix, or sometimes the suffix will change slightly depending on the root. These phonological operations do not signal any change in meaning. For a more in-depth discussion of Uyghur phonology, see the introductory chapters of Engs\ae{}th et al.~\citeyear{Engetal} and Hahn~\citeyear{Hahn}.}
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex[]{\gll m\"e-ning alma-m\\
+	     me-\gen{}    apple-\poss{1}{s}\\
+		  \glt ``my apple''
+		 }     
+	\ex[*]{\gll m\"e-ning almi-miz\\
+	            me-\gen{}    apple-\poss{1}{p}\\
+	      }
+	\ex[*]{\gll m\"e-ning almi-si\\
+	            me-\gen{}      apple-\poss{3}{s}\\
+	      }
+	\ex[]{\gll m\"e-ning almi-lir-im\\
+	         me-\gen{}    apple-\pl-\poss{1}{s}\\
+	    \glt ``my apples''
+	    }
+	\end{xlist}
+\ex
+	\begin{xlist}
+	\ex[]{\gll biz-ning almi-miz\\
+	         us-\gen{}   apple-\poss{1}{p}\\
+	    \glt ``our apple''
+	    }
+	\ex[]{\gll biz-ning almi-lir-imiz\\
+	         our-\gen{}  apple-\pl-\poss{1}{p}\\
+	    \glt ``our apples''
+	    }
+  \ex[*]{\gll biz-ning almi-lir-im\\
+              our-\gen{} apple-\pl-\poss{1}{s}\\
+        }
+  \end{xlist}
+\ex[]{\gll Mehmud-ning almi-si\\
+           Mehmud-\gen{}  apple-\poss{3}{s}\\
+      \glt ``Mehmud's apple''
+      }
+\end{exe}
+
+\subsection{Semantic roles and the interpretation of ``possession''}
+Although the preceding introduction used the terms ``possessor'' and ``possessed'' to indicate the nouns marked with the \gen{} and \posst{} suffixes,
+in reality the nouns do not always perform these roles. The genitive-possessive construction may also indicate kinship (3a), association (3b), an undergoer-action
+relationship (3c), or other roles.
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex	\gll Rene-ning ati-si\\
+					 Rene-\gen{}  father-\poss{3}{s}\\
+	\ex \gll Rene-ning ders-i\\
+				   Rene-\gen{} class-\poss{3}{s}\\
+	\ex \gll Rene-ning vapat-i\\
+					 Rene-\gen{}  death-\poss{3}{s}\\
+	\end{xlist}
+\end{exe}
+This suggests that ``possessor'' is a syntactic notion, rather than a semantic one: a noun that occupies a certain point in the
+syntactic structure bears [gen] case and is interpreted as the structural ``possessor''. This is similar to the behavior of sentential
+subjects, which can bear any number of \mbox{theta-roles} \mbox{($\theta$-roles)} but always appear in a particular location ([Spec,TP] in English) and bear
+nominative case. Because of this variation in semantic roles, for the remainder of this paper I will avoid the terms ``possessor'' and ``possessed'' for these constituents at the surface, and instead use the terms
+``DP-subject'' and ``head noun'' to refer to the nouns marked with the \gen{} and \posst{} suffixes, respectively. The reason for my use of the term ``DP-subject'' to refer to nouns marked with \textsl{-ning} is that their structural position is parallel to that of sentential ``TP-subjects'', as I will argue in \S 2.
+
+If a noun does not bear [gen] case, it is not interpreted as a DP-subject or ``possessor'' (whatever the actual semantic role of ``possessor'' is). In Uyghur there is a set of noun-noun compounds in which the second noun is marked with \posst{} but the first noun is not marked
+with \gen{} as would be expected in a normal genitive-possessive phrase~\cite[pp. 41--2]{deJong}. These are compounds in which the two nouns
+are have a close inherent relationship, usually because the phrase is a proper name (4) or because it signifies a particular subtype of the \posst{}-marked
+noun (5):
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex \gll Tarim oymanliq-i\\
+					 Tarim	basin-\poss{3}{s}\\
+			\glt ``the Tarim basin''
+	\ex \gll Azadliq yol-i\\
+					 Liberartion street-\poss{3}{s}\\
+			\glt ``Liberation Avenue''
+	\ex \gll D\"ongk\"ovr\"uk bazir-i\\
+					 D\"ongk\"ovr\"uk bazaar-\poss{3}{s}\\
+			\glt ``D\"ongk\"ovr\"uk Bazaar''
+	\ex \gll Kentucky ashxani-si\\
+					 Kentucky restaurant-\poss{3}{s}\\
+			\glt ``Kentucky Fried Chicken'' (lit.: ``Kentucky restaurant'')
+	\end{xlist}
+\ex
+	\begin{xlist}
+	\ex	\gll kala g\"osh-i\\
+			cow meat-\poss{3}{s}\\
+			\glt ``beef''
+	\ex	\gll qol somki-si\\
+			     hand bag-\poss{3}{s}\\
+			\glt ``handbag''
+	\ex \gll partiye nizamnami-si\\
+					 party   constitution-\poss{3}{s}\\
+			\glt ``party constitution''
+	\end{xlist}
+\end{exe} 
+These phrases, as predicted, are not interpreted as ``possessive'' and do not correspond to possessive phrases in English, further suggesting that it is the
+\gen{} suffix \textsl{-ning} rather than the \posst{} suffix that generates this interpretation.
+					 
+\subsection{Distribution of DP-subjects and suffixes}
+In genitive-possessive constructions, the \gen-marked DP-subject may be omitted. This is best illustrated in constructions where the DP-subject is a first-
+or second-person pronoun, since the referents for those pronouns are unambigous. In the case of third-person, if a third-person DP-subject is omitted then the 
+construction gets its referent from the preceding discourse, as shown in (9b).
+\begin{exe}
+	\ex \gll (M\"e-ning) ata-m bek \"egiz.\\
+					 (me-\gen{}) father-\poss{1}{s} very tall\\
+			\glt ``My father is very tall.''
+	\ex \gll (Siz-ning) kitab-ingiz qiziq-mu?\\
+					 (you-\gen{}) book-\poss{2}{s} interesting-\textsc{inter}\\
+			\glt ``Is your book interesting?''
+\ex
+	\begin{xlist}	
+	\ex \gll Mehmud-ning ders-i uzaq.\\
+					 Mehmud-\gen{} class-\poss{3}{s} long\\
+			\glt ``Mehmud's class is long''
+	\ex \gll Mehmud t\"exi kel-mi-di. Ders-i uzaq.\\
+					Mehmud still come-\textsc{neg}-\textsc{past}.{\footnotesize 3}s class-\poss{3}{s} long\\
+			\glt ``Mehmud has not arrived yet. His(Mehmud's) class is long.''
+	\end{xlist}
+\end{exe}
+The DP-subject is more likely to be kept if it is to receive focus (for the purpose of contrast, or to refer
+specifically to the possessor) or, in the case of third-person genitives, to bring in a DP-subject that is not present or not most recent in the preceding discourse.
+
+There are also constructions in which one or the other of the relevant suffixes is dropped. The preceding section
+demonstrated ``non-genitive'' compounds in which \posst{} marking appears but there is no \gen{} marking; when \gen{} marking does not appear, the compound is not interpreted as a genitive-possessive phrase. On the other hand, under limited
+circumstances, the \posst{} suffix may be dropped without losing the possessive interpretation. For instance, in informal speech the \posst{} suffix is sometimes dropped and a pronominal DP-subject with [gen] case pronounced:
+\begin{exe}
+\ex \gll biz-ning \"oy\\
+				 us-\gen{} house\\
+	  \glt ``our house''\\
+	       (Example from Engs\ae{}th et al.~\citeyear[p. 117]{Engetal}; see also De~Jong~\citeyear[p. 39]{deJong})
+\end{exe}
+Turkish (but not Uyghur) allows the \posst{} suffix to be dropped in situations where the emphasis is on ``identity, not possession''~\cite[p. 26]{Dede}:
+\begin{exe}
+\ex \gll biz-im Ankara\\
+				 us-\gen{} Ankara\\
+				 ``our Ankara'' (the Ankara that we know)\\
+				 (Example from Dede~\citeyear[p. 27]{Dede})
+\end{exe}
+These observations suggest that [gen] case is more important to the interpretation than \posst{} marking, and that the latter is
+only a syntactic reflex. The following section will elaborate on what these two suffixes represent, what contribution they make
+during the derivation, and where they originate from.
+
+\section{Case checking and agreement marking in genitive-possessives}
+I propose that the derivation of Uyghur genitive-possessive DPs is parallel to that assumed for simple TPs, and that the head noun functions structurally like the verb of
+a TP and the DP-subject functions like the TP-subject. This comparison is motivated by the phenomenon of DP-subject dropping described above, and its similarity to
+TP-subject dropping at the sentence level (i.e., \textit{pro}-drop).
+
+Uyghur verbs bear
+inflection that, in present and past perfect, agrees in person and number with the subject. In such cases, the subject may optionally be dropped:
+\begin{exe}
+\ex \gll (Men) b\"ug\"un tash k\"ord\"um.\\
+				 (I) today rock saw\\
+		\glt ``Today (I) saw a rock.''
+\end{exe}
+ The subject is
+less likely to be dropped (more likely to be pronounced) if it is receiving focus or bringing in a new discourse referent---in other words, under the same
+conditions that the DP-subject in a genitive-possessive DP is less likely to be dropped; this parallel has been noticed at least as early as
+Nilsson~\citeyear[p. 151]{Nilsson}. It seems that there is a nuanced division of labor between inflection
+(verbal conjugation or \posst{} marking) and the overt nominal (the subject of TP or DP). The inflection identifies some characteristics of the
+subject of an event or DP-subject of a noun, specifically its person and number. The overt nominal, on the other hand, names the referent specifically, either directly in the case of nouns or indirectly in the case of pronouns.
+
+I will adopt this analogy between TP-subjects and DP-subjects and, for the remainder of the paper, see how far it can go towards explaining the behavior of Uyghur
+genitive-possessives. 
+
+\subsection{Case checking}
+We will assume that just as the subject in a TP is brought in by quasi-functional head \textit{v}, the subject in a DP is brought in by a quasi-functional head \textit{n}, which takes NP as its complement. (For now we will assume that the head noun is a fully-formed NP; the following section will discuss heads that are gerunds with internal structure of their own.) We further assume that, like many languages' TP-subjects, Uyghur DP-subjects raise to [Spec, D], while head nouns adjoin to \textit{n} and possibly to D. Just as TP-subjects receive [nom] case from T, DP-subjects will receive [gen] case from D. A simple tree is shown below; arrows denote movement (copying):
+
+\begin{exe}
+\ex
+	\begin{xlist}
+\ex \gll Mehmud-ning ati-si\\
+				 Mehmud-\gen{} father-\poss{3}{s}\\
+		\glt ``Mehmud's father''
+\ex
+\Tree
+				[.DP
+					\node{mehmudend}{\textsl{Mehmud}\feat{case:gen}}
+					[.D'\feat{\sout{gen}}
+						[.\textit{n}P
+							\node{mehmudbegin}{\trace{\textsl{Mehmud}\feat{\sout{3s}~;~case:}}}\\Mehmud
+							[.\textit{n}'
+								\qroof{\node{atabegin}{\trace{\textsl{ata}}}\\father}.NP
+								\node{atan}{\trace{\textit{n}\feat{Infl:~;~$\phi$:3s}~{\textsl{ata}}}}
+							] !\qsetw{3cm}
+						] !\qsetw{5cm}
+						[.D$_{gen}$ D$_{gen}$\feat{\sout{\posst}} [.\node{ataend}{\textit{n}\feat{Infl:\posst;~$\phi$:3s}} \textit{n} \textsl{ata} ] ]
+					] !\qsetw{3cm}
+				]
+				{\makedash{4pt}
+				\anodecurve[br]{atabegin}[br]{atan}{.5in}
+				\anodecurve[r]{atan}[br]{ataend}{.75in}
+				\anodecurve[tl]{mehmudbegin}[bl]{mehmudend}{.5in}
+				}
+	\end{xlist}
+\end{exe}
+This DP is derived as follows:
+\begin{itemize}
+	\item The NP \textsl{ata} (``father'') is selected as a complement by \textit{n}. Uyghur is a specifier-first, head-final SOV language (similar to
+	Turkish~\cite[p. 233]{vandeCraats} and Japanese~\cite{Koizumi,FukuiSakai}), so \textit{n} is merged on the right.
+	\item \textit{n} introduces \textsl{Mehmud} as its specifier, to fill a c-selectional requirement ([\emph{u}D]) and to get its \mbox{\textit{phi} features} \mbox{($\phi$ features)} valued; the head
+	noun \textsl{ata} raises and adjoins to \textit{n} and hosts that head's inflection. The \mbox{$\phi$ features} on \textit{n} are valued as third-person singular ([3s]), but the phonological interface does not know how to pronounce those features unless it also knows what inflection they are
+	specifying, and \emph{n}'s inflectional feature is still unvalued ([Infl: ]).
+	\item \textit{n}P is becomes the complement of D$_{gen}$,\footnote{Throughout this paper, DP is shown as being head-final, like the rest of the XPs in Uyghur.
+	The location of demonstratives and articles in Uyghur, however, raises questions about where D is actually located:
+	\begin{exe}
+	\ex \gll m\"e-ning bu kitab-im\\
+						 me-\gen{} this book-\poss{1}{s}\\
+			\glt ``this book of mine''
+	\ex \gll m\"e-ning bir kitab-im\\
+					 me-\gen{} one book-\poss{1}{s}\\
+			\glt ``a book of mine''
+	\end{exe}
+	There is not yet a satisfactory account of these phenomena, and thus in this paper I remain agnostic about the location of D.
+	} a null D that grants [gen] case and \posst{} inflectional features. \textsl{Mehmud} raises to [Spec,D] to receive the [gen] case, which will be pronounced as \textsl{-ning} thanks to morphophonological interface rules. Likewise, the whole \textit{n} complex raises to adjoin with D to have its inflectional features valued. \posst{} inflection with [3s] \mbox{$\phi$ features} will
+	be pronounced as \textsl{si} on the only potential host, \textsl{ata}.
+\end{itemize}
+
+In this schematic, the supposition of a quasi-functional projection \textit{n}P intermediate to NP and DP that is responsible for licensing a subject-like nominal is in line
+with the claim put forth in Adger~\citeyear{Adger}. This sort of structure differs, however, from the view
+taken by van de Craats and colleagues~\citeyear{vandeCraats}, who posit that the DP-subject is originally merged as the complement of the head noun and later raises
+out of NP. I adopt the \textit{n}P analysis instead since it is analogous to the \textit{v}P hypothesis for clauses. Just as \textit{v} both introduces an argument
+and facilitates subject-verb agreement by hosting that argument's \mbox{$\phi$ features} and the inflectional features from T, so does \textit{n} introduce an external ``argument''
+(if the DP-subject can be considered an argument of the noun---i.e., its possessor, relative, associate, undergoer, etc.) and allow agreement through the same mechanisms.
+
+In the previous section we raised the question of where exactly the locus of the ``possessive'' interpretation is. According to the theory presented here, that
+should be the D head. That is the head that brings in the interpretable [gen] feature and values \textit{n} as [Infl:\posst]---just as T values verbal inflection and
+thus is the locus of tense. \textit{n} does not give rise to ``possessive'' interpretation, it merely introduces an
+``external argument'' and acts as the locus of agreement by hosting $\phi$ and inflectional features. If D$_{gen}$ (and the phonological reflex of its [gen] feature, \textsl{-ning}) is responsible for possessive interpretation, however, how can we observe a possessive interpretation for phrases that lack a DP-subject and lack the \gen{} marker \textsl{-ning}, such as the examples in (7--9)? Here we can stipulate that \textit{n} may, when the discourse allows it, introduce a phonologically null external argument (\textit{pro}, or its DP-phase equivalent). That null argument raises to [Spec,DP], is interpreted as the DP-subject,
+and bears [gen] case as usual, but since is has no pronounceable content its [gen] case is also phonologically null. Thus, such phrases still contain a D$_{gen}$,
+it is just not pronounced.
+
+\subsection{Agreement marking}
+By supposing that the DP-subject (\textsl{Mehmud} in this example) raises to \mbox{[Spec,DP]}, we can also explain differences between this construction and the non-genitive 
+compound nouns shown in example (6), repeated here:
+\begin{exe}
+\ex \begin{xlist}
+\ex \textbf{Genitive-possessive}:
+		\gll partiye-ning nizamnami-si\\
+				 party-\gen{} constitution-\poss{3}{s}\\
+		\glt ``the party's constitution''; ``the constitution of the party''
+\ex \textbf{Non-genitive}:
+		\gll partiye nizamnami-si\\
+				 party constitution-\poss{3}{s}\\
+		\glt ``party constitution''
+\end{xlist}
+\end{exe}
+Nilsson~\citeyear{Nilsson}, discussing Turkish, attributes this difference to referentiality. That is to say, the difference between (11a) and (11b) is that the first refers to a
+specific party, whereas the second simply describes the type of constitution as a ``party'' constitution, without adopting any specific referent. The projection of
+D is, in essence, the locus of referntiality: it is an interface between the lexical item and the real world. Therefore, it makes sense that the
+genitive-possessive, which does have a specific referent in the world, must also have a DP layer, whereas the non-genitive does not have it yet. The presence or
+absence of a DP layer
+can be shown using \textsl{bir}, which literally means ``one'' but also functions as an indefiniteness marker, much like the English indefinite article ``a'', and
+thus probably occupies D:
+\begin{exe}
+\ex 
+	\begin{xlist}
+	\ex[*]{
+		\gll bir \textup{[}partiye-ning nizamnami-si\textup{]}\\
+				 one party-\gen{} constitution-\poss{3}{s}\\
+		\glt (intended: ``a [the party's constitution]'')
+	}
+	\ex[]{
+		\gll \textup{[}bir partiye\textup{]}-ning nizamnami-si\\
+				 one party-\gen{} constitution-\poss{3}{s}\\
+		\glt ``[a party's] constitution''
+	}
+	\ex[]{
+		\gll partiye-ning bir nizamnami-si\\
+				 party-\gen{} one constitution-\poss{3}{s}\\
+		\glt ``a constitution of the party's''
+	}
+	\end{xlist}
+\ex
+	\begin{xlist}
+	\ex[]{
+		\gll bir \textup{[}partiye nizamnami-si\textup{]}\\
+				 one party constitution-\poss{3}{s}\\
+		\glt ``a party constitution''
+	}
+	\ex[*]{
+		\gll partiye bir nizamnami-si\\
+				 party one constitution-\poss{3}{s}\\
+	}
+	\end{xlist}
+\end{exe}
+In the examples above, (12a) shows that a normal genitive-possessive cannot be further modified by an article, suggesting that it is already referential (i.e.,
+that it already has a D projection). If an article precedes the construction, the only possible interpretation is the one where the article
+is within the innermost DP (the DP-subject), as shown in (12b). The full DP can be made indefinite by putting the article \emph{after} the DP-subject (12c).\footnote{This
+observation raises the question of where in the structure D is located. If \textsl{bir} ``one'' is an indefinite article, we might assume that it is in D, but that would mean that D is merged head-initially in an otherwise head-final language; it would also preclude the NP-raising-to-D analysis used here, and prompt the question of how D can assign [gen] case if it is occupied by an article and thus not occupied
+by a null head D$_{gen}$. One alternative explanation is that \textsl{bir} is not actually in D, but is the head or specifier of some NumP, and passes its indefinitess feature up to D. In this article I will remain agnostic about the representation of indefiniteness and possible structure of NumP in Uyghur.} On the other hand, (13a) shows that the non-genitive phrase can easily take an article,
+and (13b) shows that the article does not follow the ``subject'' as it does in the genitive-possessives; therefore, \textsl{partiye} in the non-genitive phrase has probably not risen to [Spec,DP], suggesting that the non-genitive does not have
+a D projection yet. The observation that true genitive-possessives have a D projection and that non-genitives do not is further evidence that [gen] case marking,
+\textsl{-ning}, is assigned by D.
+
+It appears, then, that non-genitive possessives bear \posst{} marking even though they do not have a D. \posst{}, then, apparently does not come from D. There
+must rather be some intermediate projection (which I will call AgrP, following Pollock's~\citeyear{Pollock} proposal for the verbal Agr projection) that supplies the [\posst] inflectional feature. Separating D and Agr in this manner may explain how \posst{} marking can appear without \gen{} and without giving rise to
+possessive interpretation. It also allows us to simplify the derivation shown above by postulating that the Agr head itself is pronounced as the \posst{} suffix;
+thus, rather than posit that the head noun raises to adjoin to \textit{n} and D to get an inflectional feature valued and that the presence or absence of
+a suffix is the phonological reflex of an inflectional feature, we can simply assume that the presence or absence of a suffix is determined by the presence or
+absence of AgrP. The phonological content of Agr is unspecified until the DP-subject moves through its specifier, at which point specifier-head agreement fills in the $\phi$-features of Agr and tells the phonological interface how to pronounce the \posst{} suffix. This is, admittedly, an area where the strict DP-TP analogy
+breaks down (as subject-verb agreement in TPs is often thought to operate by letting T value an inflectional feature on \textit{v} from afar), but it yields the
+correct output in a simpler manner. A modified version of tree (13), using AgrP, is shown below:
+\begin{exe}
+\ex
+\Tree
+		[.DP
+			\node{mehmud2end}{\textsl{\textbf{Mehmud}}\feat{case:gen}}
+			[.D'\feat{\sout{gen}}
+				[.AgrP
+					\node{mehmud2agr}{\trace{\textsl{Mehmud}\feat{\sout{3s};~case:~}}}
+					[.Agr'
+						[.\textit{n}P
+							\node{mehmud2begin}{\trace{\textsl{Mehmud}\feat{D;~3s;~case:}}}\\Mehmud
+							[.\textit{n}'\feat{\sout{\textit{u}D}}
+								\qroof{\textsl{\textbf{ata}}\\father}.NP !\qsetw{4cm}
+								\textit{n}
+							] !\qsetw{4cm}
+						] !\qsetw{4cm}
+						Agr\feat{$\phi$:3s}\\\textsl{\textbf{-si}}
+					] !\qsetw{4cm}
+				] !\qsetw{4cm}
+				D$_{gen}$
+			] !\qsetw{4cm}
+		]
+				{\makedash{4pt}
+				\anodecurve[tl]{mehmud2begin}[bl]{mehmud2agr}{.5in}
+				\anodecurve[tl]{mehmud2agr}[bl]{mehmud2end}{.5in}
+				}\\
+		\strutt{.1cm}
+\end{exe}
+Usually \gen{} and \posst{} marking co-occur, so one might wonder how to ensure that behavior in this schematic.
+We can stipulate that D$_{gen}$ optimally selects an AgrP, rather than an \textit{n}P, as its complement; this would explain why \posst{} co-occurs with \gen{} even though
+D itself doesn't supply \posst{} marking. A non-genitive D selects an \textit{n}P directly; with no AgrP there is no \posst{} suffix, which is the correct prediction for bare nouns. Furthermore, even though \gen{} and \posst{}
+marking \emph{usually} co-occur, the fact that they may each occur indepedently under special circumstances (see examples (5--6) for independent \posst, and (10)
+for indepedent \gen) suggests that there is some empirical value in separating the two. This behavior can be allowed if we assume that
+under some circumstances D$_{gen}$ may select an \textit{n}P instead of an AgrP, thus yielding a DP with
+\gen{} marking but no \posst{} marking. Informal genitives (lacking \posst) and non-genitive possessives (lacking \gen) would be
+difficult to account for without positing an independent AgrP.
+
+%Another point to address is what the content of \emph{n} actually is. One possibility is that the \posst{} marking is actually an overt head in \emph{n}, although its
+%phonological form is not determined until its specifier is merged in to value its \textit{phi} features. Another is that, as shown in the tree above, it is a null head that assigns 
+%inflection to the semantic head of the phrase, the noun, and that the \posst{} marking is pronounced on that noun. If that is the case, we must also decide whether what it assigns is really inflection, or is actually case. On the one hand, the fact that it changes to agree with the person and number of its subject suggests that it is inflection, as does the fact that it gives
+%us the possessive interpretation and tells us something about its subject (as described at the beginning of this section). On the other hand, the fact that it
+%comes from a projection that also introduces a ``possessor'' suggests that it may be case (remember that \textit{v} both introduces an Agent and assigns accusative case); likewise, it tells us something about the way one nominal is related to the surrounding context, as case generally does. It is possible that
+%\posst{} marking is a hybrid between inflection and case. In any case, this head seems to be what is responsible for the introduction of the ``possessor'', for
+%the presence of \posst{} marking, and for possessive interpretation, regardless of the details of how it is instantiated.
+
+\section{Argument-selecting nouns}
+In English syntax, DP structure must also be able to explain the derivation of argument-selecting nouns such as these:
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex ...the doctor's \textul{examination} of the patient...
+	\ex ...the Mamluks' \textul{victory} over the Mongols...
+	\ex ...the Allies' \textul{liberation} of France...
+	\ex ...John's \textul{gift} of a romantic CD to Mary...
+	\end{xlist}
+\end{exe}
+
+As Uyghur is a highly inflected language, it has few argument-selecting nouns that are fully lexicalized like these. Most of its argument-selecting nouns
+are actually gerunds that formed with productive affixes and are clearly deverbal, formed with either a general nominalizer suffix (glossed \textsc{nzr}) or with a 
+gerund suffix (glossed \textsc{ger})\footnote{A notable exception is words for death, \textsl{vapat} and \textsl{\"ol}, which do not seem to be
+immediately deverbal. (\textsl{Vapat} is turned into a verb by being put in a verb phrase, as in \textsl{vapat bolmaq} ``to be dead'', and \textsl{\"ol} is turned into a
+verb by adding verb inflection, as in \textsl{\"olmek} ``to die''; typical deverbal nouns, on the other hand, show the opposite pattern: a nominalizer or gerundizer is added
+to the verb to make a noun.) But since the event these nouns describe is unaccusative and only takes one argument, they can't be subjected to the same sort of analysis as the
+English examples above. (That is to say, we can only have ``John's death'', not *``my death of John''.)}:
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex \gll siz-ning alma-ni \textul{y\"e-gen-lik}-ingiz\\
+					 you-\gen{} apple-\textsc{acc} eat-\textsc{perf}-\textsc{nzr}-\poss{2}{s}\\
+			\glt ``your eating of the apple''
+	\ex \gll m\"e-ning Nur-ni \textul{\"olt\"ur-gen-lik}-im\\
+					 me-\gen{} Nur-\textsc{acc} kill-\textsc{perf}-\textsc{nzr}-\poss{1}{s}\\
+			\glt ``my killing of Nur''
+	\end{xlist}
+\ex
+	\begin{xlist}
+	\ex \gll siz-ning alma-ni \textul{y\"e-yish}-ingiz\\
+					 you-\gen{} apple-\textsc{acc} eat-\textsc{ger}-\poss{2}{s}\\
+			\glt ``your eating of the apple''
+	\ex \gll m\"e-ning Nur-ni \textul{\"olt\"ur-\"ush}-\"um\\
+					 me-\gen{} Nur-\textsc{acc} kill-\textsc{ger}-\poss{1}{s}\\
+			\glt ``my killing of Nur''
+	\end{xlist}
+\end{exe}
+
+Cases like these can be accounted for with no change to the theory of DPs outlined above. We can simply assume that the gerund is first formed as a VP and the 
+nominalizing suffixes \textsl{-lik} and \textsl{-sh}\footnote{The precise status of \textsl{-lik} and \textsl{-sh} is unclear. Asarina~\citeyear[p. 11]{Asarina}, for instance, considers them allomorphs, whereas T\"om\"ur~\citeyear{Tomur} and de Jong~\citeyear{deJong} treat them as different gerund types and catalogue slightly
+different uses for each. The following discussion will only consider \textsl{-lik} gerunds, but can be generalized to \textsl{-ish} gerunds as well. See
+Asarina~\citeyear{Asarina2010,Asarina} for a more in-depth discussion of the distributional differences between these.} convert it into an NP. The nominalized verbal projection either does not include a TP (which
+is what Asarina~\citeyear{Asarina} assumes), or
+its T is defective (unable to assign case); therefore, the subject of the verbal projection does not receive [nom]. Adopting Hornstein's~\citeyear{Hornstein} movement hypothesis, we assume that this subject must then raise to [Spec,DP] to receive [gen] case, possibly occupying [Spec,\textit{n}P] on the way there. This
+sort of movement
+would explain why \textsc{agent}s of gerunds bear [gen] case and why they have two syntactic roles, TP-subject (``doer'' of the verb) and DP-subject (case-marked ``possessor'' of the noun); furthermore, Asarina~\citeyear{Asarina} identifies independently motivated reasons to assume that gerund subjects are moved out of
+their original position and into [Spec,DP]. The \gen{} marking on the DP-subject means the D head must be D$_{gen}$, which also explains why the gerund itself bears \posst{} marking (assuming again that D$_{gen}$ optimally selects an AgrP). This mechanism is demonstrated in the example below.
+\begin{exe}
+\ex \begin{xlist}
+\ex \gll \textup{[}siz-ning \textup{[}Nur-ni \"olt\"ur-gen\textup{]}-lik-ingiz\textup{]}-ni bil-dim\\
+				 you-\gen{} Nur-\textsc{acc} kill-\textsc{perf}-\textsc{nzr}-\poss{2}{s}-\textsc{acc} know-\textsc{past}.{\footnotesize 1}s\\
+		\glt ``I found out that you killed Nur.'' (lit.: ``I found out your killing of Nur.'')
+\ex
+\Tree
+[.DP
+	\node{sizend}{\textsl{\textbf{siz}}\feat{case:gen}}
+	[.D'\feat{\sout{gen}}
+		[.AgrP
+			\node{sizagr}{\trace{\textsl{siz}\feat{\sout{2s};~case:~}}}
+			[.Agr'
+				[.\textit{n}P
+					\node{sizn}{\trace{\textsl{siz}\feat{D;~2s;~case:~}}}
+					[.\textit{n}'\feat{\sout{\textit{u}D}}
+						[.\textsl{lik}P=NP
+								[.AspP
+									[.\textit{v}P
+										\node{sizbegin}{\trace{\textsl{siz}\feat{D;~2s;~case:~}}}\\you
+										[.\textit{v}'
+											[.VP
+												\textsl{\textbf{Nur}}\feat{case:acc}\\Nur
+												\node{olbegin}{\trace{\textsl{\"olt\"ur}}}\\kill
+											] !\qsetw{4cm}
+											\node{olv}{\textit{v}\feat{\sout{acc}}~\textsl{\textbf{\"olt\"ur}}}
+										] !\qsetw{4cm}
+									] !\qsetw{4cm}
+									\textsl{\textbf{-gen}}
+								] !\qsetw{4cm}
+								\textsl{\textbf{-lik}}
+						] !\qsetw{4cm}
+						\textit{n}
+					] !\qsetw{4cm}
+				] !\qsetw{4cm}
+				Agr\feat{$\phi$:2s}\\\textsl{\textbf{-ingiz}}
+			] !\qsetw{4cm}
+		] !\qsetw{4cm}
+		D$_{gen}$
+	] !\qsetw{4cm}
+]
+		{\makedash{4pt}
+		\anodecurve[tl]{sizbegin}[bl]{sizn}{.75in}
+		\anodecurve[tl]{sizn}[bl]{sizagr}{.5in}
+		\anodecurve[tl]{sizagr}[bl]{sizend}{.5in}
+		\anodecurve[br]{olbegin}[br]{olv}{.5in}
+		%\anodecurve[r]{olv}[br]{olT}{.5in}
+		%\anodecurve[t]{olT}[tl]{ollik}{.2in}
+		%\anodecurve[br]{lik}[br]{oln}{.5in}
+		%\anodecurve[r]{oln}[r]{olend}{1.5in}
+		}\\
+		\strutt{.1cm}
+	\end{xlist}
+\end{exe}	
+
+In (21b), the lexical shell of the verb \textsl{\"olt\"ur} ``kill'' is constructed with \textsl{Nur} as its \textsc{theme} and \textsl{siz}~``you'' as its
+\textsc{agent}. The \textsc{theme} is able to receive [acc] case from \textit{v}. The verb raises to \textit{v}. Next Asp is added, and the full AspP is selected by \textsl{-lik} to form a gerund (\textsl{-lik}P or NP).The TP-subject \textsl{siz}, which has not received case
+since no T was ever merged, raises to [Spec,\textit{n}P] and then behaves like the DP-subject in (17), passing through [Spec,AgrP] to value the $\phi$-features on Agr and ultimately receiving case from D$_{gen}$.
+
+Many gerunds also allow the subject not to bear [gen] case:
+\begin{exe}
+\ex \gll Qiz-(ning) k\"el-ish-i muhim.\\
+				 girl-(\gen) come-\textsc{ger}-\poss{3}{s} important\\
+		\glt ``It is important for a girl to come.'' (lit: ``A girl's coming is important.'')\\
+		(Example from Asarina~\citeyear[p. 1]{Asarina2010})
+\end{exe}
+Here I will simply assume that the non-genitive versions of these gerunds are formed by not raising the subject to [Spec,DP], either leaving it caseless, assigning
+its case from a matrix T (i.e., raising it all the way out of the DP), or including a T within the gerund. These structures and their interpretations are discussed
+in more detail by Asarina~\citeyear{Asarina2010,Asarina}.
+
+The structure given above makes the right predictions about the location of adverbials within gerunds. In matrix clauses, adverbials have relatively free word
+order relative to the rest of the sentence---they must precede the verb, but they can either precede or follow the subject~(23a,b). On the other hand, in gerunds, adverbials may not
+precede the subject~(24b):
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex[]{\gll Siz \textul{t\"un\"ug\"un} Nur-ni \"olt\"ur-dingiz.\\
+					 you yesterday Nur-\textsc{acc} kill-\textsc{past}.{\footnotesize 2}s\\
+			\glt ``You killed Nur yesterday.''}
+	\ex[]{\gll \textul{T\"un\"ug\"un} siz Nur-ni \"olt\"ur-dingiz.\\
+					 yesterday you Nur-\textsc{acc} kill-\textsc{past}.{\footnotesize 2}s\\
+			\glt ``Yesterday you killed Nur.''}
+	\end{xlist}
+\ex
+	\begin{xlist}
+	\ex[]{\gll \textup{[}siz-ning \textul{t\"un\"ug\"un} Nur-ni \"olt\"ur-gen-lik-ingiz\textup{]}-ni bil-dim\\
+				 you-\gen{} yesterday Nur-\textsc{acc} kill-\textsc{perf}-\textsc{nzr}-\poss{2}{s}-\textsc{acc} know-\textsc{past}.{\footnotesize 1}s\\
+		\glt ``I found out that yesterday you killed Nur.''}
+	\ex[*]{\gll \textup{[}\textul{T\"un\"ug\"un} siz-ning Nur-ni \"olt\"ur-gen-lik-ingiz\textup{]}-ni bil-dim\\
+				 you-\gen{} yesterday Nur-\textsc{acc} kill-\textsc{perf}-\textsc{nzr}-\poss{2}{s}-\textsc{acc} know-\textsc{past}.{\footnotesize 1}s\\
+		\glt (only interpretation possible is ``I found out yesterday that you killed Nur'')}
+	\end{xlist}
+\end{exe}
+Given that the verb's external argument becomes a DP-subject and raises to \mbox{[Spec,DP]}, this ordering is what we would expect: no matter where in the gerund the adverbial is adjoined
+(whether it's \textit{v}P- or TP-adjoined), the subject will precede it after raising, and the DP has no position that can ever precede [Spec,DP].
+
+\section{Conclusion}
+This paper proposes that Uyghur genitive DPs, which bear case on the ``possessor'' and agreement on the ``possessee'', are derived in a fashion analogous to that of
+TPs, which bear case on the subject and agreement on the verb. In the account described here, the \gen{} suffix \textsl{-ning} is the phonological realization of
+a [gen] case feature assigned by a null determiner D$_{gen}$, and the various \posst{} suffixes are phonological realizations of a head Agr that bears the $\phi$-features of the DP-subject that has passed through its specifier. Gerunds are formed in a similar fashion, only the
+DP-subject is not initially \textsc{merge}d into [Spec,\textit{n}P] but is raised out of a nominalized TP. This account explains several distributional phenomena,
+including the location of adverbs within gerunds and the presence or absence of definiteness in genitive-possessive and non-genitive phrases, and makes a strong
+position that nothing in the DP will precede the DP-subject.
+
+This analysis can gracefully account for both simple genitive-possessives and deverbal gerunds. It will be worthwhile in future investigations to examine how
+numbers, demonstratives, quantifiers, and numeral classifiers interact with the affixes discussed here, to further elucidate the internal structure of the DP.
+
+\bibliographystyle{chicago}
+\bibliography{bibbed}
+
+\vspace{.25in}
+\noindent \textit{Author contact information:\\
+Stephen Politzer-Ahles: \hspace{.05in} sjpa@ku.edu}
+
+\end{document}

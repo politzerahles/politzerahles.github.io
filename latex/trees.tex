@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage{qtree}
+\usepackage{tree-dvips}
+\usepackage{ulem}
+
+\begin{document}
+\section{Simple trees}
+A simple tree can just be any bracketed structure, introduced by the command~\texttt{$\backslash$Tree}:
+
+\Tree [.S [.Pron this ] [.VP [.V is ] [.DP [.D a ] [.NP tree ] ] ] ]
+
+Remember to include a space before every closing bracket, or the tree will not compile properly. The bracketed sentence can written linearly, or tabbed for
+easier viewing; both of the following bracketed sentences would produce the same tree:
+
+\begin{quote}
+\texttt{[.S [.Pron this ] [.VP [.V is ] [.DP [.D a ] [.NP tree ] ] ] ]}
+\end{quote}
+
+\begin{tabbing}
+[.S \=                                        \\
+     \> [.Pron this ]                         \\
+     \> [.VP    \=                            \\
+     \>         \> [.V is ]                   \\
+     \>         \> [.DP \=                    \\
+     \>         \>      \> [.D a ]            \\
+     \>         \>      \> [.NP tree ]        \\
+     \>         \> ]                          \\
+     \> ]                                     \\
+]
+\end{tabbing}
+
+Make sure there are spaces between the words in the sentence and the closing brackets! If there are no spaces (e.g. \texttt{[.DP a]}) you'll get an error and the document won't compile!
+
+\section{Triangles}
+Triangles can be added easily using the~\texttt{$\backslash$qroof\{\}} command, putting the content inside the brackets and the node name after the brackets:
+
+\Tree
+[.VP read \qroof{those five plays by Shakespeare}.DP ]
+
+\begin{quote}
+\texttt{[.VP read $\backslash$qroof\{those five plays by Shakespeare\}.DP ]}
+\end{quote}
+
+\section{More complicated trees}
+Node names can include just about anything, including special formatting. Thus, trees can have not only VP, NP, TP, but also fancier things like \textit{v}P,
+\textit{b\v aP}, etc.:
+
+\Tree
+[.\textit{v}P \textit{v} [.VP read books ] ]
+
+\begin{quote}
+\texttt{[.$\backslash$textit\{v\}P $\backslash$textit\{v\} [.VP read books ] ]}
+\end{quote}
+
+To add strikeout (for instance, in feature checking), you can use the~\texttt{ulem} package, which includes an~\texttt{$\backslash$sout\{\}} command:
+
+\Tree
+[.VP read\footnotesize[\sout{uN}]\normalsize{} books\footnotesize[N]\normalsize{} ]
+
+\begin{quote}
+\texttt{[.VP read[$\backslash$sout\{uN\}] books[N] ]}
+\end{quote}
+
+\section{Movement arrows}
+You can use the package \texttt{tree-dvips} to add movement arrows to trees. To do this, you must find both the node where the arrow begins and the node where the
+arrow ends, and label them with names using the $\backslash$node\{\} command. Then, below the tree, use the command
+$\backslash$anodecurve[bl]\{BEGINNODE\}[bl]\{ENDNODE\}\{1in\} to draw the arrow:
+
+\begin{quote}
+\texttt{[.$\backslash$textit\{v\}P [.$\backslash$textit\{v\} $\backslash$textit\{v\} $\backslash$node\{end\}\{read\} ] [.VP $\backslash$node\{start\}\{\$$\backslash$langle\$read\$$\backslash$rangle\$\} books ] ] \\
+$\backslash$anodecurve[br]\{start\}[bl]\{end\}\{1in\}}
+\end{quote}
+\Tree
+[.\textit{v}P [.\textit{v} \textit{v} \node{end}{read} ] [.VP \node{start}{$\langle$read$\rangle$} books ] ]
+\anodecurve[br]{start}[bl]{end}{1in}
+
+\ \newline
+
+\ \newline
+
+\ \newline
+
+Note that, for this to work, you can't directly build \LaTeX{} =$>$ PDF with tree-dvips; for some reason that package doesn't work with the pdflatex tool. Instead, 
+you have to first build PostScript, and build PDF from that. If you're using the TeXnicCenter or a similar editing application, you can do this simply by selecting
+the \LaTeX{} =$>$ PS =$>$ PDF option in the Build menu.
+
+
+\end{document}

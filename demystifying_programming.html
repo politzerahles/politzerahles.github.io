@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .bigsource, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+	width:65%;
+	margin-left:auto; margin-right:auto;
+	border:1px solid #ccc;
+	overflow:auto;
+	background-color: #FFFFFF;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Demystifying programming</title>
+        <link rel="stylesheet" type="text/css" href="stevetools_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body style="background:#DCDCDC">
+
+
+	<h1 class="centercol">Demystifying programming</h2>
+        <p class="centercol">If you are not familiar with programming, or if your only experience is using your colleagues' scripts without really
+		digging into them, then code can look very intimidating. For instance, here's a random snapshot of some of my own ugly MATLAB code (for EEG
+		data preprocessing); this looks confusing and intimidating even to me, and I wrote the darn thing!</p>
+	<center><img src="figure/matlab_code_snippet.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></center>
+
+	<p class="centercol">The truth, however, is that <strong>coding is easy</strong>. It might look confusing because you're not used to looking at it. (Or
+		because, in this case, the code you're looking at is messy and disorganized.)
+		But once you get used to what coding actually is, it's very straightforward. The purpose of this tutorial is to give you a quick introduction to
+		what programming is. It's not specifically meant to teach any particular programming language, as the details of each language are different;
+		rather, the purpose is to show you how to think like a programmer. Once you know that, learning any new programming language is easy.</p>
+
+	<h2 class="centercol">What is programming?</h3>
+	<p class="centercol">Programming is just problem-solving. You have a small set of tools (the things that a programming language can do) and a task to
+		accomplish (maybe it's finding all the words in a corpus that have some certain property, maybe it's filtering a digital signal, maybe it's taking
+		a folder full of data from an experiment and doing statistics on them, or maybe it's making a game that plays Rock-Paper-Scissors against you&mdash;the
+		sky's the limit). Programming is just figuring out how to use the tools to accomplish the task. The sequence of steps you will take to accomplish the task
+		is, in programming jargon, an <em>algorithm</em> (the "AL" part of <a href="https://en.wikipedia.org/wiki/HAL_9000">HAL 9000</a>). An algorithm
+		is just a plan to solve a problem. More specifically, to solve a problem you have to first break the big problem down into smaller steps; the list
+		of steps you break your problem down into is an "algorithm". You use algorithms all the time in your daily life without realizing it&mdash;maybe you have a sink full of dirty dishes
+		and you need to clean them, so you mentally make a plan to take the tools you have available (a sponge, soap, a tap), wash the first dish, rinse the first dish,
+		place it in the rack, and then move on to the next dish and repeat... or maybe you wash all the dishes, then rinse all the dishes, then place them on a rack. Those are two
+		different algorithms you could use to approach the same problem.</p>
+	<p class="centercol">Coding is just thinking of an algorithm to solve the problem you want to solve, and then translating that algorithm from concepts in your head
+		(e.g., "First I need to load all the files, then I need to strip off the headers of each file, then I need to combine them into one sheet...") into language
+		that the computer understands. Translating your ideas into the computer's language is the <em>implementation</em> part of programming, and that
+		varies from one programming language to another&mdash;for instance, getting the mean of some list of numbers is done with <code>mean()</code> in
+		languages like R and MATLAB, but with <code>=AVERAGE()</code> in Excel/Visual Basic. Don't worry about these details; the crucial part of programming is the
+		problem-solving algorithm part. Once you're good at that, you can learn any implementation (i.e., any programming language) very easily.</p>
+	<p class="centercol">In this tutorial we'll walk through what a simple algorithm looks like. This will show you what it means to think like a programmer. Once
+		you know how to think up an algorithm and know what tools are available in programming, you'll have a better idea how to understand other people's code and
+		you'll know how to write your own code to solve just about any task.</p>
+
+	<h2 class="centercol">An algorithm to average numbers</h2>
+	<p class="centercol">Let's say you have a list of numbers and you want to get their average. Most programming languages have built-in functions to do this
+		(we discussed a few of them above). But this is also a good starting point for an example of a programming task and an algorithm to solve it. Here
+		we won't use any particular language to solve it; instead, we'll do it in <em>pseudocode</em>, which is a fancy way of saying that instead of
+		writing actual code we will just describe, in plain English, what we want the computer to do each step of the way.</p>
+	<p class="centercol">Let's start out with our list: <code>LIST = [90 112 103  88 103 118  93  99]</code>. Now, we know that to get the mean, we need to divide
+		the sum of the list by the number of elements in the list. So we already have a rough outline of the algorithm we need to use:
+		<ul class="center">
+			<li><code>LIST = [90 112 103  88 103 118  93  99]</code></li>
+			<li>Get values we will need for calculating the mean:
+				<ul>
+					<li><code>SUM = sum of numbers in LIST</code></li>
+					<li><code>N = number of numbers in LIST</code></li>
+				</ul></li>
+			<li>Get the mean: <code>SUM / N</code></li>
+		</ul></p>
+
+	<p class="centercol">How do we figure out the sum of the numbers in LIST, and the number of numbers in LIST? This is where the tools of programming come in.
+		Across just about any programming language, the same three basic tools are available. While simple, once you use them together you can do just about
+		anything with them.
+		<ul class="center">
+			<li><strong>Variables</strong>: A variable holds some value so you can refer back to it later. We saw them in the algorithm above: the variable
+			LIST stored the list of numbers we wanted to work with, and subsequent steps of the algorithm work on those. The idea here is that you could
+			replace the value of the variable (say, work on a different list of numbers), but subsequent code will still do the same thing to the numbers
+			stored in that variable&mdash;thus, the same script could be used to, for example, get the means of any list of numbers. A variable can store just
+			about anything: numbers, texts, lists of numbers, lists of text, lists of lists of lists of numbers, etc... A variable can even store more code
+			that will be run. (Such a variable is a special kind of variable called a <em>function</em>, and we will talk about those more below.)</li>
+			<li><strong>Loops</strong>: A loop is some portion of code that executes over and over again. For example, in a program that is meant to open
+			each file in a folder and do something to the file and then save it again, there might be a snippet of code that accomplishes that task, and that
+			code snippet will be wrapped up in a loop that makes it re-do the same thing once per each file in the folder. Loops are what make programs so
+			useful: doing some task (like getting the mean of some numbers or opening a file and modifying it) is easy to do by hand once, but hard to do by hand
+			a thousand times; a program, on the other hand, has no trouble doing the same thing over and over.</li>
+			<li><strong>Conditionals</strong>: A conditional is an instruction to the program to do one thing if some condition is met, or do something else otherwise.
+			For example, maybe you need to write a program to delete all the .PNG files in a folder but keep all the .TIF files. You could have the program
+			look at a file, and <em>if</em> the file is a .PNG file then the program will delete the file, otherwise it will do nothing and move on to the next file.
+			As you can imagine from this description, such a program would be combining a conditional (to decide what to do to any given file) with a loop (to
+			go through every file in the folder and use that conditional over and over).</li>
+		</ul> </p>
+	<p class="centercol">Now let's think about how we can use these three basic tools to accomplish the task of getting a mean of LIST.</p>
+
+	<p class="centercol">First we want to get the sum, and store it in a <em>variable</em> so we can use it later (when we divide the sum by the N to get the
+		mean). How can we do that? We can start with the value 0, and <em>loop</em> through each item in LIST, adding that item to the value. Here's how
+		that will look in our pseudocode algorithm:
+		<ul class="center">
+			<li><code>LIST = [90 112 103  88 103 118  93  99]</code></li>
+			<li>Get values we will need for calculating the mean:
+				<ul>
+					<li>The sum
+						<ul>
+						<li><code>SUM = 0</code></li>
+						<li><code><em>for</em> each NUMBER in LIST, increase SUM by NUMBER</code></li>
+						</ul></li>
+					<li><code>N = number of numbers in LIST</code></li>
+				</ul></li>
+			<li>Get the mean: <code>SUM / N</code></li>
+		</ul></p>
+	<p class="centercol">Notice the new part of the code above. We first created a <em>variable</em>, SUM, which starts at 0. We then used a <em>loop</em>
+		to go through each item in our LIST, and at each item we took it and added it back to the SUM (specifically, we set the new value of SUM to be
+		NUMBER plus the old value of SUM). For instance, we start with SUM set to zero, and we grab the first number in our list, which is 90; we set SUM
+		to SUM+90, so now SUM is 90 instead of zero. Then we grab the next number in our list, which is 112, and set SUM to SUM+112, which is 90+112, which
+		is 202. We continue this until we've done it for every number in the list; at the end of this loop, the value of SUM will be the
+		sum of all the numbers in LIST, and we have it stored in our <em>variable</em> SUM so we can use it again later. After that, any time we refer to
+		"SUM", the program will plug in the actual number in the place of "SUM". (Don't worry about the details
+		of how the loop itself is actually written; this will vary from one programming language to another, but hopefully you see the logic behind why we
+		used a loop.)</p>
+	<p class="centercol">Now how about finding the number of items in our LIST? We can use a very similar strategy. I'll put an updated pseudocode algorithm here;
+		before reading on, see if you can understand the algorithm and see how it works, then continue on to read my explanation of it and see if you were right.
+		<ul class="center">
+			<li><code>LIST = [90 112 103  88 103 118  93  99]</code></li>
+			<li>Get values we will need for calculating the mean:
+				<ul>
+					<li>The sum
+						<ul>
+						<li><code>SUM = 0</code></li>
+						<li><code><em>for</em> each NUMBER in LIST, increase SUM by NUMBER</code></li>
+						</ul></li>
+					<li>The N
+						<ul>
+						<li><code>N = 0</code></li>
+						<li><code><em>for</em> each NUMBER in LIST, increase N by 1</code></li>
+						</ul></li>
+				</ul></li>
+			<li>Get the mean: <code>SUM / N</code></li>
+		</ul></p>
+
+	<p class="centercol">To get the number of items in the list, we used another loop. It's almost the same as the first one. We start with a <em>variable</em> N,
+		which begins at 0 but which we will use to keep track of the number of items in LIST. Then we <em>loop</em> through each item in a list. Only this time
+		instead of adding the value of each item to N, we just add 1 to the current value of N; thus, by the end of the loop, N will represent the number of items
+		that there were in the list.</p>
+	<p class="centercol">Once we've gotten SUM and N, all we need to do is divide and, ta-da! We have the mean.</p>
+	
+	<p class="centercol">This example was very simple. But using this same logic, you can program almost anything. Of course, most programming languages don't require
+		you to make loops to figure out means and sums on your own; these capabilities are already built in. For instance, R has functions <code>sum()</code> and
+		<code>length()</code>, which would have automatically given you the SUM and N values without needing to make loops; it also has a function <code>mean()</code>.
+		Deep down inside those functions, though, is more code that does, somewhere at the low level, execute a very simple algorithm something like this. <em>Functions</em>,
+		like <code>mean()</code> and <code>sum()</code> are simply <em>variables</em> that, instead of holding some number, hold some computer code, and they can
+		be called upon to run that computer code and accomplish that task. So, for instance, if you are writing a program that needs to find means of numbers 5 different
+		times, then instead of writing out a long algorithm each time like we did above, you can simply repeatedly call on the <code>mean()</code> function, saving yourself
+		a lot of time and avoiding the risk of making a mistake one of the times you write out the same bit of code.</p>
+	<p class="centercol">Functions (also called <em>subroutines</em>, which philosophically speaking is a more accurate name for them) are another one of the tools you have
+		available when making an algorithm to solve a problem
+		(just keep in mind that functions are, deep down inside, just more code which uses the basic tools we discussed above: variables, loops, and conditionals). If you
+		look back up at the messy MATLAB example I illustrated above, you will see several functions: the built-in function <code>dlmread()</code> is used twice to read
+		some external data into the program and store it in a variable, and at the very bottom you can even see the MATLAB version of the <code>mean()</code> function
+		being used. <!--The function <code>cell2mat()</code> is used to change the type of a variable; the details are rather specific to MATLAB (it changes a 'cell array', which
+		is a list of all different kinds of items, into a 'matrix', which is a list of just numbers), but the idea of changing variable types is common: if you have 
+		a variable that holding the text string "1" and you want to change it into the integer 1, you would be changing its variable type (in MATLAB this can be done
+		with yet another built-in function, <code>str2num()</code>, which stands for "string to number"; in R the built-in function for doing the same thing is called
+		<code>as.numeric()</code>).--></p>
+	<p class="centercol">To sum up, programming is just thinking up an algorithm that uses the tools available to you to solve some task. Those tools include variables,
+		loops, conditionals, and functions. Once you're used to thinking in those terms, you can pick up any programming language. Let's look at how to implement
+		this simple algorithm in a specific programming language, R.</p>
+
+
+
+	<h2 class="centercol">Implementing a programming algorithm in R</h2>
+	<p class="centercol">You're going to need to install the free programming language <a href=https://www.r-project.org/>R</a> to run this code.</p>
+	<p class="centercol">Open R and let's start writing this code. First of all, create your list of numbers:
+	
+	<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">my_list</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">( </span><span class="hl num">90</span><span class="std">, </span><span class="hl num">112</span><span class="std">, </span><span class="hl num">103</span><span class="std">, </span><span class="hl num">88</span><span class="std">, </span><span class="hl num">103</span><span class="std">, </span><span class="hl num">118</span><span class="std">, </span><span class="hl num">93</span><span class="std">, </span><span class="hl num">99</span><span class="hl std"> )</span>
+</pre></div>
+</div></div>
+
+	<p class="centercol">The "<code><-</code>" here is an <em>assignment operator</em>: it sets (or assigns) the value of the variable <code>my_list</code> to equal the
+		list of numbers to its right. We used the built-in function <code>c()</code> (stands for "concatenate") to create a list of numbers, and we fed that function
+		(inside its parentheses) a comma-separated list of the numbers that the variable will be storing. Note that all of this is specific to R; the details of how
+		to create a list, and how to assign it to a variable, might differ in other programs, but crucially, no matter how specifically we code it, it's all accomplishing
+		the first step of our algorithm from above, which is to make that list of numbers. If you want, you can type back in "my_list" in R and hit ENTER to see that
+		it now is holding the list of numbers you gave it.</p>
+
+	<p class="centercol">Now let's make a loop to get the sum, the second step of our algorithm:</p>
+	<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">my_sum</span> <span class="hl kwb">&lt;-</span> <span class="hl num">0</span>
+<span class="hl kwd">for</span><span class="hl std">( number </span><span class="hl kwd">in</span> <span class="hl std">my_list ){</span>
+	<span class="hl std">my_sum</span> <span class="hl kwb">&lt;-</span> <span class="hl std">my_sum</span> <span class="hl opt">+</span> <span class="hl std">number</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+	<p class="centercol">Here we first created a variable <code>my_sum</code>, which begins as 0 but by the end of the loop will hold the sum of all the values in <code>my_list</code>.
+		Next we have a <code>for</code> loop. This loops works by iterating through some list (in this case, <code>my_list</code>) and each time through it sets the value of
+		a temporary variable, <code>number</code>, and then executes all the code that is within the curly brackes <code>{}</code>. Specifically, the first time through the
+		loop, it sets the value of <code>number</code> to be the very first number in <code>my_list</code>, and then it adds that number to the value of <code>my_sum</code>. Then
+		the first iteration through the loop is finished, and the loop begins again, only this time it sets the value of <code>number</code> to the <em>second</em> number
+		in <code>my_list</code> and adds that to the value of <code>my_sum</code>. It repeats this process until it has done it for every number in <code>my_list</code>, at which
+		point the loop has finished. You can type in <code>my_sum</code> in R to see what the sum ended up being (and since R already has a <code>sum()</code> built-in function,
+		you can check if this is correct: type <code>sum(&nbsp;my_list&nbsp;)</code> and you should see the same value).</p>
+
+<p class="centercol">Now let's make a loop to get the N, the third step of our algorithm. This will work in almost the same way as the previous loop.</p>
+	<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">my_N</span> <span class="hl kwb">&lt;-</span> <span class="hl num">0</span>
+<span class="hl kwd">for</span><span class="hl std">( number </span><span class="hl kwd">in</span> <span class="hl std">my_list ){</span>
+	<span class="hl std">my_N</span> <span class="hl kwb">&lt;-</span> <span class="hl std">my_N</span> <span class="hl opt">+</span> <span class="hl num">1</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+	<p class="centercol">By now you should be able to understand the loop above and see how it works to figure out the number of elements in <code>my_list</code>. Once again,
+		R already has a built-in function that does the same thing, so we can check our work. Compare the values of <code>my_N</code> and of <code>length(&nbsp;my_list&nbsp;)</code>
+		in R to see if our loop figured out the correct value.</p>
+
+	<p class="centercol">Now we have all the values we need to figure out the mean, and both are stored in variables. All we need to do is divide them:</p>
+	<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">my_sum</span> <span class="hl opt">/</span> <span class="hl std">my_N</span>
+</pre></div>
+</div></div>
+
+	<p class="centercol">This division should give you the same value as the built-in mean function. Check it by entering <code>mean(&nbsp;my_list&nbsp;)</code>.</p>
+
+
+	<h2 class="centercol">Wrap-up</h2>
+	<p class="centercol">We have reviewed the basics of what a program actually does, seen how to think like a programmer, and gone through how to translate an algorithm into
+		actual computer code. This is basically all the skills you need to write your own code. Of course, real-life programs will look different than this; we were just
+		getting the mean of some numbers, which is such a common operation that we usually don't need to write code like this to do it, as most programs already have
+		built-in functions that do common things like this. But the concepts we observed here are used in any other computer program as well: the program is simply a
+		series of steps that the computer will take to accomplish some thing.</p>
+	<p class="centercol">In many programs, each of these steps might be yet another function. We saw several examples in the big ugly MATLAB program I illustrated at the beginning
+		of the tutorial&mdash;almost every step of that program was using some function! So then you may wonder, how do people writing computer code know what all these functions do? When someone is approaching a task and figuring out
+		their algorithm and, for example, in step 3 they need to sort their list of numbers in descending order, how do they know which built-in function to use to do that?
+		And when someone is reading another program and trying to understand it, how do they know what all these crazy functions do? I'll let you in on a secret: programmers
+		aren't magic. We use Google. Sure, after writing R code for several years I remember that the function for getting a mean is called <code>mean()</code> and not
+		<code>average()</code>, and I remember that the function for finding which number in a list is the one I want is <code>which()</code> and not <code>find()</code> (but vice versa
+		in MATLAB!), but I don't have the entire R programming language memorized, and in fact no one in the world does. Rather, any time I need to do a thing
+		and I don't remember how, I just Google it, e.g., "read xlsx file in R" or "r find unique numbers in array", etc. In fact, that is how most people learn to code:
+		not by sitting down with a book and learning the whole language at once, but by Googling one question at a time, as they need it, until eventually they become
+		pretty comfortable with coding in that language. So don't feel intimidated by code; you can figure out how to do whatever you need by first coming up with an
+		algorithm, then using Google one step at a time as you convert that algorithm into real code. Indeed, that's how most code gets written.</p>
+	<p class="centercol">This tutorial was, of course, only scratching the surface. In addition to the basic programming tools we discussed above (<em>variables</em>,
+		<em>conditionals</em>, and <em>loops</em>, as well as <em>functions</em>), hardcore programming languages also include some other things, but you probably won't need to
+		worry about them. For example, all programming languages have input/output streams, which control getting data into the program through either the keyboard or a file,
+		and sending data out of the program either to be shown on the screen or be saved in a file, but in most high-level programming languages used for applied science stuff
+		(such as R, MATLAB, and Python) these are handled just like other functions; for example, in the MATLAB code I showed at the beginning of this tutorial, data
+		were read into the program with the <code>dlmread()</code> function, and in the R code we ran just now data were shown on the screen pretty much automatically;
+		however, if you ever use a more hardcore programming language like C++, handling input/output streams will be a separate concept to learn. Another tool we haven't discussed
+		is pointers/references, which are a thing in languages like C++ and Perl, but which you probably won't need to think about at all for writing scripts in languages like
+		R, MATLAB, and Python. And another tool is operators: we are all familiar with things like +, -, *, and /, but most programming languages also allow you to make
+		up your own operators; this usually isn't necessary for writing simple programs, though, and more often is just something experts do to save themselves time. Anyway,
+		that is all to say, in this tutorial we have not covered <em>all</em> the main tools of programming (so don't be surprised if someday you come across something new),
+		but we have covered the core ones that are likely to show up in almost any code you read or write.</p>
+	<p class="centercol">What's next? Get out and start programming! There are lots of books and online tutorials available for whatever programming language you need to use
+		and these can be helpful&mdash;in particular, even though you know the basics now, for any given programming language you will need to check the details of their
+		implementation, for example whether "for" loops use curly brackets or square brackets, how the language lets you create your own functions, and how the language handles <em>indexing</em> (i.e., specifying that you want
+		to grab a certain number out of a list rather than grabbing the whole list). But sometimes the best way is just to start out with some code that has already been
+		written and modify it to do what you need. Of course, because every programming language has its own details of implementation, don't feel bad if you don't understand
+		everything immediately. For example, while we talked about the basics of programming here, we didn't talk about anything that would explain to you what's going on
+		with all the periods in my MATLAB code (stuff like <code>averages.(condition).(subject)</code>), or all the stuff in <code>[]</code> square brackets, or all the <code>~</code>
+		squigglies. Those are bits of syntax that are specific to MATLAB code, but as you need each one you can learn how to use it via Googling. For instance, <code>[]</code>
+		is just how you make a list of numbers in MATLAB; it's the equivalent of R's <code>c()</code> function that we used to create our list earlier. And the <code>~</code>
+		is MATLAB's version of "not", so it can be used in conditionals to make sure something happens if a given condition is NOT met instead of if a given condition IS
+		met. All of these details will vary from one programming language to another and even from one person's code to another's (in most languages there is more than one
+		way to do the same thing, i.e., more than one algorithm to accomplish the same task), but now you have the foundational knowledge to figure out how to use them.</p>
+	<hr>
+	<p class="mini">by <a href=".">Stephen Politzer-Ahles</a>. Last modified on 2016-04-08.</p>
+
+
+
+    </body>
+</html>

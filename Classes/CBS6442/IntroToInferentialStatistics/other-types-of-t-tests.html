@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<style type="text/css">
+.txtUpsideDown 
+{
+	filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=2);  /* IE6,IE7 */
+	ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)"; /* IE8 */
+	-moz-transform: rotate(-180deg);  /* FF3.5+ */
+	-o-transform: rotate(-180deg);  /* Opera 10.5 */
+	-webkit-transform: rotate(-180deg);  /* Safari 3.1+, Chrome */
+	position: absolute; 
+}
+</style>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Other types of t-tests</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Other types of <em>t</em>-tests (2 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">What we discussed in the previous section was called a <em>one-sample t-test</em>. We took one sample of numbers, and
+	compared the mean of that sample to some other number. That number is usually zero: e.g., in our <em>t</em>-test, we checked to see
+	whether the average improvement for our sample of 20 students was greater than zero.</p>
+<p class="centercol">Another kind of <em>t</em>-test is the <em>paired samples t-test </em>(also sometimes called a <em>dependent samples
+	t-test</em>). This happens when you have two sets of numbers (e.g., pre-test scores and post-test scores) and you compare their means
+	(e.g., to see if the average post-test score is higher than the average pre-test score). For it to be a <em>paired samples</em>
+	<em>t</em>-test, the scores have to come in natural pairs: for example, a pre-test score and a post-test score from the same person
+	makes a pair. If your pre-test scores and post-test scores are from different people, you can't use a paired samples <em>t</em>-test.
+	I won't talk much more about the paired samples t-test because it's actually literally the same thing as a one-sample <em>t</em>-test.
+	Checking whether someone's post-test score is higher than their pre-test score is exactly the same thing as checking whether
+	someone's {post-test minus pre-test} difference is higher than zero. (For example, imagine someone's pre-test score is 63 and their
+	post-test score is 85. Mathematically, you could express this as "85 &gt; 63", or you could express it as "85-63 &gt; 0" ; these are
+	the same.) Thus, every paired samples <em>t</em>-test could be restated as a one-sample <em>t</em>-test. In fact, the formula for a
+	paired samples <em>t</em>-test is essentially the same as the formula for a one-sample <em>t</em>-test.</p>
+<p class="centercol">Last, there is an <em>independent samples t-test</em>. This is what you use when you want to compare two samples of
+	data, and the data do <em>not</em> come in natural pairs. For example, if I want to see if PolyU students are taller than HKU
+	students, I would need to use an independent samples <em>t</em>-test, because my measurements of PolyU students come from different
+	people than my measurements of HKU students, and there's no meaningful way to pair the people up. The formula for an independent
+	samples <em>t</em>-test follows the same logic as the one-sample <em>t</em>-test formula you learned earlier (its key parts are still
+	the size of the group difference, the amount of variance, and the size of the sample), but some of the details are different. I
+	usually just calculate it using statistical software.</p>
+<p class="centercol">When you use statistical software for doing an independent samples <em>t</em>-test, you will have to indicate whether
+	your samples have [approximately] <em>equal variance</em> or [approximately] <em>unequal variance</em>. (For example, imagine you
+	want to compare 20 cats and 20 dogs to see whether cats or dogs are heavier. Cats' weights don't vary a lot; all housecats are more
+	or less the same size. Dogs' weights do vary a lot, though: there are some tiny dogs and some big dogs. Thus, these two groups have
+	<em>unequal variance</em>.) In general, it's best to just always use the unequal variance test to be safe (in fact, some statistical
+	software, like R, does this by default); in situations where you do have equal variance both tests are pretty much equally effective,
+	and in situations where you have unequal variance the unequal-variance test is far more effective than the equal-variance test. So
+	there's rarely a need to ever use the equal-variance test.</p>
+<p class="centercol">Additionally, when you use statistical software for any <em>t</em>-test (independent or one-sample), you will have to
+	indicate whether you want a two-tailed test or a one-tailed test. A two-tailed test is what you use when you have no directional
+	prediction: Group A might be higher than Group B or Group B might be higher than Group A, you have no idea, you just want to see if
+	the groups are different in either direction. I think this situation is rare, but people still often use the two-tailed test anyway.
+	A one-tailed test is what you use when you have a directional prediction: e.g., you expect that Group A is <em>higher</em> than Group
+	B, and you have no interest in testing whether Group A is <em>lower</em> than Group B. If you have a directional prediction, an
+	appropriate one-tailed test has a better chance of finding a significant <em>p</em>-value. However, you have to be careful that
+	you're looking in the right tail (if you expect Group A to be higher than Group B but you accidentally put the two groups into the
+	Excel formula in the wrong order, Excel might totally miss the effect). Understanding all the details of how this works is beyond the
+	scope of the present class (but you can learn more about it in a statistics class). My recommendation is: if you are confident with
+	what you're doing, use one-tailed tests when appropriate to have a better chance of finding the effects you're looking for; but if
+	you're not confident or not sure what you're doing, just use a two-tailed test.</p>
+<p class="centercol">To learn how to do a t-test in Excel, see e.g. <a href="https://www.excel-easy.com/examples/t-test.html">this site</a>.
+	(There are many other tutorials available for this sort of thing; this is just one I found. Note that the instructions here assume
+	that you have activated the "Data Analysis Toolkit" in Excel. This is not activated by default, but can be activated with a few
+	simple steps; it should be easy to Google for instructions on how. I usually don't use this toolkit, I usually just directly use the
+	=T.TEST() function, but that function only reports the <em>p</em>-value, whereas the Data Analysis Toolkit also reports the
+	<em>t</em> statistic and other relevant numbers that you might need.)</p>
+<p class="centercol">To learn how to do a t-test in R with as little use of R coding as possible, see <a href="t-test in R.pdf">t-test in
+	R.pdf</a></p>
+<p class="centercol">To do a little practice doing a <em>t</em>-test with computer software, continue to the exercises below.</p>
+
+		<center>
+
+
+		<button class="collapsible">Calculate <em>t</em> with software</button>
+		<div class="content">
+			<p>Recall the first activity in this module, where I listed the ages of some [imaginary] PolyU and HKUST
+				graduate students:</p>
+			<ul>
+				<li>PolyU: 25, 24, 23, 31, 33, 25, 26, 28, 44, 30</li>
+				<li>HKUST: 17, 35, 23, 25, 27, 24, 25, 25, 21, 24</li>
+			</ul>
+			<p>Using whatever software you prefer, do a <em>t</em>-test to compare these two groups. You'll have to decide which kind
+				of <em>t</em>-test to use. Once you've done the test, write down the <em>p</em>-value.</p>
+			<p>The answer is at the bottom of the page.</p>
+		</div>
+
+
+		</center>
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			"<a href="choosing-a-test.html">Choosing a test</a>".</p>
+
+<p class="txtUpsideDown">For this question I accept either <em>p</em>=0.096925231, or <em>p</em>=0.048462616. The first is what you get from a two-tailed test, and the second is what you get from a one-tailed test; whether you use a two-tailed or a one-tailed test depends on your original hypothesis. Note that both of these p-values come from the "unequal variance" t-test; the "equal variance" t-test never needs to be used.
+<br /><br /></p>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-15. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+
+

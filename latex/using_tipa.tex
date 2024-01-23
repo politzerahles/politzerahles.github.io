@@ -1,0 +1,19 @@
+\documentclass{article}
+\usepackage{tipa}
+
+\begin{document}
+
+\begin{itemize}
+	\item{ \textsc{tipa} \emph{shortcut characters} work only within the \texttt{$\backslash$textipa\{\}} environment. For example, \texttt{D} within the \texttt{$\backslash$textipa\{\}} environment yields the voiced linguodental fricative symbol: \textipa{D}. }
+	\item{ Characters may be entered using their \emph{macros}, or names of the character in the form of a command. These work outside of the \texttt{$\backslash$textipa\{\}} environment. For example, \texttt{$\backslash$textglotstop} yields \textglotstop, and \texttt{$\backslash$ae\{\}} yields \ae{}. }
+	\item{ Some characters may be formed using \emph{special modifying macros}, combined with existing letters, in the \texttt{$\backslash$textipa\{\}} environment. For example, \texttt{$\backslash$:} plus a
+	letter creates a retroflex: \texttt{$\backslash$:d} yields	\textipa{\:d}. Likewise, \texttt{$\backslash$*} plus a letter turns the letter upside-down: \texttt{$\backslash$*r} yields \textipa{\*r} }
+	\item{ There are numerous commands for adding diacritics. For example, \texttt{$\backslash$s\{\}} (short for \texttt{$\backslash$textsyllabic}) marks a segment
+	as syllabic: \textipa{\s{n}}. }
+	\item{ For a full description of how to input any character, see the TIPA manual (available from CTAN.org, just search for TIPA). Check this if you are having 
+	trouble inputting a certain character. }
+\end{itemize}
+\textipa{DIs Is Di InR\s{\*r}n\ae{}S\s{n}\s{l} f@nERIk \ae{}lf@bEt.}
+
+
+\end{document}

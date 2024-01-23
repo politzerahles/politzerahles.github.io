@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Making a self-paced reading experiment in DMDX</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Tutorial: Making a self-paced reading experiment in DMDX (1.5 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">Doing a self-paced reading experiment in DMDX is a bit of a hassle, but it's possible. It follows the same logic as a
+	priming experiment, but with a few extra twists. Since this tutorial builds off of the concepts that were discussed in
+	<a href="tutorial-priming.html">the priming tutorial</a>, I recommend you do that tutorial (if you haven't already) before continuing
+	with this one.</p>
+
+<h4 class="centercol">1. Simple self-paced reading experiment</h4>
+<ul class="center"><li>Script: <a href="selfpaced1.rtf">selfpaced1.rtf</a></li></ul>
+<p class="centercol">This was a very simple self-paced reading experiment, which just presented two sentences. If you open the script and
+	examine it, you can see it looks similar to a lexical decision experiment; just, instead of presenting a single word like "DOG", I
+	presented a whole sentence, with one word revealed and the others hidden, like
+	"<span style="font-family: courier new, courier;">----&nbsp;is&nbsp;-&nbsp;-----&nbsp;---------.</span>"</p>
+<p class="centercol">A few special things had to be done to make this work. Most importantly, I had to make sure that the words within a
+	sentence appear in the right order; if things appear in a completely random order like in the priming experiment, people would not be
+	reading the sentences, they would be reading disorganized lists of words. To do this, I added the &lt;g 6=""&gt; parameter at the top
+	of the script. That tells DMDX to present the stimuli in groups of 6 ("g" is short for "group"). Since each of my sentences was six
+	stimuli long, this will ensure that the six stimuli of a given sentence will be presented in the right order (while the order of the
+	sentences themselves will still be random).</p>
+<p class="centercol">The other changes I made were minor. I put the writing in a monospace font (Courier New) so each letter would occupy
+	the same amount of space. I also put "=" (instead of "+" or "-") in front of each stimulus, because I just want the participant to
+	press either button, and I don't care which button is "right" or not.</p>
+
+<h4 class="centercol">2. Self-paced reading with sentences of varying lengths</h4>
+<ul class="center"><li>Script: <a href="selfpaced2.rtf">selfpaced2.rtf</a></li></ul>
+<p class="centercol">In the first example, all the sentences had the same number of words. In some experiments, you might have sentences
+	of different lengths (this isn't ideal, but sometimes it's unavoidable; every self-paced reading experiment I've ever done has had
+	this). This requires some extra tweaking, since the "groups" are of different sizes. As you can see from the attached script, the
+	way I did this was by adding some filler lines ("0 c;") at the end of the shorter sentences. The longest sentence is 8 stimuli long.
+	For all the shorter sentences, I added filler lines to make the sentence 8 stimuli long (e.g., for sentences that were normally 6
+	stimuli long, I added two filler lines). Then I set the group size to 8 ("&lt;g 8&gt;") in the header. This keeps each sentence
+	together within its own group. It's an ugly and awkward hack, but it works.</p>
+
+<h4 class="centercol">3. Self-paced reading with comprehension questions</h4>
+<ul class="center"><li>Script: <a href="selfpaced3.rtf">selfpaced3.rtf</a></li></ul>
+<p class="centercol">Just reading sentences and not doing anything would be pretty boring in an experiment. If your participants get bored
+	and fall asleep in your experiment (or if they figure out they can just repeatedly mash the SHIFT button without paying attention)
+	you're not going to get meaningful data. So we often include comprehension questions, or something similar, in the experiment to make
+	participants pay attention.</p>
+<p class="centercol">You can see that in this script I added a comprehension question after each item (and increased the &lt;g&gt;
+	parameter accordingly). Make sure you put the right "+" or "-" sign at the beginning of the question line to indicate what you expect
+	the "correct" answer to be!</p>
+<p class="centercol">I added one more thing in this script: I put a "/" at the beginning of the first stimulus in each sentence, to clear
+	the previous screen from the previous sentence.</p>
+
+<h4 class="centercol">Wrap-up</h4>
+<p class="centercol">This script is very simplistic; you can make further improvements to it by using the strategies discussed in the
+	previous tutorial (e.g., adding practice items, adding instruction messages, using a clear numbering system for the item codes,
+	etc.).</p>
+<p class="centercol">There are lots of other kinds of experiment that can be done with DMDX. To be honest, I find DMDX quite clunky for
+	anything other than basic priming sorts of experiments, so if you're doing any sort of weird experiment I recomment using something
+	else; but nevertheless, I have ended up often using DMDX anyway, because it's free and easy to install, which makes it useful for
+	e.g. when I want to put the same experiment on 30 computers in a computer lab and bring in a lot of volunteers at once. Anyway,
+	here are some other examples of more complicated DMDX experiments, if you're interested in trying to do something fancy.</p>
+<ul class="center">
+	<li><strong><a href="https://osf.io/5ezcp/">McGurk experiment</a></strong>: The <a href="https://www.youtube.com/watch?v=FefFfvriAwQ&t=52s">McGurk
+		effect</a> is a pretty cool effect. For this experiment, I needed a script that played videos with sound to people, and then
+		people could type in what they think they heard (so their response was not just pressing a single button, but pressing
+		several buttons). Frankly this could also have been done by just showing the videos in PowerPoint and having the participants
+		write their answers on paper, but I used DMDX so the responses could be recorded in the computer automatically, saving me and
+		my coauthor the tedium of having to manually enter responses into a computer. If you want to try this experiment yourself, go
+		to the link (<a href="https://osf.io/5ezcp/">https://osf.io/5ezcp/</a>) and download and unzip the entire folder "Stimuli and
+		DMDX script". The DMDX .rtf file needs to be in the same folder with all the videos in order to work.</li>
+	<li><strong><a href="https://osf.io/8y94s/">Ganong experiment</a></strong>: For this experiment, participants hear a sound or word,
+		and then have to make a binary decision about what one of the sounds in it was. For example, they might hear a sound that is
+		ambiguous between "da" and "ta", and then they have to press the left shift button if they think it was "da" or the right shift
+		button if they think it was "ta". So ultimately it's very similar (from the DMDX coding point of view) as the priming experiment
+		we saw earlier; it just involves hearing sound files instead of seeing text.</li>
+	<li><strong><a href="https://osf.io/8nvm7/">Self-paced listening experiment</a></strong>: Just what it sounds like&mdash;it's like
+		self-paced reading, but with listening instead of reading. Each sentence is divided into short sound files, and participants
+		hear each sound file one at a time and press a button when they're ready for the next one. The setup is very similar to the
+		self-paced reading experiment above, except that it plays sound files instead of showing text. We also had to make sure DMDX
+		would stop the current soundfile and move to the next one as soon as the participant presses a button; DMDX's default behaviour
+		is to finish the soundfile (even if the participant presses a button) before moving on to the next one, and this behaviour is
+		not ideal because it means a participant can just quickly mash the button over and over again to hear all the files. If you want
+		to try this experiment, download and unzip the "Audio stimuli and DMDX scripts" folder and use the "b" versions of the
+		experiment (e.g. List1b.rtf, List2b.rtf, etc.).</li>
+	<li><strong><a href="https://osf.io/mnb8f/">Long-lag priming experiment</a></strong>: Long-lag priming is a bit different from regular
+		priming. In regular priming (more accurately called "paired priming"), the participant sees a prime and does not need to respond
+		to it, and then immediately sees its associated target. In long-lag priming, on the other hand, a participant sees the prime,
+		does respond to it (e.g. to judge if it's a real word or a nonword), and then sees (and responds to) a whole bunch of other
+		before responding to its associated target. The way we handled that in this experiment was as follows. We divided the stimulus
+		list into smaller groups of words, such that each group had a few items of each condition (e.g. a few related prime-target pairs,
+		a few unrelated prime-target pairs, a few nonword primes, a few nonword targets, etc.). Specifically, each group had 18 primes
+		and 18 targets, and there were something like 12 groups; let's call them group A, group B, group C, etc. Then, within the
+		experiment itself, we would first show all the group A primes in a random order, then all the group B primes in a random order,
+		then all the group A <em>targets</em> in a random order, then all the group B targets in a random order, and so on. This ensured
+		that a given prime always appeared before its associated target, and there were always a bunch of other words in between the
+		prime and target. (The number of words in between prime and target could be as little as 18&mdash;if this item's prime was the
+		last prime shown in group A and the target was the first shown in group A, so all that sits between them are the 18 primes of
+		group B&mdash;or as high as 52&mdash;if this item's prime was the first in its group and the target was the last in its group,
+		so what sits between them is 17 other primes from group A, 18 primes from group B, and 17 other targets from group A.) To make
+		this work, we had to fiddle with DMDX's randomization settings, such that the order of words within each group was shuffled,
+		but the order of the groups themselves was fixed.</li>
+</ul>
+
+
+		<p class="centercol">When you are ready, continue on to the next task in the module;  
+			"<a href="make-a-simple-dmdx-experiment.html">Make a simple DMDX experiment</a>".</p>
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-14. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+

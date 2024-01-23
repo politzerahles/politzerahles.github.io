@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .bigsource, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+	width:65%;
+	margin-left:auto; margin-right:auto;
+	border:1px solid #ccc;
+	overflow:auto;
+	background-color: #FFFFFF;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Find a significant effect in any study</title>
+        <link rel="stylesheet" type="text/css" href="stevetools_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body>
+
+
+		<h2>Find a significant effect in any study</h2>
+
+		<p class="centercol">\(p>.05\). We've all been there. Who among us hasn't had a student crying in our office over an experiment that
+			failed to show a significant effect? Who among us hasn't been that student?</p>
+
+		<p class="centercol">Statistical nonsignificance is one of the most serious challenges facing science. When experiments aren't \(p<.05\),
+			they can't be published, people can't graduate, no one can get university funding to party it up at that conference in that scenic location,
+			and in general the whole enterprise falls apart. The amount of taxpayer dollars that have been wasted on \(p>.05\) experiments
+			is frankly astounding.</p>
+
+		<p class="centercol">Fortunately, there is a solution. In this post I would like to introduce you to a new R function, <code>phackR</code>,
+			which helps you find the significant result in your dataset. The logic underlying this function is simple: anyone who can't get
+			a significant result is lazy. A truly dedicated researcher, especially one who is aware how much money has been spent running
+			participants and who knows that that money must not go to waste, will always be able to find a result in their results.
+			(This is precisely the point that <a href="http://pss.sagepub.com/content/22/11/1359">Simmons, Nelson, and Simonsohn (2011)</a>
+			make in their famous paper.) This function simply assists in that process.</p>
+
+		<p class="centercol">To use the function, simply feed it two vectors of data, like you would the <code>t.test()</code> function. (Currently
+			it's only set up to handle paired data, but since it's so useful, I'm sure someone will soon update it to handle other designs.)
+			You can also specify whether the alternative hypothesis you are testing is that the first vector is "greater" or "less" than
+			the second (again, same as with the <code>t.test()</code> function). <code>phackR()</code> will then show you which
+			sub-group of participants shows the expected effect, and it will offer some helpful suggestions for which moderating variable
+			might be useful to explain the presence of different sub-groups.</p>
+		
+		<p class="centercol">Below is an example with some fake data. This example shows how powerful the function is: even for simulated
+			data with an effect size of zero, <code>phackR()</code> can successfully find the true effect that <em>you</em>
+			wanted! Feel free to also try it out with your real data, and kiss your \(p>.05\) woes goodbye.</p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Simulate paired data with N=48 participants, a raw effect size of 0 (SD 2)</span>
+<span class="hl std">N</span> <span class="hl kwb">&lt;-</span> <span class="hl num">48</span>
+<span class="hl std">effectsize</span> <span class="hl kwb">&lt;-</span> <span class="hl num">0</span>
+<span class="hl std">effectsd</span> <span class="hl kwb">&lt;-</span> <span class="hl num">2</span>
+<span class="hl std">cond1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">jitter</span><span class="hl std">(</span> <span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,N),</span> <span class="hl kwc">amount</span><span class="hl std">=</span><span class="hl num">5</span> <span class="hl std">)</span>
+<span class="hl std">cond2</span> <span class="hl kwb">&lt;-</span> <span class="hl std">cond1</span> <span class="hl opt">+</span> <span class="hl kwd">rnorm</span><span class="hl std">( N, effectsize, effectsd )</span>
+
+
+<span class="hl com"># source the phackR function</span>
+<span class="hl kwd">source</span><span class="hl std">(</span> <span class="hl kwd">url</span><span class="hl std">(</span><span class="hl str">&quot;http://www.mypolyuweb.hk/~sjpolit/phackR.txt&quot;</span><span class="hl std">) )</span>
+
+<span class="hl com"># Find the significant result!</span>
+<span class="hl kwd">phackR</span><span class="hl std">( cond1, cond2 )</span>
+</pre></div>
+</div><div class="rcode">
+<div class="output"><pre class="knitr r">## You can get a result of p=5.74742828890648e-06 if you use only the following 22 good subjects:
+## 
+## 4 5 7 9 14 15 16 17 19 22 26 29 30 32 34 35 36 37 38 41 42 45
+## 
+## A potential explanation for the result is:
+## Maybe the good subjects have high working memory and the bad subjects have low working memory. You should look into it.
+## 	(or, better yet, read http://www.nature.com/neuro/journal/v10/n1/full/nn0107-3.html)
+</pre></div><div class="rimage default"><center><img src="figure/phacked.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></center></div>
+</div></div>
+
+		<p class="centercol">It's that easy!<!-- On this first day of April 2017, I am thrilled to share this powerful function with you all.--></p>
+
+		<p class="footnote">*This post is inspired by the wonderful <a href="http://varianceexplained.org/r/monetizr/">monetizr</a> package,
+			and by years of doing experimental psychology.</p>
+
+	<hr>
+	<p class="mini">by <a href=".">Stephen Politzer-Ahles</a>. Last modified on 2016-09-19.</p>
+
+
+
+    </body>
+</html>

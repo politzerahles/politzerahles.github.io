@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<style type="text/css">
+.txtUpsideDown 
+{
+	filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=2);  /* IE6,IE7 */
+	ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)"; /* IE8 */
+	-moz-transform: rotate(-180deg);  /* FF3.5+ */
+	-o-transform: rotate(-180deg);  /* Opera 10.5 */
+	-webkit-transform: rotate(-180deg);  /* Safari 3.1+, Chrome */
+	position: absolute; 
+}
+</style>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>T-test by hand</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2><em>T</em>-test by hand (1 hour)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">A <i>p</i>-value is calculated with a <span style="text-decoration: underline;">hypothesis test</span> (more formally
+	called a <span style="text-decoration: underline;">null hypothesis statistical test</span>). The example you read about in Task 1 of
+	this module was one way of carrying out a hypothesis test: I created a fake population where there was no difference between the
+	groups, and then looked to see how many samples from that population would show a big difference. (We won't be conducting any more
+	tests like that in this class, but that kind of test is called a <em>permutation test</em>, in case you were wondering.)</p>
+<p class="centercol">It often is not feasible to create a fake population like this (for example, we might not known how much variation in
+	age there should be in the population, so we wouldn't know how to make up the fake population). Instead, people usually use a math
+	formula to approximate this kind of test. Specifically, they use a math formula to calculate a number (called a
+	<span style="text-decoration: underline;">test statistic</span>) which falls somewhere on a known distribution (unlike my example in
+	the earlier task, where I had to make up a distribution by simulating tests on fake data 5000 times) and then get the <i>p</i>-value
+	by seeing where in the distribution the test statistic falls.</p>
+<p class="centercol">One of the simplest and most common examples of a statistical procedure like this is the <i>t</i>-test. Imagine that
+	I have ten students, and I compare each student's score on a math test and reading test; I want to see if the students do better at
+	reading than math. For each student, I can calculate the reading test score minus the math test score to see how much better they
+	did at reading. Here is a set of scores:</p>
+<ul class="center"><li>5, 17, -6, 3, 12, -11, 8, 13, 10, -2</li></ul>
+<p class="centercol">We can see that, on average, students did better on reading than they did on math (the average of these values is
+	4.9, meaning they scored an average of 4.9 points higher on reading than they did on math). But some students actually did worse on
+	reading. And, as we know, the results from this sample might not match the results of the population. We want to do a statistical
+	test to help us decide whether to conclude that, in the population, this reading-minus-math difference is likely to be bigger than
+	zero (if reading and math scores are the same in the population, the difference between them would be zero). Keep in mind that
+	calculating a <i>p</i>-value does not actually answer this question, for the reasons we discussed in the previous tasks (a
+	<em>p</em>-value tells us about the probability of a result under a certain population difference, it does <em>not</em> tell us the
+	probability of a population difference given a certain result); nonetheless, you may be expected to calculate a <i>p</i>-value
+	anyway.</p>
+<p class="centercol">To get a <i>p</i>-value, we first calculate a <i>t</i> statistic using the below formula:</p>
+<center><big><big><big>\(t = \frac{\bar{x}}{^s/_{\sqrt{N}}}\)</big></big></big></center>
+<p class="centercol">\(\bar{x}\) refers the average of the results (4.9), <em>s</em> refers to the sample standard deviation (a measure of
+	how much the results vary across people; you can calculate this in Excel or other statistical software, or by hand), and <em>N</em>
+	refers to the number of participants. If I plug all the numbers into the equation I get the following:</p>
+<center><big><big><big>\(t = \frac{4.9}{^{8.94986}/_{\sqrt{10}}} = 1.73133\)</big></big></big></center>
+<p class="centercol">So, the <i>t</i>-statistic for these data is 1.7313. The next step is to know what <i>p</i>-value this corresponds
+	to. In the past we would do this by looking up the value from a table, but nowadays most statistical software calculates this
+	automatically. In this case, the <i>p</i>-value is .05872, meaning that if there were no difference between reading and writing
+	scores in the population, there is a 5.872% chance that we might have observed a <em>t</em>-value of 1.73133 or bigger in this
+	sample. (A good rule of thumb is that if your study has a large enough sample, <em>t</em>-values above 2 or below -2 will tend to
+	have <em>p</em>-values below .05. If your study has a small sample [e.g. less than about 30 participants or items] this rule of thumb
+	will not work reliably, though.)<br /></p>
+<p class="centercol">There are many more nuances to how to do a <i>t-</i>test. First of all, the formula for calculating a <i>t-</i>value
+	is slightly different if you are just examining one average (as in our present example, seeing if the number is different from zero)
+	or if we are examining two averages that come from two different groups of people (as in the PolyU/HKUST example discussed above).
+	And the way you calculate a <i>p</i>-value from a <i>t</i>-statistic depends on your previous predictions (in this case, I had
+	predicted beforehand that reading scores would be higher; if I had not made that prediction, the <i>p</i>-value for this same
+	<i>t</i>-statistic would be different). If you plan to use a <i>t</i>-test in your own research, you will need to read more about it
+	to make sure you handle these issues correctly, as what you've read here is just a brief crash course and is not yet enough to
+	prepare you to use these tests responsibly (although some of these issues will be addressed in the next activity in this module).</p>
+<p class="centercol">Nevertheless, the formula for the <i>t</i>-statistic is a useful formula to know, because it gracefully illustrates
+	all the things that are important when you design research. To get a statistically significant result (i.e., a small <i>p</i>-value),
+	you want to get a high <i>t</i>-statistic (the higher the <i>t</i>-statistic is, the smaller its corresponding <i>p</i>-value will
+	be, if all else is held constant). If you look at the formula for the <i>t</i>-statistic above, and do some basic math, you should
+	see that there are three things you could do to make <i>t</i> bigger:</p>
+<ul class="center">
+	<li>If \(\bar{x}\) (the size of the effect) is bigger, <i>t</i> will be bigger;</span></li>
+	<li>If <em>s</em> (the variation across participants) is smaller, <i>t</i> will be bigger;</span></li>
+	<li>If <em>N</em> (the number of participants) is bigger, <i>t</i> will be bigger.</span></li>
+</ul>
+<p class="centercol">Therefore, the <i>t</i> formula is a perfect summary of the three things you can do in your study to maximize the
+	chance of finding a significant effect. If you try to find bigger effects (by doing whatever you can to make the difference as big as
+	possible; e.g., choosing tests that accentuate the difference between math and reading, as opposed to choosing a "math" test that
+	still requires a lot of reading), minimize the variation across participants (e.g., by trying to test people under as similar
+	circumstances as possible, rather than e.g. testing some students at night and some in the morning), and find as many volunteers as
+	you can, you can increase your chance of finding a significant effect. Even if you never actually use a <em>t</em>-test, the <em>t</em>
+	formula is an excellent reminder of how to design good research.</p>
+<p class="centercol">To practice calculating a <em>t</em>-statistic, try the exercise below.</p>
+
+
+
+		<center>
+
+
+		<button class="collapsible">Calculate <em>t</em> by hand</button>
+		<div class="content">
+			<p>Imagine I test students at both the beginning and end of the semester to see if they improve on some test. At the end
+				of the semester, I take their end-of-semester score minus their beginning-of-semester score to see how much
+				improvement they had. Now imagine my class has 1000 students but I could only perform these tests for 20 randomly
+				selected students. Therefore, maybe the university wants to know if the improvement I observed in just 20 students is
+				statistically significant (even though a statistical significance test doesn't tell us whether there was reliable
+				improvement across the whole population of students).</p>
+			<p>Below are the 20 improvement scores for the students I tested. Calculate the <em>t</em>-statistic for checking if these
+				improvement scores are significantly greater than zero.</p>
+			<center>{-5, 9, -4, 8, 9, -1, 12, 4, 11, 14, 1, 14, 15, -2, -4, 4, 2, 5, 14, 10}</center>
+			<p>The answer is at the bottom of the page.</p>
+		</div>
+
+
+		</center>
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			"<a href="other-types-of-t-tests.html">Other types of <em>t</em>-tests</a>".</p>
+
+<p class="txtUpsideDown">Answer: 3.866215. You can get this by plugging the mean difference score (5.8), standard deviation (6.708988), and number of students (20) into the <em>t</em> formula.
+<br /><br /></p>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-15. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+
+

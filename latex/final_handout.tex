@@ -1,0 +1,370 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[margin=1in,
+vmargin={0pt,1in},
+includefoot,includehead]{geometry}
+\usepackage{geometry}
+\usepackage{}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{gb4e}
+\let\eachwordone=\sl
+\usepackage{qtree}
+\usepackage[normalem]{ulem}
+\usepackage{tipa}
+\usepackage{tree-dvips}
+\usepackage{chicago}
+\pagestyle{fancy}
+\headheight 35pt
+\rhead{\today}
+\chead{Uyghur genitives}
+\lhead{Syntax II}
+
+\newcommand{\trace}[1]{$\langle$#1$\rangle$}
+\newcommand{\feat}[1]{{\scriptsize [#1]}}
+\newcommand{\strutt}[1]{\rule[-#1]{0cm}{1cm}}
+\newcommand{\poss}[2]{\textsc{poss}.{\footnotesize #1}#2}
+\newcommand{\posst}{\textsc{poss}}
+\newcommand{\gen}{\textsc{gen}}
+\newcommand{\pl}{\textsc{pl}}
+ 
+\begin{document}
+
+\begin{center}\Large{\textbf{A Minimalist analysis of Uyghur genitives}}\\
+\vspace{0.4cm}
+\normalsize Stephen Politzer-Ahles
+\vspace{0.1in}
+\end{center}
+
+\begin{itemize}
+\item Uyghur is a Turkic language spoken in western China and Central Asia
+\item Uyghur possessive constructions bear marking on both the \emph{possessor} and \emph{possessed}~\cite{Engetal,deJong,Tomur}
+\end{itemize}
+
+\section{\Large{Syntactic and semantic properties}}
+\subsection{Morphological marking and agreement}
+\begin{itemize}
+\item	Morphemes:
+	\begin{itemize}
+	\item ``Possessor'': \gen{} case suffix \textsl{-ning}
+	\item ``Possessed'': \posst{} agreement suffix, agrees with ``possessor'' in person \& number
+	\end{itemize}
+\end{itemize}
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex[]{\gll m\"e-ning alma-m\\
+	     me-\gen{}    apple-\poss{1}{s}\\
+		  \glt ``my apple''
+		 }     
+	\ex[*]{\gll m\"e-ning almi-miz\\
+	            me-\gen{}    apple-\poss{1}{p}\\
+	      }
+	\ex[*]{\gll m\"e-ning almi-si\\
+	            me-\gen{}      apple-\poss{3}{s}\\
+	      }
+	\ex[]{\gll m\"e-ning almi-lir-im\\
+	         me-\gen{}    apple-\pl-\poss{1}{s}\\
+	    \glt ``my apples''
+	    }
+	\ex[*]{\gll m\"e-ning almi-lir-imiz\\
+						me-\gen{} apple-\pl-\poss{1}{p}\\
+				}
+	\end{xlist}
+\ex
+	\begin{xlist}
+	\ex[]{\gll biz-ning almi-miz\\
+	         us-\gen{}   apple-\poss{1}{p}\\
+	    \glt ``our apple''
+	    }
+	\ex[]{\gll biz-ning almi-lir-imiz\\
+	         our-\gen{}  apple-\pl-\poss{1}{p}\\
+	    \glt ``our apples''
+	    }
+  \ex[*]{\gll biz-ning almi-lir-im\\
+              our-\gen{} apple-\pl-\poss{1}{s}\\
+        }
+  \end{xlist}
+\end{exe}
+
+\subsection{Semantic roles}
+\begin{itemize}
+\item ``Possessors'' are not always really possessors~\cite{Dede}:
+\end{itemize}
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex	Kinship:
+			\gll Rene-ning ati-si\\
+					 Rene-\gen{}  father-\poss{3}{s}\\
+	\ex Association:
+			\gll Rene-ning ders-i\\
+				   Rene-\gen{} class-\poss{3}{s}\\
+	\ex Undergoer:
+			\gll Rene-ning vapat-i\\
+					 Rene-\gen{}  death-\poss{3}{s}\\
+	\end{xlist}
+\end{exe}
+\begin{itemize}
+\item Like sentence subjects, ``possessors'' are actually a syntactic notion, not a semantic one
+\item From now on will call them ``DP-subjects'', as they are in the subject position of the DP
+\end{itemize}
+
+\subsection{Distribution of DP-subjects}
+\begin{itemize}
+\item DP-subject may be omitted~\cite{Tomur,Dede}:
+\end{itemize}
+\begin{exe}
+	\ex \gll (M\"e-ning) ata-m bek \"egiz.\\
+					 (me-\gen{}) father-\poss{1}{s} very tall\\
+			\glt ``My father is very tall.''
+	\ex \gll (Siz-ning) kitab-ingiz qiziq-mu?\\
+					 (you-\gen{}) book-\poss{2}{s} interesting-\textsc{inter}\\
+			\glt ``Is your book interesting?''
+\ex
+	\begin{xlist}	
+	\ex \gll Mehmud-ning ders-i uzun.\\
+					 Mehmud-\gen{} class-\poss{3}{s} long\\
+			\glt ``Mehmud's class is long''
+	\ex \gll U-ning ders-i uzun.\\
+					 him-\gen{} class-\poss{3}{s} long\\
+			\glt ``His class is long.''
+	\ex \gll ( Mehmud t\"exi kel-mi-di.) Ders-i uzun.\\
+					 {} Mehmud still come-\textsc{neg}-\textsc{perf}.{\footnotesize 3}s class-\poss{3}{s} long\\
+			\glt ``(Mehmud has not arrived yet.) His [Mehmud's] class is long.''
+	\end{xlist}
+\end{exe}
+\begin{itemize}
+\item Non-genitive possessives (\posst{} marking but no \gen{} case):
+\end{itemize}
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex \gll Tarim oymanliq-i\\
+					 Tarim	basin-\poss{3}{s}\\
+			\glt ``the Tarim basin''
+	\ex \gll Azadliq yol-i\\
+					 Liberartion street-\poss{3}{s}\\
+			\glt ``Liberation Avenue''
+	\end{xlist}
+\ex
+	\begin{xlist}
+	\ex	\gll tor b\"ekit-i\\
+					 Internet stop-\poss{3}{s}\\
+			\glt ``website''
+	\ex	\gll poyiz istansi-si\\
+			     train station-\poss{3}{s}\\
+			\glt ``train station''
+	\end{xlist}
+\end{exe} 
+
+
+\section{\Large{Case checking and agreement marking}}
+\subsection{DP-subjects are like TP-subjects}
+\begin{itemize}
+\item Uyghur has \emph{pro}-drop:
+\end{itemize}
+\begin{exe}
+\ex \gll (Men) b\"ug\"un tash k\"ord\"um.\\
+				 (I) today rock saw\\
+		\glt ``Today (I) saw a rock.''
+\end{exe}
+\begin{itemize}
+\item TP-subject drop and DP-subject drop occur under similar conditions:
+	\begin{itemize}
+	\item Subject not receiving focus or bringing in a new discourse element
+	\item Subject is 1st person, 2nd person, or 3rd person but already given in the discourse
+	\end{itemize}
+\item In both TP and DP, overt subject names the specific referent, while inflection (verbal or \posst) identifies some characteristics of the referent
+\item Making an analogy between DP-subjects and TP-subjects:
+	\begin{itemize}
+	\item In TP, subject occupies [Spec,T] and receives [nom] case there. \textsc{agent}s are introduced by \emph{v}, which also hosts verbal inflection (tense and subject-verb agreement)
+	\item In DP, subject should occupy [Spec,D] and receive [gen] case there. ``possessor''s (the only kind of DP-subject) introduced by \emph{n}, which also hosts nominal inflection (\posst{} and ``possessor''--``possessed'' agreement)
+	\end{itemize}
+\end{itemize}
+
+\subsection{The theory in action}
+\begin{exe}
+\ex
+	\begin{xlist}
+\ex \gll Mehmud-ning ati-si\\
+				 Mehmud-\gen{} father-\poss{3}{s}\\
+		\glt ``Mehmud's father''
+\ex
+\Tree
+				[.DP
+					\node{mehmudend}{\textsl{Mehmud}\feat{case:\gen}}
+					[.D'\feat{\sout{case:\gen}}
+						[.\textit{n}P
+							\node{mehmudbegin}{\trace{\textsl{Mehmud}\feat{\sout{$\phi$:3s}~;~case:}}}
+							[.\textit{n}'
+								\qroof{\node{atabegin}{\trace{\textsl{ata}}}}.NP
+								\node{atan}{\trace{\textit{n}\feat{Infl:~;~$\phi$:3s}~{\textsl{ata}}}}
+							] !\qsetw{3cm}
+						] !\qsetw{5cm}
+						[.D$_{gen}$ D$_{gen}$\feat{\sout{Infl:\posst}} [.\node{ataend}{\textit{n}\feat{Infl:\posst;~$\phi$:3s}} \textit{n} \textsl{ata} ] ]
+					] !\qsetw{3cm}
+				]
+				{\makedash{4pt}
+				\anodecurve[br]{atabegin}[br]{atan}{.5in}
+				\anodecurve[r]{atan}[br]{ataend}{.75in}
+				\anodecurve[tl]{mehmudbegin}[bl]{mehmudend}{.5in}
+				}
+	\end{xlist}
+\end{exe}
+\begin{itemize}
+\item Derivation:
+	\begin{itemize}
+	\item Bare NP \textsl{ata} formed, selected as complement of \textit{n} and raises to adjoin with \textit{n}, which will host its inflectional and $\phi$ features
+	\item \textit{n} introduces \textsl{Mehmud} as its specifier, to fill a c-selectional requirement ([\emph{u}D]) and to get its $\phi$ features valued
+	\item \textit{n}P is becomes the complement of D$_{gen}$, a null D with \gen{} case and \posst{} inflectional features
+	\item \textsl{Mehmud} raises to [Spec,D] to receive \gen{} case, which will be pronounced as \textsl{-ning} thanks to morphophonological interface rules
+	\item The whole \textit{n} complex raises to adjoin with D to have its inflectional features valued. \posst{} inflection with third-singular $\phi$ features will
+	be pronounced as \textsl{si} on the only potential host, \textsl{ata}
+	\item This roughly parallels the derivation of a verbal extended projection
+	\end{itemize}
+\end{itemize}
+
+\subsection{Details, details}
+\begin{itemize}
+\item Why \textit{n}?
+	\begin{itemize}
+	\item Typically \textit{n} is used for a nominal \textsc{agent} for a deverbal noun, as in \textit{John's examination of the patient}~\cite{Adger}. Uyghur lacks such nouns
+	(there are only gerunds)
+	\item Just as \textit{v} allows subject--verb agreement by hosting inflection and $\phi$-features, so does \textit{n} allow DP-subject--noun agreement
+	\item \textit{n} introduces an external ``argument'' of the noun (possessor, relative, associate, undergoer, etc.), as does \textit{v}~\cite{Kratzer}
+	\end{itemize}
+\item What is the locus of ``possessive interpretation''?
+	\begin{itemize}
+	\item D$_{gen}$. \textit{n} only facilitates agreement and introduces external argument
+	\item In cases of DP-subject drop (6--8), there is unpronounced \gen{} case hosted on a phonetically null \emph{pro} in [Spec,DP]
+	\end{itemize}
+\item Why must DP-subject raise to [Spec,DP]?
+	\begin{itemize}
+	\item Evidence comes from non-genitive possessive constructions
+	\end{itemize}\begin{exe}
+\ex 
+	\begin{xlist}
+	\ex[*]{
+		\gll bir \textup{[}partiye-ning nizamnami-si\textup{]}\\
+				 one party-\gen{} constitution-\poss{3}{s}\\
+		\glt (intended: ``a [the party's constitution]'')
+	}
+	\ex[]{
+		\gll \textup{[}bir partiye\textup{]}-ning nizamnami-si\\
+				 one party-\gen{} constitution-\poss{3}{s}\\
+		\glt ``[a party's] constitution''
+	}
+	\ex[]{
+		\gll partiye-ning bir nizamnami-si\\
+				 party-\gen{} one constitution-\poss{3}{s}\\
+		\glt ``a constitution of the party's''
+	}
+	\end{xlist}
+\ex
+	\begin{xlist}
+	\ex[]{
+		\gll bir \textup{[}partiye nizamnami-si\textup{]}\\
+				 one party constitution-\poss{3}{s}\\
+		\glt ``a party constitution''
+	}
+	\ex[*]{
+		\gll partiye bir nizamnami-si\\
+				 party one constitution-\poss{3}{s}\\
+	}
+	\end{xlist}
+	\begin{itemize}
+	\item Assume that \textsl{bir} ``one'' is in [Spec,NumP], above \textit{n}P and below DP
+	\item Regular genitive-possessives cannot be further modified by numbers or articles; numbers must be internal to the phrase. DP-subject has risen past NumP
+	\item Non-genitive possessives can be; number cannot be phrase internal. First constituent has remained in [Spec,\textit{n}P]. \gen{} case not discharged, so no
+	possessive interpretation
+	\end{itemize}
+\end{exe}
+\end{itemize}
+
+\section{\Large{Handling gerunds}}
+\begin{itemize}
+\item Gerunds formed with nominalizer suffix \textsl{genlik}
+\item Gerund subjects bear \gen{} case; gerundized verbs bear agreeing \posst{} marking
+\end{itemize}
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex \gll siz-ning alma-ni y\"e-gen-lik-ingiz\\
+					 you-\gen{} apple-\textsc{acc} eat-\textsc{perf}-\textsc{nzr}-\poss{2}{s}\\
+			\glt ``your eating of the apple''
+	\ex \gll m\"e-ning Nur-ni \"olt\"ur-gen-lik-im\\
+					 me-\gen{} Nur-\textsc{acc} kill-\textsc{perf}-\textsc{nzr}-\poss{1}{s}\\
+			\glt ``my killing of Nur''
+	\end{xlist}
+\end{exe}
+\begin{itemize}
+\item Proposal:
+	\begin{itemize}
+	\item Gerund formed by taking a partial verbal projection and nominalizing it with \textsl{genlik}~\cite{Kratzer}
+	\item Nominalized gerund either does not include T, or T is defective (non-finite), so the \textsc{agent} cannot receive [nom] case
+	\item Adopting Hornstein's~\citeyear{Hornstein} movement hypothesis, \textsc{agent} can move out to get \gen{} case; on the way it stops at [Spec,\textit{n}P] where it picks up the ``possessor'' role and triggers agreement
+	\end{itemize}
+\end{itemize}
+
+\subsection{The theory in action}
+\begin{exe}
+\ex \begin{xlist}
+\ex \gll \textup{[}siz-ning \textup{[}Nur-ni \"olt\"ur-gen\textup{]}-lik-ingiz\textup{]}-ni bil-dim\\
+				 you-\gen{} Nur-\textsc{acc} kill-\textsc{perf}-\textsc{nzr}-\poss{2}{s}-\textsc{acc} know-\textsc{past}.{\footnotesize 1}s\\
+		\glt ``I found out that you killed Nur.'' (lit.: ``I found out your killing of Nur.'')
+\ex
+\Tree
+		[.DP
+			\node{sizend}{\textsl{siz}\feat{case:\gen}}
+			[.D'\feat{\sout{case:\gen}}
+				[.\textit{n}P
+					\node{sizn}{\trace{\textsl{siz}\feat{\sout{$\phi$:2s};~case:}}}
+					[.\textit{n}'
+						\qroof{\node{sizbegin}{\trace{\textsl{siz}\feat{$\phi$:2s;~case:}}} \textsl{Nur-ni} \node{olbegin}{\trace{\textsl{\"olt\"ur-gen-lik}}}}.NP !\qsetw{3cm}
+						\node{oln}{\trace{\textit{n}\feat{Infl:~;~$\phi$:2s}~\textsl{\"olt\"ur-gen-lik}}}
+					] !\qsetw{3cm}
+				] !\qsetw{6cm}
+				[.D$_{gen}$ D$_{gen}$\feat{\sout{Infl:\posst}} [.\node{olend}{\textit{n}\feat{Infl:\posst{};~$\phi$:2s}} \textit{n} \textsl{\"olt\"ur-gen-lik} ] ]
+			] !\qsetw{3cm}
+		]
+		{\makedash{4pt}
+		\anodecurve[l]{sizbegin}[bl]{sizn}{.75in}
+		\anodecurve[tl]{sizn}[bl]{sizend}{.5in}
+		\anodecurve[r]{olbegin}[br]{oln}{.5in}
+		\anodecurve[r]{oln}[r]{olend}{1.5in}
+		}
+	\end{xlist}
+\end{exe}
+
+\subsection{Evidence from adverbs}
+\begin{itemize}
+\item In matrix clauses, adverbs have free word order before the verb. In gerunds, they may only follow the subject:
+\end{itemize}
+\begin{exe}
+\ex
+	\begin{xlist}
+	\ex[]{\gll Siz t\"un\"ug\"un Nur-ni \"olt\"ur-dingiz.\\
+					 you yesterday Nur-\textsc{acc} kill-\textsc{past}.{\footnotesize 2}s\\
+			\glt ``You killed Nur yesterday.''}
+	\ex[]{\gll T\"un\"ug\"un siz Nur-ni \"olt\"ur-dingiz.\\
+					 yesterday you Nur-\textsc{acc} kill-\textsc{past}.{\footnotesize 2}s\\
+			\glt ``Yesterday you killed Nur.''}
+	\end{xlist}
+\ex
+	\begin{xlist}
+	\ex[]{\gll \textup{[}siz-ning t\"un\"ug\"un Nur-ni \"olt\"ur-gen-lik-ingiz\textup{]}-ni bil-dim\\
+				 you-\gen{} yesterday Nur-\textsc{acc} kill-\textsc{perf}-\textsc{nzr}-\poss{2}{s}-\textsc{acc} know-\textsc{past}.{\footnotesize 1}s\\
+		\glt ``I found out that yesterday you killed Nur.''}
+	\ex[*]{\gll \textup{[}T\"un\"ug\"un siz-ning Nur-ni \"olt\"ur-gen-lik-ingiz\textup{]}-ni bil-dim\\
+				 you-\gen{} yesterday Nur-\textsc{acc} kill-\textsc{perf}-\textsc{nzr}-\poss{2}{s}-\textsc{acc} know-\textsc{past}.{\footnotesize 1}s\\
+		\glt (only interpretation possible is ``I found out yesterday that you killed Nur'')}
+	\end{xlist}
+\end{exe}
+\begin{itemize}
+\item If gerund structures cause the \textsc{agent} to raise to [Spec,DP] while leaving the adverb stranded in the gerund, this ordering is expected
+\end{itemize}
+
+\bibliographystyle{chicago}
+\bibliography{bibbed}
+\end{document}

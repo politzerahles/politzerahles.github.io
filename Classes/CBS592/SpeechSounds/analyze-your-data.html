@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Analyze your data</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Analyze your data (1 hour)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">If you record yourself saying "pa" and "ba" many times, and measure the voice onset time every time, you will probably notice that it varies a lot. Your "pa" won't have the same voice
+	onset time every time you say it. Maybe sometimes it's 85 milliseconds, sometimes 78 milliseconds, sometimes 92.3 milliseconds, etc.</p>
+<p class="centercol">In fact, voice onset time has a wide range. When it's really short (like 1 or 2 milliseconds), that might obviously sound like "ba". When it's really long (like 150 milliseconds), that
+	might obviously sound like "pa". But what will your mind do when it hears voice onset times that are somewhere else in this range? What will a voice onset time of 25 milliseconds sound like? What about
+	a voice onset time of 43 milliseconds? What about 57 milliseconds?</p>
+<p class="centercol">That's what this experiment was about. I used Praat to modify the "pa" that I recorded. While "pa" naturally has a pretty long voice onset time, I can cut parts of it out to make it
+	shorter and shorter. So I artificially created sounds with various voice onset times: 0 milliseconds, 10 milliseconds, 20 milliseconds, etc. I had you listen to those sounds and decide whether they are
+	"ba" or "pa". In this way, we can examine how you understand sounds differently depending on their voice onset time. We might be able to find out how much voice onset time a sound needs for you to think
+	it sounds like "pa".</p>
+<p class="centercol">As we discussed before, sounds with short voice onset time sound like "ba", and sounds like long voice onset time sound like "pa". So we might predict that, the longer the voice onset
+	time is, the more it sounds like "pa". If I graph how often you chose "pa" for each voice onset time, I might expect that for sounds with longer voice onset time you chose "pa" more often, as shown in
+	the graph below:</p>
+<center><img src="linear.png" alt="Graph showing how often you choose &quot;pa&quot;, as a function of the VOT of the sound you heard. When VOT is low, the percentage of times you choose &quot;pa&quot; is low. As VOT increases, percentage of time you chose &quot;pa&quot; steadily increases, making a straight, upward-sloping line." title="Predictions for identification task" width=40% /></center>
+<p class="centercol">Your job now is to analyze your data to see if this prediction was correct. For each Voice Onset Time you heard, you will count up how many times you chose "pa", and make a graph like
+	this. When you are ready, do the task below.</p>
+
+
+		<center>
+		<button class="collapsible">Calculate your results</button>
+		<div class="content">
+			<p>Go back to the results you recorded when you did the experiment. You should have 28 responses (all either "ba" or "pa".</p>
+			<ul>
+				<li>Items number 3, 6, 12, and 26 were recordings with 0 ms of VOT.</li>
+				<li>Items number 9, 14, 23, and 28 were recordings with 10 ms of VOT.</li>
+				<li>Items number 19, 20, 21, and 24 were recordings with 20 ms of VOT.</li>
+				<li>Items number 1, 7, 10, and 15 were recordings with 30 ms of VOT.</li>
+				<li>Items number 2, 11, 25, and 27 were recordings with 40 ms of VOT.</li>
+				<li>Items number 5, 13, 17, and 18 were recordings with 50 ms of VOT.</li>
+				<li>Items number 4, 8, 16, and 22 were recordings with 60 ms of VOT.</li>
+			</ul>
+			<p>For each VOT, count how many times you wrote "pa". For example, for 30 ms, check #1, #7, #10, and #15. If you wrote "pa" for #7 and "ba" for the other three, then your answer is "1"
+				(you wrote "pa" one time for the 30-ms tokens.</p>
+			<p>Then, convert these responses into percentage (out of 4). 0 out of 4 is 0%; 1 out of 4 is 25%; 2 out of 4 is 50%; 3 out of 4 is 75%; and 4 out of 4 is 100%.</p>
+<p>When I teach this class with a group of students, I like to create <a href="https://docs.google.com/spreadsheets/d/1R1TTWSjnyjJtiIn_Ca227u0fxfC-LW2l5Zrb4idq480/edit?usp=sharing">a shared Google spreadsheet</a>
+	and have all students input their results into it so they can compare what they found. This is also a useful way to see the general trend across multiple people (for example, if 90% of students were
+	faster for 'related' than for 'unrelated' and 10% of students were faster for 'unrelated' than 'related'), which is important in any empirical research. If you are teaching this class, you can make your
+	own spreadsheet for your students. On the other hand, if you are using this webpage to learn independently, you can visit my class's spreadsheet above to see what some other students found.</p>
+
+			<p>Finally, answer the question: <strong>Did your results match the prediction I described before? If your results were different than the prediction, describe how they are different.</strong></p>
+		</div>
+
+		</center>
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			"<a href="the-concept-of-categorical-perception.html">The concept of categorical perception</a>".</p>
+
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-07-13. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+

@@ -1,0 +1,317 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Making a priming experiment in DMDX</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Tutorial: Making a priming experiment in DMDX (2 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">The best tutorial for how to make an experiment in DMDX is <a href="https://psycholinguistics.indiana.edu/resources/dmdx-tutorial_id_2010.pdf">these
+	slides by Isabelle Darcy</a>. I highly recommend you read them. I have also provided some explanation and tips below, but they just
+	demonstrate a small subset of the things you can do with DMDX, and are not a complete substitute for reading through Dr. Darcy's
+	tutorial, especially if you want to learn more than what is included here.</p>
+<p class="centercol">For a step-by-step introduction to how to use DMDX, including example experiments, continue to the instructions
+	below. Each step below includes a sample experiment, and an explanation of how that experiment was set up in DMDX. For each sample,
+	you should first download the sample script, run it in DMDX so you can see what it does (see the "Reaction times" module for
+	instructions on how to install DMDX and how to open an experiment in DMDX), and then read on in this page to understand how I created
+	the experiment in DMDX.</p>
+
+<h4 class="centercol">1. Simple "experiment" to get started</h4>
+<ul class="center"><li>Script: <a href="1_simple_experiment.rtf">1_simple_experiment.rtf</a></li></ul>
+<p class="centercol">This was a really simple and stupid experiment. You should have just seen two "trials" in the experiment: one telling
+	you to press the left Shift key, and one telling you to press the right Shift key. (They were in a random order, which means you
+	might have had the left shift key first and the right shift key second, or you might have had the right shift key first and the left
+	shift key second.)</p>
+<p class="centercol">There are two important parts of this script. The first line (with lots of &lt; and &gt;) is the header, which
+	specifies some general settings about how the experiment will run; we can ignore this for now. (In some later steps we will look in
+	more detail at the information in the header; and for a more complete explanation, you can check Isabelle Darcy's slides.) The second
+	part specifies what will happen in each trial of the experiment.</p>
+<p class="centercol">Each line is one "trial", i.e., something that will show up on the screen. (In DMDX's terminology, this is called an
+	"item".) A trial always begins with a number (positive or negative), which will be useful later when we want to analyze the results.
+	 The "+" or "-" before the number
+	tells DMDX what we expect the "correct" response will be; a "+" means we expect the person to press the right button, and a "-" means
+	we expect the person to press the left button.
+	The "/" character tells DMDX to erase
+	whatever was on the screen before this trial. The "*" character tells DMDX to start counting time; later, when we analyze the
+	results, the numbers you see will indicate how many milliseconds passed from the beginning of the timing (the "*") until when the
+	person pressed a button. The part in quotation marks tells DMDX what to show on the screen during this trial. Finally, a trial always
+	ends with a ";" character. (Pro tip: if you create a DMDX script and there is some error when you try to run it, one
+	of the first things to check is whether any lines are missing the ";" character at the end.)</p>
+<p class="centercol">So the first trial in our simple DMDX script can be understood to mean the following things:</p>
+<ul class="center">
+	<li>For this trial, participants should press the right button (because the trial starts with a "+");</li>
+	<li>In the results file, the code indicating the results for this particular trial will be "1";</li>
+	<li>The first thing that happens in the trial is: whatever was on the screen before gets erased;</li>
+	<li>Next, DMDX starts keeping track of the time;</li>
+	<li>Next, the text "Press the RIGHT SHIFT button now" appears on the screen;</li>
+	<li>Finally, the trial continues until the person presses a button. (Technically, the trial ends when the person presses a button OR
+		when 4 seconds have passed; whichever comes first. If you want to change this, you have to edit information in the header; see
+		Isabelle Darcy's slides.)</li>
+</ul>
+<p class="centercol">To get a clearer idea what all this stuff means, let's take a look at the results file. After you ran the experiment,
+	DMDX should have saved a results file (either an .azk file or a .zil file). Open that file now. Here's what the results file looks
+	like for me (yours may be slightly different):</p>
+<p dir="ltr" style="line-height: 1.2; margin-left: 28.35pt; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt; font-family: 'Courier New'; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">Subjects incorporated to date: 001</span></p>
+<p dir="ltr" style="line-height: 1.2; margin-left: 28.35pt; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt; font-family: 'Courier New'; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">Data file started on machine BSYS30</span></p>
+<p class="centercol"></p>
+<p dir="ltr" style="line-height: 1.2; margin-left: 28.35pt; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt; font-family: 'Courier New'; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">**********************************************************************</span></p>
+<p dir="ltr" style="line-height: 1.2; margin-left: 28.35pt; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt; font-family: 'Courier New'; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">Subject 1, 03/15/2018 09:42:48 on BSYS30, DMDX 5.1.5.3, Windows 6.1.7601, refresh 16.67ms</span></p>
+<p dir="ltr" style="line-height: 1.2; margin-left: 28.35pt; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt; font-family: 'Courier New'; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">&nbsp;&nbsp;Item &nbsp; &nbsp; &nbsp; RT</span></p>
+<p dir="ltr" style="line-height: 1.2; margin-left: 28.35pt; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt; font-family: 'Courier New'; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">!&nbsp; DMDX is running in auto mode (automatically determined raster sync)</span></p>
+<p dir="ltr" style="line-height: 1.2; margin-left: 28.35pt; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt; font-family: 'Courier New'; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">!&nbsp; Video Mode 1280,1024,32,60</span></p>
+<p dir="ltr" style="line-height: 1.2; margin-left: 28.35pt; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt; font-family: 'Courier New'; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">!&nbsp; Item File Dropbox\Classes\TechniquesInLanguageSciences\week8\experiments\1_simple_experiment.rtf&gt;</span></p>
+<p dir="ltr" style="line-height: 1.2; margin-left: 28.35pt; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt; font-family: 'Courier New'; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp; -563.12</span></p>
+<p dir="ltr" style="line-height: 1.2; margin-left: 28.35pt; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt; font-family: 'Courier New'; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp; &nbsp; 382.00 *** ABORTED AT 3503.66 ***</span></p>
+<p class="centercol"></p>
+<p class="centercol"></p>
+<p class="centercol">Most of this stuff is not very important for us. The real data we are interested in is the last two lines.</p>
+<p class="centercol">The first line of data says "1". That means that the trial shown there was the trial with code "1" (i.e., the one
+	that said "Press the RIGHT SHIFT" button now).</p>
+<p class="centercol">The second number in that line says "-563.12". There are two key pieces of information contained here. The "-" means
+	that I pressed the "wrong" button. Recall that in the DMDX script, this trial has a "+" sign, meaning that we expected the person to
+	press the right shift button. In the results there is a "-" sign, meaning I pressed the wrong button for this trial. The "wrong
+	button" is the left shift button (since we told DMDX that the "correct button" is the right shift button). Therefore, we know that
+	on this trial I pressed the left shift button. The other important information is the number, which tells us that I pressed the
+	button 563.12 milliseconds after I saw the words appear on the screen.</p>
+<p class="centercol">The second trial starts with a "2", which tells us that this was the trial with code "2" (the one where we were
+	supposed to press the left shift button). There is no "-" by the result, which means I pressed the "correct" button&mdash;in this
+	trial, the "correct" button was designated as the left shift key, so we know I pressed the left shift key. Finally, we know that it
+	took me 382 milliseconds to press the button after I saw the words on the screen.</p>
+<p class="centercol">That's the basics of DMDX. Now let's see how we can upgrade this experiment to be more like a real priming experiment.</p>
+
+<h4 class="centercol">2. Lexical decision experiment</h4>
+<ul class="center"><li>Script: <a href="2_lexdec_experiment.rtf">2_lexdec_experiment.rtf</a></li></ul>
+<p class="centercol">For your experiment, you're not just going to be showing people text that tells them "please press the shift button
+	now". If you make a priming experiment, you're probably going to be showing them real words and fake words, and wanting them to press
+	a button when they decide if they've seen a real word or not (if your priming experiment uses a lexical decision task). That's what
+	this script does.</p>
+<p class="centercol">Notice that the layout and format are almost identical to the stupid simple script we begin with. Only now, instead
+	of presenting text that says "Please press the right shift button now", we are instead presenting text that shows a real word (like
+	"DOG") or a fake word (like "PPAEL").</p>
+<p class="centercol">Other than that, the setup is basically the same as before. Importantly, notice that we are using different codes for
+	different words: this is so that in our results file, we can figure out which line is the reaction speed for "DOG", which line is
+	the reaction speed for "NURSE", etc. Also notice that we are using "+" or "-" signs to indicate the expected responses: for all the
+	real words we want the person to press the right button, so all the real words have codes beginning with "+", and all the nonwords
+	have codes beginning with "-".</p>
+<p class="centercol">There is one more important thing we have changed: the &lt;s&gt; part in the header. In the first stupid experiment
+	example we did, the header included "&lt;s 2&gt;". Now, in this lexical decision experiment, it's instead "&lt;s 8&gt;". Why do you
+	think that is?</p>
+<p class="centercol">One hint: in the first stupid experiment we did, there were 2 trials. In this one, there are 8.</p>
+<p class="centercol">&lt;s&gt; is short for "shuffle", and it controls how DMDX puts the trials into a random order. It's a little bit
+	complicated. But what DMDX does is it divides the trials into "blocks", and it randomizes both the order of the blocks and the order
+	of the trials within the blocks. Imagine what would happen if we used "&lt;s 4&gt;" in this experiment. This would mean that DMDX
+	divides the trials into blocks, with 4 trials in each block. Our experiment has 8 trials:</p>
+<ol class="center">
+	<li>DOG</li>
+	<li>TABLE</li>
+	<li>NURSE</li>
+	<li>BUS</li>
+	<li>TALBE</li>
+	<li>SUTEDNT</li>
+	<li>PPAEL</li>
+	<li>GBA</li>
+</ol>
+<p class="centercol">With "s 4", DMDX would arrange the first four trials into one block {DOG, TABLE, NURSE, BUS}, and the next four
+	trials into another block {TALBE, SUTEDNT, PPAEL, GBA}. It would put those blocks in a random order (so sometimes {DOG, TABLE, NURSE,
+	BUS} might come before {TALBE, SUTEDNT, PPAEL, GBA}; other times, it might come after). Then, DMDX will make the trials within each
+	block all be in a random order: for example, the order for the first block might become {TABLE, BUS, NURSE, DOG} instead of {DOG,
+	TABLE, NURSE, BUS}. A big problem with using "s 4" in this example is: the person would see all of the real words first, and then all
+	of the nonwords later (or they would see all of the nonwords first, and then all of the real words later). The trials wouldn't be
+	very well mixed together, and thus the participant might not need to pay close attention to the experiment (imagine if a participant
+	sees 40 non-words in a row; eventually they will probably notice the pattern, and then they'll just be able to keep pressing the left
+	button constantly, without really paying close attention to what's happening).</p>
+<p class="centercol">One good solution is often to set up DMDX in such a way that each small block of the experiment will have an even mix
+	of stimuli (for example, in a big experiment, I might set it up so that in every series of 12 trials, there are 3 related trials, 3
+	unrelated trials, and 6 nonword trials). However, the easiest thing (and acceptable for the present project) is to just let the
+	trials be in a fully random order. To do that, you can set the "s" parameter to be equal to the total number of trials in your
+	experiment (not counting the practice trials), or set the "s" parameter to 1; either way should give you the same result (in this
+	simple context).</p>
+
+<h4 class="centercol">3. Priming experiment</h4>
+<ul class="center"><li>Script: <a href="3_priming_experiment.rtf">3_priming_experiment.rtf</a></li></ul>
+<p class="centercol">The previous example experiment only had <em>targets</em>. If we want to make a priming experiment, then of course we
+	need <em>primes</em> as well! To have primes, we need to figure out how to show <em>two words</em> in the same trial: a prime, and
+	then a target.</p>
+<p class="centercol">That's what this script does. Now notice that instead of just showing "DOG" (for example), it will show "cat", and
+	then "DOG". Other than that, the script is basically the same as the previous one.</p>
+<p class="centercol">This script shows us a few important things about timing in DMDX. When you ran the experiment, you should have
+	noticed that the prime (like "cat") stays on the screen for a certain amount of time and then disappears automatically; then the
+	target (like "DOG") stays on the screen either until you press the button or until a certain amount of time passes. Here's some more
+	detail on how that all works.</p>
+<ul class="center">
+	<li>A trial consists of one or more "frames" (think of it as being similar to multiple Powerpoint slides), separated by "/". So, the
+		first frame will show "cat"; the second frame will show "DOG". (I guess technically there is another "frame" before "cat", but
+		it doesn't show anything, because there is no text in quotation marks for that frame; it's just a blank screen.)</li>
+	<li>If the DMDX code for a frame includes a "*" character (like our "DOG" screen does), that is a frame where DMDX will expect the
+		person to respond. Therefore, that frame will remain visible on-screen either until the person responds, or until a certain
+		amount of time passes (the default is 4 seconds, but this can be changed with the "t" keyword in the DMDX script header).</li>
+	<li>If the DMDX code for a frame does not include a "*", then DMDX fully controls how long that frame will remain on the screen. By
+		default, this will be based on the "fd" keyword in the header (see Isabelle Darcy's slides for a much more detailed explanation
+		of how this works). If you want to change the on-screen duration of any particular frame, it is possible; we will see an example
+		later.</li>
+	<li>The amount of time between trials (i.e., how much time passes after a person presses a button, before the next trial begins) is
+		controlled by the "d" keyword in the DMDX header.</li>
+</ul>
+
+<h4 class="centercol">4. Masked priming</h4>
+<ul class="center"><li>Script: <a href="4_maskedpriming_experiment.rtf">4_maskedpriming_experiment.rtf</a></li></ul>
+<p class="centercol">This script performed a masked priming experiment. In the "Priming" module you may have already learned what masked
+	priming is; but this might have been your first chance to see what it actually looks like.</p>
+<p class="centercol">In regular priming, the prime is shown on the screen, and then the target is shown; the participant sees both. In
+	masked priming, on the other hand, the prime is flashed on the screen so quickly that the participant usually does not realize they
+	saw it. (Another word for this is <em>subliminal</em> priming; "subliminal" means "below consciousness", i.e., something that you
+	can't notice. You may have heard of the concept of <a href="https://www.youtube.com/watch?v=1knkpPd_0dg">subliminal messages</a>,
+	which is when advertisers do things like flash the word "COCA-COLA!" very briefly in a movie or something, hoping that it will make
+	you want to buy some Coke.) The awesome thing about masked priming is that priming effects still occur in these experiments, i.e.,
+	people still respond to targets faster if there was a related prime than they do if there was an unrelated prime. In other words,
+	even though participants never even realize that they saw the prime, they are still influenced by it!</p>
+<p class="centercol">To turn our priming experiment into a masked priming experiment, there are two important changes in this script.
+	First of all, we need to make the prime flash on the screen for a very short time, instead of staying on the screen long enough for
+	people to notice. I accomplished this by adding &lt;ms% 50&gt; at the beginning of the frame for each prime. This tells DMDX to show
+	the frame (i.e., the prime) for 50 milliseconds, instead of the normal amount of time.</p>
+<p class="centercol">The second change is that I added another frame, showing just "########", before each prime. This is called a
+	<em>forward mask</em>. Masked priming only works if the prime is "masked", i.e., covered up by some stimulus on the screen before and
+	after it. If I just flashed the prime on the screen for 50 milliseconds, you actually would probably be able to notice it. (You can
+	test this out by editing this DMDX script or the previous one, making the primes show up for only 50 milliseconds but not showing
+	this ###### mask before it. If you run the experiment that way, you will probably be able to consciously see the primes.) To really
+	make the prime un-noticeable, you have to make sure there is other stuff on the screen just before it and just after it. There
+	already is going to be a target on the screen just after it, so we don't need to add anything for that. But in our original script,
+	there was nothing on the screen <em>before</em> the prime. That's why I add this "#######", to function as a forward mask. When we
+	have <em>both</em> a very short prime duration <em>and</em> masks before and after the prime, we can create a situation where
+	participants do not consciously notice the prime&mdash;i.e., we can create a masked priming experiment.</p>
+<p class="centercol">We now have the bare bones of a priming experiment; we can show primes (even masked primes, if we want) and targets,
+	we can control how DMDX will put them in a random order, and we can record what buttons people press and how quickly they press them.
+	Technically that's all we need; you could add more trials to this kind of script to finish making your experiment already. But there
+	are still a few important things we can do to make this experiment better.</p>
+
+<h4 class="centercol">5. Adding messages</h4>
+<ul class="center"><li>Script: <a href="5_maskedpriming_experiment_withmessages.rtf">5_maskedpriming_experiment_withmessages.rtf</a></li></ul>
+<p class="centercol">Remember the priming experiment you did in the "Priming" module? Before the real experiment started, there were
+	several screens of instructions. There was also a message at the end telling you the experiment is over. It's generally nice to
+	include stuff like this. You don't want your participant to be faced with a mysterious blank screen at the end of experiment, and not
+	knowing what to do; you want them to see a friendly message like "Thank you for helping with this experiment! Please notify me that
+	you have finished".</p>
+<p class="centercol">This example includes some messages in the experiment. There are two key things I have done to allow the experiment
+	to have messages in it.</p>
+<p class="centercol">First, notice that each "message" begins with a "0". Remember how every trial in the experiment starts with a code
+	number like 1, 2, 3, etc.? A message is technically a trial (it's something that DMDX needs to show on the screen), so it also needs
+	a code number. But I don't care about recording "results" for this trial (i.e., I don't care how long it takes the participant to
+	press the button when they read a message). "0" is a special code just for these kind of messages. When a trial has a code of "0",
+	DMDX will not include it in the results file; DMDX also won't put any time limit on it (as opposed to normal trials, which end
+	after a few seconds if the participant does not press any button).</p>
+<p class="centercol">The other important thing I added was some "$" signs. I didn't add those because I love money; I'm not some evil
+	capitalist! The reason actually has to do with how DMDX arranges things into a random order.</p>
+<p class="centercol">Keep in mind that DMDX will put all trials into a random order, based on the "s" keyword in your header, as we
+	discussed before. But I don't want these messages to be in a random order. Otherwise, the message saying "Welcome to the experiment,
+	here are some instructions", which <em>should</em> come at the beginning of the experiment, might end up coming at some other random
+	place&mdash;even at the end of the experiment! I used the "$" signs to avoid this. Any trial with "$" signs before and after it is
+	excluded from randomization. In other words, when DMDX tries to put the trials in a random order, it will completely ignore the ones
+	that are "protected" by the $ signs, and it will leave them in the place they are supposed to be. This is how I can make sure that
+	the message I want to show at the end of the experiment, will actually appear at the end of the experiment (instead of in some other
+	random place).</p>
+
+<h4 class="centercol">6. Improving the trial codes</h4>
+<ul class="center"><li>Script: <a href="6_maskedpriming_experiment_withmessages_betternumbers.rtf">6_maskedpriming_experiment_withmessages_betternumbers.rtf</a></li></ul>
+<p class="centercol">This is a minor thing (and you might not even need to do it for your experiment), but I find it makes my life way
+	easier.</p>
+<p class="centercol">In the previous versions of the script, the "related" trials had codes of 1 and 2, the "unrelated" trials had codes
+	of 3 and 4, and the "nonword" trials had codes of 5 to 8. I find this to be a little confusing; it's hard to remember which trials
+	are which. I prefer to use something like the 'hundreds' place to handle this. (This is also how the trials were coded in the example
+	experiment you did in the "Reaction times" module.)</p>
+<p class="centercol">Check the codes in this new experiment. Do you see the pattern?</p>
+<p class="centercol">Now, all the related trials are in the 100s: 101, 102, etc. All the "unrelated" trials are in the 200s (201, 202,
+	etc.). And all the "nonword" trials are in the 300s (301, 302, etc.). I find it a lot easier to keep track of things if I do it this
+	way. The hundreds place (1xx, 2xx, or 3xx) tells me whether the trial was related, unrelated, or nonword. And the remaining numbers
+	(x01, x02, x03, etc.) tell me which target it was. (Keep in mind the Latin square design discussed before. For a target like BEE,
+	remember that it could have a related prime like BUTTERFLY, <em>or</em> an unrelated prime like EDIT. Thus, if I designate BEE as
+	target #1, then I can code BUTTERFLY...BEE as "101", and EDIT...BEE as "201". Then, when I am analyzing my data later, if I want to
+	examine how fast people responded to BEE under any circumstances, I could look up the results for trials with codes of 101 or 201.)</p>
+<p class="centercol">This can scale up; if an experiment has more conditions and variables, you can use bigger and bigger numbers. I did a
+	long-lag priming experiment once that had three independent variables and 96 different items, so the trials had codes like "13224"; the
+	ten-thousands, thousands, and hundreds digits each represent the condition on one of the variables, and the "24" at the end indicates
+	that it's item number 24. Anyway you don't have to go that crazy for this project, but you can keep this in mind for future
+	experiments.</p>
+
+<h4 class="centercol">7. Practice trials</h4>
+<ul class="center"><li>Script: <a href="7_maskedpriming_experiment_withmessages_betternumbers_practice.rtf">7_maskedpriming_experiment_withmessages_betternumbers_practice.rtf</a></li></ul>
+<p class="centercol">Including practice trials is super important! Participants need some time to practice and get used to the experiment
+	and the buttons, before they get into the "real" experiment. In the real experiment, a button press is assumed to reflect the outcome
+	of several processes (e.g., seeing a stimulus, recognizing what word it is, deciding whether or not it's a real word). If a
+	participant hasn't had sufficient opportunity to practice, then one of those processes might just be trying to remember which button
+	is the "word" button and which is the "nonword" button&mdash;i.e., a person might quickly recognize that what they saw is a word, but
+	then might need several seconds to think about whether that means they should press the left button and the right button. And early
+	in the experiment, the amount of time this process needs might vary a lot across trials. Therefore, participants need to practice
+	enough so that they can do this process pretty automatically, so it takes the same amount of time (hopefully a very short time) on
+	every trial. I recommended having at least 20 practice trials before your real experiment begins.</p>
+<p class="centercol">Of course, practice trials are only "practice" if they come at the beginning, before the real trials of the
+	experiment. If they're mixed in random order with the rest of the trials, they're not really practice. Therefore, we need to make
+	sure the practice trials all come at the beginning, and do not get randomly mixed together with the rest of the experiment. How can
+	we do that?</p>
+<p class="centercol">We can solve this problem the same way we solved the same problem with messages in example script #5. We put "$"
+	signs before and after the practice section, to make sure it is does not get randomly mixed in with the rest.</p>
+
+<h4 class="centercol">Wrap-up</h4>
+<p class="centercol">With all that done, you essentially have a template for a priming experiment. You can use the example scripts I have
+	provided, and edit them accordingly to add your own stimuli into the template. Of course, to do this successfully, you should have a
+	good understanding of what you are editing. So, rather than just skipping to the end here and downloading the last script and
+	starting to edit it, I strongly recommend you read through (either read through this page, or read through Isabelle Darcy's slides)
+	to make sure you understand what you will be editing in this script.</p>
+<p class="centercol">Any time you finish making a working DMDX script with all your words in it, you should test it on yourself (i.e., sit
+	down and "do" the whole experiment). This is valuable for two reasons: to make sure it works and there are no errors, and to record
+	some "data" which you can try out analyzing&mdash;the data won't really be meaningful, since you know too much about the experiment
+	now (you are already very familiar with the words), but it's a good way to make sure you know <em>how</em> to analyze the data,
+	before you start getting data from "real" participants. In other modules we will learn more about how to analyze data.</p>
+
+
+		<p class="centercol">The next task for you to complete in this module is 
+			"<a href="make-a-simple-dmdx-experiment.html">Make a simple DMDX experiment</a>". However, if you want to know how
+			to use DMDX to make more kinds of experiments other than just priming, you can also do the extra tutorial:</p>
+		<ul class="center">
+			<li><a href="tutorial-self-paced-reading.html">Tutorial: Making a self-paced reading experiment in DMDX</a></li>
+		</ul>
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-14. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+

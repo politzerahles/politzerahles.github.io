@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Using eye-tracking to study how people read</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Using eye-tracking to study how people read (1hour)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">Now you have some idea how people's eyes move while reading. This is the information an eye tracker measures when we
+	want to study how people read. In general, there are two things that the eyes do when we read:</p>
+<ul class="center">
+	<li><em><span style="text-decoration: underline;"><strong>Fixations</strong></span></em>: When the eyes stop and look at something
+		for some time</li>
+	<li><span style="text-decoration: underline;"><em><strong>Saccades</strong></em></span>: When the eyes "jump" to another spot.</li>
+</ul>
+<p class="centercol">You can feel the difference between fixations and saccades if you try to slowly look from one side of your room to
+	the other. Look at one side (the right or the left), and try to "scan" your eyes across the room to the other side, as slowly and
+	smoothly as possible. You will probably feel that your eyes don't actually smoothly move from right to left (or left to right); they
+	stop somewhere, then jump, then stop, then jump, then stop, then jump... You can move across the room in very small jumps, but you
+	can't move your eyes across the room perfectly smoothly.</p>
+<p class="centercol">When we measure people's reading, we usually are measuring their fixations. For example, when their eyes jump to one
+	word and then look at that word for 500 milliseconds, they are making a 500-millisecond fixation on that word. The eye-tracker
+	records that, and then we can assume that they spent 500 milliseconds to read the word. In this way, eye-tracking is just like
+	self-paced reading: for each word, we can get a measurement of how long the person looked at that word, so we can figure out how
+	long they needed to read each word in the sentence.</p>
+<p class="centercol">Or is it really that simple? Proceed to the reflection questions below, and we'll see if things are that simple or
+	if there are some other problems that we need to consider...</p>
+
+
+		<center>
+
+
+		<button class="collapsible">Brainstorm some challenges</button>
+		<div class="content">
+<p>With self-paced reading, for one word we get one result (one number telling us how long the person needed to read that word).</p>
+<p>Will the results also work that way when we do eye-tracking, or will the results be more complicated? Think about what you saw in the
+	previous task when you watched videos of how people's eyes move. Can you think of any situations where it will be complicated to
+	determine how long a person took to read a word? Can you think of any situations where we will not get one result for one word
+	(e.g., situations where we will get more than one number for one word, or situations where we will get less than one number for one
+	word)?</p>
+		</div>
+
+
+		<button class="collapsible">Different reading measures</button>
+		<div class="content">
+<p>Imagine I am doing an eye-tracking experiment and I want to see how long people take to read each word in the following sentence:</p>
+<ul><li><em>The key to the cabinets are sitting on the table</em>.</li></ul>
+<p>Specifically, I want to know how long people take to read "<em>cabinets</em>".</p>
+<p>Now let's imagine I record people's eyes moving while they read the sentence, and I observe the following pattern:</p>
+<center><img src="eyetracking1.png" alt="An image showing a sample pattern of eye movements. At the bottom of the image is the sentence 'The key to the cabinets are on the table'. Above this is a series of numbers showing the fixations; each number shows where a fixation was made (e.g., #1 is above 'The key', indicating that the first fixation was on these words; #2 is over 'to the'; etc. See text for detailed description of the pattern of results." width=80% /></center>
+<p>This picture tells us that the eye movements followed the following pattern:</p>
+<ol>
+	<li>First, the person looked at (made a fixation on) the word <em>the</em>.</li>
+	<li>Next, they moved their eyes (made a saccade) and then looked at the word <em>to</em>.</li>
+	<li>Next, they looked at the beginning of the word <em>cabinets</em>.</li>
+	<li>Then, they moved their eyes, but not to another word --- they just looked at another spot on the same word <em>cabinets</em>.</li>
+	<li>Then, their eyes jumped <strong>back</strong>, and looked at the word <em>key</em>!</li>
+	<li>Then, they jumped forward and looked at <em>cabinets</em> again.</li>
+	<li>Next, they jumped forward and looked at the phrase <em>are sitting</em>.</li>
+	<li>Next, they looked at <em>on</em>.</li>
+	<li>Next, they looked at <em>table</em>.</li>
+	<li>Next, their eyes jumped back again, and they looked at <em>cabinets</em> again!</li>
+	<li>Last, then again moved their eyes within the same word -- looking at another spot on the word <em>cabinets</em>.</li>
+</ol>
+<p>So they made eleven fixations at different places in this sentence. For each of these fixations, the eye-tracker will also have
+	recorded how long the fixation was (e.g., how long they spent looking at "cabinets" during fixation #3, etc.), but let's not worry
+	about that yet.</p>
+<p><span style="text-decoration: underline;"><strong>If you wanted to know how long people spent to read the word "cabinets", what would
+	you do?</strong></span> If we were doing self-paced reading we would have just one number; but with eye-tracking, they looked at this
+	word five different times. <span style="text-decoration: underline;"><strong>Which of these fixations might you pay attention to if
+	you're trying to calculate how long people spent reading the word?</strong></span></p>
+<p>As usual, there's no right or wrong answer, but I want you to think about this problem and I want to see what solution you think might
+	be best.</p>
+		</div>
+
+
+		<button class="collapsible">Comparing measures</button>
+		<div class="content">
+<p>Let's think again about the example from the previous question. Here is a picture of the data pattern again; after the picture I have
+	also shown the same data pattern as a table, in case you have trouble viewing the picture.</p>
+<center><img src="eyetracking1.png" alt="An image showing a sample pattern of eye movements. At the bottom of the image is the sentence 'The key to the cabinets are on the table'. Above this is a series of numbers showing the fixations; each number shows where a fixation was made (e.g., #1 is above 'The key', indicating that the first fixation was on these words; #2 is over 'to the'; etc. See text for detailed description of the pattern of results." width=80% /></center>
+<table border="1">
+<tbody>
+<tr>
+	<td>1</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>2</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>3</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>4</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>5</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>6</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>7</td>
+	<td>8</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>9</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>10</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>11</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td><span style="font-family: courier new, courier; font-size: medium;"><strong>The key</strong></span></td>
+	<td><span style="font-family: courier new, courier; font-size: medium;"><strong>to the</strong></span></td>
+	<td><span style="font-family: arial black, avant garde; font-size: medium; color: #ff0000;"><strong>cabinets</strong></span></td>
+	<td><span style="font-family: courier new, courier; font-size: medium;"><strong>are sitting</strong></span></td>
+	<td><span style="font-family: courier new, courier; font-size: medium;"><strong>on the</strong></span></td>
+	<td><span style="font-family: courier new, courier; font-size: medium;"><strong>table.</strong></span></td>
+</tr>
+</tbody>
+</table>
+<p>As we discussed in the previous question, there are a lot of possible ways we could measure how long people took to read <em>cabinets</em>, because they looked at it five different times.</p>
+<p>Among people who do research on eye-tracking, there are several common ways we can measure how long people took to read a word. Here
+	are some of them:</p>
+<ul>
+	<li><strong>First fixation duration</strong>: Measure how long was the first fixation on the word. In this example, that is fixation
+		#3.</li>
+	<li><strong>First pass duration</strong> (also called <strong>gaze duration</strong>): Add up all the fixations from the first time
+		the person looked at this word, until the first time they looked at anything else. In other words, how much time did they spend
+		looking at the word until they looked away. In this example, that means we'd add up fixation #3 plus fixation #4; fixation #5
+		is when they looked away from the word, so we wouldn't include it.</li>
+	<li><strong>Go-past time</strong> (also called <strong>regression path duration</strong>): Add up all fixations, on this word
+		<span style="text-decoration: underline;">or any other words</span>, from the first time the person looked at this word, until
+		the first time they looked at a later word. In other words, this is how much time they needed from the first time they looked
+		at this word until they were able to go past this word. In this example, that means we'd add up fixations #3, #4, #5, and #6;
+		the first time they went past the word <em>cabinets</em> was fixation #7, so we wouldn't include that. Crucially, we still
+		count fixation #5, even though it's not looking at the word <em>cabinets</em>; maybe the time they were looking back at
+		previous words is still time they were using to try to understand the word <em>cabinets</em> and figure out how it fits into
+		the sentence!</li>
+	<li><strong>Total time</strong>: Add up all the fixations on this word. In this example, that means we'd add up fixations #3, #4, #6,
+		#10, and #11.</li>
+</ul>
+<p>Which of these measures do you think would be most useful? Or, do you think different measures would be useful for different things?
+	If so, what do you think would be the important differences between them? For example, what do you think one measure (such as total
+	time) might tell us that is different from what another measure (such as first pass time) might tell us?</p>
+		</div>
+
+		<p class="centercol">When you have finished these activities, continue to the next section of the module: 
+			"<a href="practice-calculating-reading-times.html">Practice calculating reading times</a>".</p>
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-14. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+

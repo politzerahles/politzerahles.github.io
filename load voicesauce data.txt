@@ -1,0 +1,226 @@
+# Clear the workspace
+rm(list=ls())
+
+#              #
+##            ##
+### SETTINGS ###
+##            ##
+#              #
+
+# The path to where the data are stored
+pathtodata <- "G:\\a folder"							# Set this variable
+
+# List of subject names
+subjectlist <- c("m1", "m4", "m5")						# Set this variable
+
+# The measures we care about getting						# Set this variable
+measures <- c("sF0", "strF0", "CPP", "H1H2c", "H1A1c", "H1A2c", "H1A3c")
+
+# The number of samples to remove from the beginning and end of each
+#	Note: A typical number to use here is 12, since VoiceSauce samples use
+#	a 25-ms window. But if your data have segments that are shorter than
+#	(numtocut*2 + n_windows) samples, then there will be an error later in the script
+#	when the program cuts off (numtocut*2) samples from the segment and then
+#	tries to divide fewer than N samples into N windows. If that is the case,
+#	set numtocut to a smaller number. (Setting numtocut to 0 will make nothing
+#	be cut from the segments) 
+numtocut <- 12									# Set this variable
+
+# The number of windows to normalize into					# Set this variable
+n_windows <- 10
+
+
+
+#                     #
+##                   ##
+### IMPORT THE DATA ###
+##                   ##
+#                     #
+
+# Iterate through the subjects, loading each subject's data and combining them all
+#	into one data frame
+for(Subject in subjectlist){
+
+	# Read the data from this subject					# You may need to modify this command depending on your
+										#	file naming conventions
+	subjdata <- read.table(file=paste(pathtodata, "\\", Subject, ".txt", sep=""), header=TRUE, sep="\t")
+     
+	# Add a column saying which subject this is
+	subjdata$Subject <- Subject
+
+	# Make Label a factor
+	subjdata$Label <- factor(subjdata$Label)
+
+	# Get duration of each segment
+	subjdata$Duration <- subjdata$seg_End - subjdata$seg_Start
+
+	### The following conditional adds this subject's data to a data frame that includes all subjects
+
+	# If there's already an all-subjects data frame...
+	if("alldata" %in% ls()){
+
+		# ... then add this subject's data to it			
+		alldata <- rbind(alldata, subjdata)
+	
+	# Otherwise...		
+	} else {
+
+		# ... create that data frame based on this subject's data
+		alldata <- subjdata
+	
+	# end if			
+	}
+
+# end for
+}
+
+# Turn 0s into NAs, because a VoiceSauce output of 0 does not mean that measure was 0,
+#	it just means VoiceSauce was unable to get that measure for that sample
+alldata[] <- lapply(alldata, function(alldata){replace(alldata, alldata == 0, NA)})
+
+
+
+
+#                            #
+##                          ##
+### AVERAGE INTO N WINDOWS ###
+##                          ##
+#                            #
+
+
+# The row numbers where the "seg_Start" values change.
+#	Each of these indicates the first sample of a new segment. (This line also adds
+#	one index at the end to indicate where the next word would start if there were
+#	another word after the end; this is to get the duration of the final word in the
+#	dataset.)
+notdup <- which( c( T, alldata[2:nrow(alldata),"seg_start"]!=alldata[1:(nrow(alldata)-1),"seg_start"], T) )
+notdup <- c(which( !duplicated(alldata$seg_Start) ), nrow(alldata)+1)
+
+# Use those row numbers to calculate the length (in samples) of each segment. 
+lengths <- notdup[-1] - notdup[-(length(notdup))]
+
+								
+
+
+# The following big command calculates a "Window" column, which indicates for each
+#	sample which window it will be averaged into (the 1st, 2nd, 3rd, 4th, or 5th
+#	window of the segment).
+
+# Applies the following function to each word in the data...
+Window <- unlist(
+	lapply(														
+		lengths,
+		function(x) {
+
+
+			# if the length rounds DOWN to a multiple of 5, do this...	
+			if( (x-(2*numtocut))%%n_windows < 3){
+			
+				# Make a vector of window labels by concatenating the following....
+				c(
+					# Remove the first (numtocut) samples from the analysis by
+					#	setting their window to NA
+					rep(NA, numtocut),
+
+					# Make a vector 1s through 5s up to a multiple of 5				
+					rep(1:n_windows, each=round((x-(2*numtocut))/n_windows)),	
+
+					# fill in the remaining samples with 5s		
+					rep(n_windows, (x-(2*numtocut))%%n_windows),
+
+					# Remove the last (numtocut) samples from the analysis by
+					#	setting their window to NA
+					rep(NA, numtocut)
+
+				# end c
+				)
+
+			# if the length rounds UP to a multiple of 5, do this...
+			} else {
+
+
+				# Make a vector of window labels by concatenating the following....
+				c(
+					# Remove the first (numtocut) samples from the analysis by
+					#	setting their window to NA
+					rep(NA, numtocut),
+
+					# Make a vector 1s through 5s up to a multiple of 5
+					rep(1:n_windows, each=round((x-(2*numtocut))/n_windows), length.out=(x-(2*numtocut))),
+
+
+					# Remove the last (numtocut) samples from the analysis by
+					#	setting their window to NA
+					rep(NA,  numtocut)
+
+				# end c
+				)
+
+			# end if
+			}
+
+		# end function
+		}
+
+	# end lapply
+	)
+
+# end unlist
+)
+
+# Add the Window column to the dataframe
+alldata <- data.frame(alldata, Window)
+
+
+# This line does the averaging over windows. 
+windowdata <- aggregate(
+
+	# We want an average for each measure specified in the "measure" variable 
+	#	at the top of the script
+	alldata[,measures],
+
+	# This list defines what information will NOT be averaged across
+	list(
+		
+		# Keep "Subject" (get a separate average for each subject)								
+		alldata$Subject,								
+
+		# Keep "seg_Start" (i.e., each word) (get a separate average for each word)
+		alldata$seg_Start,
+
+		# Keep the "Label" information corresponding to each segment
+		alldata$Label,
+
+		# Keep "Window" (get a separate average for each window)
+		alldata$Window,
+
+		# Keep the Duration information corresponding to each segment
+		alldata$Duration),
+	mean,
+
+	# skip missing values
+	na.rm=T
+
+# end aggregate
+)
+
+# Just cleans up the column names in the new dataframe
+colnames(windowdata)[1:5] <- c("Subject", "seg_Start", "Label", "Window", "Duration")
+
+
+
+
+#                     #
+##                   ##
+### GENERAL CLEANUP ###
+##                   ##
+#                     #
+
+
+# Remove whitespace from the beginnings of labels
+windowdata$Label <- sub("^\\s+", "", windowdata$Label)
+
+# Make important predictors into factors
+windowdata$Window <- factor(windowdata$Window)
+windowdata$Label <- factor(windowdata$Label)
+windowdata$Subject <- factor(windowdata$Subject)

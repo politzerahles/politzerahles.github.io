@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Coding schemes for categorical variables in regression</title>
+        <link rel="stylesheet" type="text/css" href="/~cpgl0080/stevetools_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body style="background:#DCDCDC">
+
+
+	<h1 class="centercol">Coding schemes for categorical variables in regression</h2>
+        <p class="centercol">The interpretation of factorial regression output with categorical variables (e.g., from an <code>lmer</code> model in R) depends very much on how the variables
+		are coded. This is particularly relevant in psycholinguistic studies, where <code>lmer</code> models are frequently used to analyze data
+		in categorical factorial designs. As I am frequently asked about this topic, I am providing the below tutorial for reference; for much more detailed
+		discussion of coding schemes for categorical variables, see e.g. <a href="http://www.ats.ucla.edu/stat/r/library/contrast_coding.htm">http://www.ats.ucla.edu/stat/r/library/contrast_coding.htm</a>
+		and <a href="http://talklab.psy.gla.ac.uk/tvw/catpred">http://talklab.psy.gla.ac.uk/tvw/catpred/</a>.</p>
+
+	<p class="centercol">The quick take-home message is: <strong>if you want to talk about simple effects, use dummy coding; if you want to talk about main effects, use deviation coding</strong>.
+		For an explanation of why, keep reading.</p>
+
+	<h2 class="centercol">The data</h3>
+	<p class="centercol">For this tutorial I am using a subset of the data from <a href="pubs/Politzer-AhlesZhang_2014_JCL.pdf">Politzer-Ahles & Zhang (in press).</a> Several conditions
+		have been removed to end up with a long-format data frame consisting of repeated-measures data from 25 subjects in a 2\(\times\)2 factorial design comparing reaction times
+		in a paradigm including the factors Condition (Unrelated vs. Homogeneous word sets) and Tone (Rising Tone vs. Low Tone sets). The data are available as an
+		.RData file, and this tutorial uses <a href=https://www.r-project.org/>R</a> (and requires that you have the <code>lme4</code> package installed). Run the below code
+		to read in and plot the data.</p>
+
+<!--begin.rcode fig.align='center', width=20
+# Clear the workspace
+rm(list=ls())
+
+# Load the libraries we will need
+library(lme4)
+
+# Read the data
+load( url("http://users.ox.ac.uk/~cpgl0080/data.RData") )
+
+
+
+### MAKING A BARPLOT WITH 95% CIs
+
+	# Get the means
+	means <- tapply( data$RT, list(data$Condition, data$Tone), mean )
+
+	## Get the 95% CIs using the Cousineau-Morey method (Morey, 2008)
+
+		# First find the mean for each participant
+		ptpmeans <- aggregate( data$RT, list(data$Subject), mean )
+		colnames(ptpmeans) <- c("Subject", "Mean")
+		rownames(ptpmeans) <- ptpmeans$Subject
+
+		# Scale the data by subtracting the participant mean and adding the grand mean
+		data$scaled_RT <- data$RT - ptpmeans[as.character(data$Subject),"Mean"] + mean(data$RT)
+
+		# The number of conditions
+		K <- length(levels(data$Condition)) + length(levels(data$Tone))
+
+		# The number of participants
+		N <- length(levels(data$Subject))
+
+		# Get the CIs (using 2 as our estimated t-value, since degrees of freedom for a mixed model are not clear anyway)
+		CIs <- tapply( data$scaled_RT, list( data$Condition, data$Tone), sd ) / sqrt( N-1 ) * 2 * sqrt( K/(K-1) )
+
+	## Done figuring out Cousineau-Morey CIs
+
+	## Barplot
+
+		# Find the ideal y limits
+		ymin <- min(means)-min(CIs)
+		ymin <- ymin - .1*ymin
+		ymax <- max(means)+max(CIs)
+		ymax <- ymax + .1*ymax
+
+		# Make the barplot
+		xvals <- barplot( means, beside=T, col=c("indianred", "cadetblue"), ylim=c(ymin, ymax), xpd=F )
+
+		# Legend
+		legend( "topright", inset=.05, legend=c("Unrelated", "Homogeneous"), fill=c("indianred", "cadetblue") )
+
+		# Error bars for confidence intervals
+		arrows( xvals, means-CIs, xvals, means+CIs, angle=90, code=3 )
+
+	## Done with barplot
+
+### DONE PLOTTING
+end.rcode-->
+
+
+
+	<p class="centercol">You should notice a clear main effect of Condition (such that Unrelated sets elicited slower responses than Homogeneous sets), and
+		an apparent interaction (such that the effect of Condition is much larger in Rising-Tone than Low-Tone sets). In what follows, we will
+		analyze these data with linear mixed models, using both <strong>dummy coding</strong>
+		(the default) and <strong>deviation coding</strong> (the coding scheme which approximates ANOVA results output).</p>
+
+	<h2 class="centercol">Dummy coding</h3>
+	<p class="centercol">Calculate a typical linear mixed model using <code>lmer</code>, per the code below. If you are a longtime user of <code>lme4</code> this
+		will look very familiar.</p>
+<!--begin.rcode
+dummy_model <- lmer( RT ~ Condition*Tone + (1|Subject) + (1|Item) + (1|List), data )
+end.rcode-->
+
+	<p class="centercol">If you inspect this model (<code>summary(dummy_model)</code>) you will see the following fixed effects in the output:</p>
+<!--begin.rcode
+summary(dummy_model)$coefficients
+end.rcode-->
+
+	
+
+
+    </body>
+</html>

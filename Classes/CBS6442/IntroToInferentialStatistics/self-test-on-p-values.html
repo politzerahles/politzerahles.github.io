@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<style type="text/css">
+.txtUpsideDown 
+{
+	filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=2);  /* IE6,IE7 */
+	ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)"; /* IE8 */
+	-moz-transform: rotate(-180deg);  /* FF3.5+ */
+	-o-transform: rotate(-180deg);  /* Opera 10.5 */
+	-webkit-transform: rotate(-180deg);  /* Safari 3.1+, Chrome */
+	position: absolute; 
+}
+</style>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Self-test on p-values</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Self-test on how well you understand <em>p</em>-values (1-3 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">Read <a href="https://www.polyu.edu.hk/cbs/sjpolit/pubs/Politzer-AhlesChen_significance.pdf"">Politzer-Ahles &amp;
+	Chen (2019)</a> and at least one of the references cited therein.*</p>
+<p class="centercol">Once you're finished, continue on to the test to check your understanding of <em>p</em>-values. Unlike most other
+	"tests" in this class, this test actually has specific right and wrong answers. If you don't answer all 6 questions correctly the
+	first time around, you should not proceed to the rest of the module until you can understand the rationale for each answer (which
+	may require reviewing the previous activity or the reading from this activity).</p>
+<p class="centercol">For this test, imagine the following scenario:</p>
+<p class="centercol" style="width: 45%;"><em>I did a research project in which I taught Chinese tones in two different ways to two groups
+	of students. One group (the "control" group) was taught using a traditional method. Another group (the "experimental" group) was
+	taught using a new method I created based on some learning theory. At the beginning and end of the semester I tested each group in a
+	test of their tone recognition. I found that the control group improved 27 points on their tone recognition from the beginning to the
+	end of the semester, whereas the experimental group improved 40.7 points. In other words, the experimental group's improvement was
+	13.7 points higher than the control group. I used a statistical test to compare the improvement between the two groups, and found
+	that the difference in improvement was statistically significant, </em>p<em>=.022.</em></p>
+<p class="centercol">When you proceed to the test below, you will see six statements about the results of this study. For each statement,
+	indicate whether the statement is <strong>true</strong> or <strong>false</strong>, based on the description above.</p>
+<hr />
+<p class="centercol">*Other useful (but longer) readings about <em>p</em>-values, and statistical testing logic in general, include
+	<a href="http://library.mpib-berlin.mpg.de/ft/gg/GG_Mindless_2004.pdf">Gigerenzer (2004)</a> and
+	<a href="https://errorstatistics.files.wordpress.com/2015/05/wagenmakers_2007_pvalueproblems.pdf">Wagenmakers (2007)</a>.</p>
+
+		<center>
+
+
+		<button class="collapsible">Mark each statement as TRUE or FALSE</button>
+		<div class="content">
+			<ol>
+				<li> I proved that the null hypothesis (no difference in learning outcomes between the two teaching methods) is
+					false.</li>
+				<li>I showed that the null hypothesis (no difference in learning outcomes between the two teaching methods) is
+					unlikely.</li>
+				<li>I proved that there is a difference in effectiveness between the two teaching methods.</li>
+				<li>It is likely that there is a difference in effectiveness between the two teaching methods.</li>
+				<li>The null hypothesis is that both teaching methods lead to the same learning outcomes; if I reject this null
+					hypothesis (i.e., if I conclude that the teaching methods lead to different learning outcomes), there is a
+					2.2% chance that I will have made a mistake.</li>
+				<li>The null hypothesis is that both teaching methods lead to the same learning outcomes; based on the results of my
+					study, there is only a 2.2% chance that this hypothesis is correct. (In other words, there is a 97.8% chance
+					that the teaching methods lead to different learning outcomes.)</li>
+			</ul>
+		</div>
+
+
+		</center>
+
+		<p class="centercol">The answers are shown at the bottom of the page. If you got all the answers correct, continue to the next section of the module: 
+			"<a href="t-test-by-hand.html"><em>T</em>-test by hand</a>". Otherwise, review the readings to make sure you understand
+			why your answer was incorrect.</p>
+
+<p class="txtUpsideDown">Answers: All six statements are false. If you marked any as "true", review the previous readings and make sure you understand why the statement is false before you proceed to the next section of the module.
+<br /><br /></p>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-15. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+
+

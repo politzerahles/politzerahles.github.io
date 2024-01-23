@@ -1,0 +1,172 @@
+\documentclass{beamer}
+\usetheme{Antibes}
+
+\usepackage{soul}			%For underlines
+
+\title[\LaTeX{} Workshop]{Typesetting Linguistic Documents in \LaTeX}
+%\subtitle[subtitle]{Uyghur vowel harmony}
+\author[Saucic and Politzer-Ahles]{Mircea Saucic and Steve Politzer-Ahles}
+\institute[KU]{
+  Department of Linguistics\\
+  University of Kansas
+}
+\date[October 2010]{7 October 2010}
+
+\begin{document}
+
+\begin{frame}[plain]
+	\titlepage
+\end{frame}
+
+\begin{frame}{What is \LaTeX{}?}
+	\begin{itemize}
+	\pause
+	\item A \emph{typesetting} language
+	\pause
+	\item Content-oriented
+	\pause
+	\item Extendable
+	\pause
+	\item Provides clear organization within a document
+	\pause
+	\item Not WYSIWYG
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Basics}
+	\begin{itemize}
+	\item TeX file:
+	\pause
+		\begin{itemize}
+		\item Preamble (header):
+			\begin{itemize}
+			\item \texttt{$\backslash$documentclass\{\}} (usually \texttt{article})
+			\item Header information (metadata, etc.)
+			\item Packages
+			\pause
+			\end{itemize}
+		\item Document
+			\begin{itemize}
+			\item Environments (\texttt{$\backslash$begin\{document\}}, etc.)
+			\item Commands (\texttt{$\backslash$emph\{\}}, etc.)
+			\pause
+			\end{itemize}
+		\end{itemize}
+	\item Build to PDF or other document format
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Lists of examples}
+	\begin{itemize}
+	\pause
+	\item Use package \texttt{gb4e} or \texttt{covington}
+		\begin{itemize}
+		\item (we'll use \texttt{gb4e} for this workshop)
+		\end{itemize}
+	\pause
+	\item \texttt{$\backslash$begin\{exe\}} ... \texttt{$\backslash$end\{exe\}} creates the example environment
+	\pause
+	\item \texttt{$\backslash$ex\{} ... \texttt{\}} creates an example
+	\pause
+	\item \texttt{$\backslash$ex[*]\{} ... \texttt{\}} adds a grammaticality judgment
+		\begin{itemize}
+		\item (\texttt{*} can be replaced with \texttt{\#}, \texttt{?}, \texttt{\%}, etc.)
+		\end{itemize}
+	\pause
+	\item \texttt{$\backslash$begin\{xlist\}} inside \texttt{$\backslash$ex\{\}} creates an embedded sub-list
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Interlinear glosses}
+	\begin{itemize}
+	\pause
+	\item Use package \texttt{gb4e} or \texttt{covington}
+		\begin{itemize}
+		\item (we'll use \texttt{gb4e} for this workshop)
+		\end{itemize}
+	\pause
+	\item \texttt{$\backslash$gll} for the sentence and glosses (words separated by spaces)
+		\begin{itemize}
+		\item make sure there are the same number of words in each
+		\item end each line with $\backslash\backslash$ (the newline character)
+		\end{itemize}
+	\pause
+	\item \texttt{$\backslash$glt} for the free translation
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{IPA}
+	\begin{itemize}
+	\pause
+	\item Use the \texttt{tipa} package
+	\pause
+	\item IPA inside the \texttt{$\backslash$textipa\{} ... \texttt{\}} command
+	\pause
+	\item See the tipa manual for list of IPA codes
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Syntax trees}
+	\begin{itemize}
+	\pause
+	\item Use the \texttt{qtree} package
+	\pause
+	\item Create a bracketed sentence
+		\begin{itemize}
+		\item Node labels are preceded with a period, e.g. \texttt{[.VP  V  N  ]}
+		\item Create triangles using the command \texttt{$\backslash$qroof\{} ... \texttt{\}.XP}
+		\end{itemize}
+	\pause
+	\item Draw arrows using package \texttt{tree-dvips}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Tables}
+	\begin{itemize}
+	\pause
+	\item Use the \texttt{\{tabular\}} environment
+	\pause
+	\item \texttt{tabular} formatting is complicated to explain but easy to demonstrate. Check the example!
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Footnotes and references}
+	\begin{itemize}
+	\pause
+	\item Bigger or fancier bibliographies should use the BibTeX utility. We will just do simple ones today
+		\begin{itemize}
+		\item (but come ask us if you want to learn BibTeX!)
+		\end{itemize}
+	\pause
+	\item The bibliography goes at the end of the document inside a \texttt{$\backslash$begin\{thebibliography\}} environment
+	\pause
+	\item Each reference is listed there inside after the command \texttt{$\backslash$bibitem\{\textit{key}\}}
+		\begin{itemize}
+		\item (replace ``key'' with a unique name for that reference, then you can refer to it in the article text)
+		\end{itemize}
+	\pause
+	\item Put parenthetical citations within the text using using \texttt{$\backslash$cite\{\textit{key}\}}
+	\pause
+	\item You can make footnotes in the text with the \mbox{\texttt{$\backslash$footnote\{} ... \texttt{\}}} command
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Where to find help}
+	\begin{itemize}
+	\pause
+	\item \textul{latex-project.org} has many free general guides to LaTeX, including \textit{The (Not So) Short Introduction to LaTeX}
+		\begin{itemize}\item (this is how I learned LaTeX!)\end{itemize}
+	\pause
+	\item \textul{CTAN.org} has specific guides for every package
+	\pause
+	\item Google \texttt{``latex for linguists''} to find many pages with info on how to use LaTeX for linguistic articles
+	\pause
+	\item All the slides and examples from today are available online at \textul{http://people.ku.edu/~sjpa/latex.html}
+	\end{itemize}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .bigsource, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+	width:65%;
+	margin-left:auto; margin-right:auto;
+	border:1px solid #ccc;
+	overflow:auto;
+	background-color: #FFFFFF;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>CIpirateplot</title>
+        <link rel="stylesheet" type="text/css" href="stevetools_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body>
+		<h2><code>CIpirateplot()</code></h2>
+
+		<p class="centercol"><code><a href="http://nathanieldphillips.com/2016/04/pirateplot-2-0-the-rdi-plotting-choice-of-r-pirates/">pirateplot()</a></code>,
+			by Nathaniel Phillips, is an excellent function that creates plots which combine a bar plot, a violin plot (beanplot), and a univariate scatter plot.
+			The resulting plots show both group means (like a barplot or point plot would) and a visual representation of the data distribution (like a
+			histogram, violin plot, or scatter plot would). As such, they are a great alternative to bar plots (see, e.g.,
+			<a href="https://pagepiccinini.com/2016/02/23/boxplots-vs-barplots/">Page Piccinini's post</a> describing problems with barplots).</p>
+
+		<p class="centercol">However, one reason I have traditionally used barplots is because, as someone whose research hypotheses are usually about
+			mean differences, I usually want to be able to plot 95% confidence intervals that will help readers make quick-and-dirty inferences
+			about comparisons between various means. Adding such intervals as error bars on a bar plot or point plot is straightforward. The pirate
+			plot, unfortunately, doesn't have a built-in way to add error bars, and indeed I suspect that manually adding error bars on top of all
+			its other stuff would look quite messy. (Plus, putting error bars onto a bar plot is easy because the <code>barplot()</code> function
+			returns a list of x-axis values of the midpoints of the bars, which is helpful for figuring out where to plot the error bars; 
+			<code>pirateplot()</code> does not do this, although this might not be a big issue, because there might be other simple ways to place
+			the error bars.)</p>
+
+		<p class="centercol">The function described below is a modification of the original <code>pirateplot()</code> function to plot confidence
+			intervals. <code>pirateplot()</code> can plot a shaded interval representing the Bayesian 95% highest density interval. Since I don't
+			usually need to plot that, I have adapted the code to use that shaded interval to plot confidence intervals instead. Examples and usage
+			notes are given below.</p>
+
+		<p class="centercol"><strong>Usage requirements</strong>. The function (along with some other functions, including a function for Cousineau-Morey
+			confidence intervals that this function uses) is available at <a href="/~sjpolit/Steve_functions.txt">http://www.polyu.edu.hk/cbs/sjpolit/Steve_functions.txt</a>.
+			The easiest way to get access is to run <code>source(&nbsp;url(&nbsp;"http://www.polyu.edu.hk/cbs/sjpolit/Steve_functions.txt"&nbsp;)&nbsp;)</code> during your R
+			session. The package "yarrr" must be installed (see the documentation for the original
+			<code>pirateplot()</code>, linked above, for instructions how). Like in a usual barplot, you can only plot two factors at once;
+			to plot more factors (e.g., to plot a three-way interaction) you need multiple plots arranged together.</p>
+
+		<p class="centercol"><strong>Options</strong>. Most of the options are the same as for the original <code>pirateplot()</code>, described
+			<a href="http://nathanieldphillips.com/2016/04/pirateplot-2-0-the-rdi-plotting-choice-of-r-pirates/">here</a>. However, there are 
+			some special options specifically related to the handling of confidence intervals.</p>
+
+		<ul class="center">
+			<li><strong>conf.level</strong>: The confidence level (as a proportion, not a percentage) to use for the CI. Defaults to .95.</li>
+			<li><strong>CI.type</strong>: either <code>"between"</code> (the default) or <code>"within"</code>; specifies whether to plot a between-groups (standard)
+				CI, or a within-groups (i.e., within-subjects) CI. For within-groups CIs, it plots a Cousineau-Morey confidence interval. Note that a
+				within CI is only meaningful if grouping.var (see below) is specified.</li>
+			<li><strong>grouping.var</strong>: Specifies the name (i.e., the column of of the data frame) of the variable over which repeated measures were done. For example, when plotting
+				a within-subjects CI, there will have been repeated measures over subjects. Even for plotting standard between-subject confidence intervals,
+				however, it is important to specify this grouping variable, in order to ensure that the function aggregates over observations within
+				a given subject (or whatever the grouping variable is). This is because a between-subject CI for a given condition in a repeated measures design is typically
+				based on the SD of the subject means, <em>not</em> the SD of all the observations.</li>
+			<li><strong>make.legend</strong>: a boolean variable specifying whether to plot a legend or not plot one (the default).</li>
+		</ul>
+
+		<p class="centercol"><strong>Examples</strong>. And now the good stuff:</p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Load the function</span>
+<span class="hl kwd">source</span><span class="hl std">(</span> <span class="hl kwd">url</span><span class="hl std">(</span> <span class="hl str">&quot;http://www.polyu.edu.hk/cbs/sjpolit/Steve_functions.txt&quot;</span> <span class="hl std">) )</span>
+
+<span class="hl com">### A pirate plot for non-repeated-measures data</span>
+<span class="hl std">airquality</span><span class="hl opt">$</span><span class="hl std">Month</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">factor</span><span class="hl std">( airquality</span><span class="hl opt">$</span><span class="hl std">Month )</span>
+<span class="hl kwd">CIpirateplot</span><span class="hl std">( Temp</span><span class="hl opt">~</span><span class="hl std">Month, airquality,</span> <span class="hl kwc">ci.o</span><span class="hl std">=</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl kwc">bar.o</span><span class="hl std">=</span><span class="hl num">.2</span> <span class="hl std">)</span>
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning: closing unused connection 5 (http://www.mypolyuweb.hk/~sjpolit/
+## Steve_functions.txt)
+</pre></div>
+</div><div class="rimage default"><center><img src="figure/CIpirateexample1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></center></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com">### A repeated-measures, fully within-subjects design, with within-subject CIs</span>
+<span class="hl kwd">library</span><span class="hl std">(ordinal)</span>
+<span class="hl kwd">CIpirateplot</span><span class="hl std">( response</span><span class="hl opt">~</span><span class="hl std">temp, wine,</span> <span class="hl kwc">grouping.var</span><span class="hl std">=</span><span class="hl str">&quot;judge&quot;</span><span class="hl std">,</span> <span class="hl kwc">CI.type</span><span class="hl std">=</span><span class="hl str">&quot;within&quot;</span><span class="hl std">,</span> <span class="hl kwc">ci.o</span><span class="hl std">=</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl kwc">bar.o</span><span class="hl std">=</span><span class="hl num">.2</span> <span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><center><img src="figure/CIpirateexample2.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></center></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com"># what that would have looked like if we used between-subject CIs</span>
+<span class="hl kwd">CIpirateplot</span><span class="hl std">( response</span><span class="hl opt">~</span><span class="hl std">temp, wine,</span> <span class="hl kwc">grouping.var</span><span class="hl std">=</span><span class="hl str">&quot;judge&quot;</span><span class="hl std">,</span> <span class="hl kwc">CI.type</span><span class="hl std">=</span><span class="hl str">&quot;between&quot;</span><span class="hl std">,</span> <span class="hl kwc">ci.o</span><span class="hl std">=</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl kwc">bar.o</span><span class="hl std">=</span><span class="hl num">.2</span> <span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><center><img src="figure/CIpirateexample3.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></center></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com"># Plot for a factorial within-subject design, and with a legend</span>
+<span class="hl kwd">CIpirateplot</span><span class="hl std">( response</span><span class="hl opt">~</span><span class="hl std">temp<span class="hl opt">+</span>contact, wine,</span> <span class="hl kwc">grouping.var</span><span class="hl std">=</span><span class="hl str">&quot;judge&quot;</span><span class="hl std">,</span> <span class="hl kwc">CI.type</span><span class="hl std">=</span><span class="hl str">&quot;within&quot;</span><span class="hl std">,</span> <span class="hl kwc">ci.o</span><span class="hl std">=</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl kwc">bar.o</span><span class="hl std">=</span><span class="hl num">.2</span><span class="hl std">,</span> <span class="hl kwc">make.legend</span><span class="hl std">=T )</span>
+</pre></div>
+</div><div class="rimage default"><center><img src="figure/CIpirateexample5.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></center></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com">### A pirate plot for a design with repeated-measures data but between-subject conditions,</span>
+<span class="hl com">###	such that we want between-subject CIs but we still need to specify a grouping.var</span>
+<span class="hl kwd">CIpirateplot</span><span class="hl std">( weight</span><span class="hl opt">~</span><span class="hl std">Diet, ChickWeight,</span> <span class="hl kwc">grouping.var</span><span class="hl std">=</span><span class="hl str">&quot;Chick&quot;</span><span class="hl std">,</span> <span class="hl kwc">CI.type</span><span class="hl std">=</span><span class="hl str">&quot;between&quot;</span><span class="hl std">,</span> <span class="hl kwc">ci.o</span><span class="hl std">=</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl kwc">bar.o</span><span class="hl std">=</span><span class="hl num">.2</span> <span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><center><img src="figure/CIpirateexample4.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></center></div></div>
+
+
+	<hr>
+	<p class="mini">by <a href="/~sjpolit/">Stephen Politzer-Ahles</a>. Last modified on 2016-05-25.</p>
+
+
+
+    </body>
+</html>

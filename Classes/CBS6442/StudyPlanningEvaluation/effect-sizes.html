@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Effect sizes</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Effect sizes (4 hours)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">In the "Introduction to inferential statistics" module we discussed <em>p</em>-values. Another important (and often
+	misunderstood) concept in statistics is <em>effect size</em>.</p>
+<p class="centercol">An effect size is, simply, the size of the effect you are interested in. The "effect" is often a difference between
+	things. For example, if you're comparing people's scores on a language test before and after training, and you find that they score
+	20 points before training and 25 points after training, the effect size is 5 points. If you're comparing the vocabulary size of
+	bilingual and monolingual speakers, and you find that bilingual speakers know 34,000 words and monolinguals know 20,000 words, the
+	effect size is 14,000 words. If you're comparing how fast people respond to verbs in a psycholinguistic experiment vs. how fast they
+	respond to nouns, and you find that they respond to verbs in 684.27 milliseconds and nouns in 697.30 milliseconds, the effect size is
+	13.03 milliseconds. Et cetera.</p>
+<p class="centercol">In other situations, the effect size might not be a difference between things, it might be the slope of a regression
+	line. For example, if you want to see whether people who spend more hours of groupwork also get higher scores on a language
+	proficiency test, and you do a study and find that every extra hour spent on groupwork is associated with an extra 0.72 points on the
+	language proficiency test, then the effect size is 0.72 points.</p>
+<p class="centercol">Broadly speaking, there are two kinds of effect sizes: <strong><em>unstandardized</em></strong> effect sizes and
+	<em><strong>standardized</strong></em> effect sizes. The above examples are unstandardized; they are presented in their natural units
+	(points, words, milliseconds, etc.). The benefit of unstandardized effect sizes is that they're easy to understand. The challenge is
+	that they can be hard to compare with other things. For example, imagine you want to compare the effectiveness of two different kinds
+	of training for language learners, and you measure two things: syntax comprehension, and speech production. You measure syntax
+	comprehension by a paper-and-pencil test (with scores ranging from 0 to 1000), and you measure speech production by recording
+	people's speech and then letting native listeners hear it and judge it on a 5-point scale (1=totally accented,
+	5=totally native-like). Imagine that you get the following results:</p>
+<p class="centercol"><strong>Training A</strong></p>
+<center>
+<table border=1>
+<tr>
+	<td>&nbsp;</td>
+	<td><strong>Pre</strong></td>
+	<td><strong>Post</strong></td>
+	<td><strong>Improvement</strong></td>
+</tr>
+<tr>
+	<td><strong>Syntax</strong></td>
+	<td>771</td>
+	<td>804</td>
+	<td>33</td>
+</tr>
+<tr>
+	<td><strong>Pronunciation</strong></td>
+	<td>2.5</td>
+	<td>3.1</td>
+	<td>0.6</td>
+</tr>
+</table>
+</center>
+
+<p class="centercol"><strong>Training B</strong></p>
+<center>
+<table border=1>
+<tr>
+	<td>&nbsp;</td>
+	<td><strong>Pre</strong></td>
+	<td><strong>Post</strong></td>
+	<td><strong>Improvement</strong></td>
+</tr>
+<tr>
+	<td><strong>Syntax</strong></td>
+	<td>792</td>
+	<td>923</td>
+	<td>131</td>
+</tr>
+<tr>
+	<td><strong>Pronunciation</strong></td>
+	<td>2.1</td>
+	<td>3.8</td>
+	<td>1.7</td>
+</tr>
+</table>
+</center>
+
+<p class="centercol">These results suggest that Training B is better. Training B improved syntax comprehension by 98 points more than
+	Training A (Training B: 131 points improvement; Training A: only 33 points improvement), and training B improved pronunciation by 1.1
+	points more than Training A (Training B: 1.7 points improvement; Training A: only 0.6 points improvement).</p>
+<p class="centercol">However, was the advantage of Training B over Training A bigger for syntax comprehension, or for pronunciation? It's
+	hard to say. We can't say the 98-point advantage for syntax comprehension is bigger than the 1.1-point advantage for pronunciation,
+	because these are on totally different scales. (For a similar example, imagine TOEFL and IELTS training programmes. If you take a
+	TOEFL training programme and it improves your TOEFL score by 20 points, and your friend takes an IETLS training programme and it
+	improves their score by 1 point, which programme is better? You can't say the 20-point TOEFL improvement is bigger than the 1-point
+	IELTS improvement, because they use totally different scales. For a similar example, you can think about GPAs, which are on a 4-point
+	scale, versus typical test scores which are often on a 100-point scale. What's a bigger difference: the difference between a GPA
+	of 3.8 and a GPA of 2.8, or the difference between getting a 85% on a test versus a 70% on a test? These are hard to compare because
+	they're on such different scales.)</p>
+<p class="centercol">This situation is where <em><strong>standardized</strong></em><strong> </strong>effect sizes can be useful.
+	Standardized effect sizes are not expressed in the natural units of the test; they're expressed in standard units that can be
+	compared across any scale. This is usually done by expressing things in terms of <em>standard deviation</em> (&#x6a19;&#x51c6;&#x5dee;)
+	rather than the original units. For example, for the 5-point pronunciation scale in the example above, the standard deviation for any
+	set of data will be fairly small, since the numbers can only vary between 1 and 5 (they can't vary a lot). For the 1000-point syntax
+	comprehension test, standard deviation is likely to be large, because the data can vary anywhere between 0 and 1000. A standardized
+	effect size will express how many <em>standard deviations</em> people's scores improved, instead of how many points they improved.
+	Thus, for example, if the standard deviation of the pronunciation test is a very small number, then an improvement of 1.1 points may
+	be an improvement of many standard deviations. If the standard deviation of the syntax comprehension test is a very large number,
+	then an improvement of 98 points might not be very many standard deviations.</p>
+<p class="centercol">A common standardized effect size is Cohen's <em>d</em> (there are many different versions of it; I'm just talking
+	about the simplest and most popular one). What I described above is Cohen's <em>d</em>: it expresses a difference (or a regression
+	slope) in standard deviations. There are many published norms explaining what counts as a "small" effect in Cohen's <em>d</em>, what
+	counts as a "medium" effect, etc. These are easy to find online, and I don't find them useful myself, so I won't go into the details
+	here.</p>
+<p class="centercol">Another common one is <em>R<sup>2</sup></em>. It works on slighly different principles than Cohen's <em>d</em>.
+	<em>R<sup>2</sup></em> expresses the proportion of variance in a dataset that is explained by some variable (or set of variables).
+	For example, imagine you have a set of data including people's heights and people's weights. Weight varies a lot. Nevertheless, if
+	you know someone's height, you can roughly predict their weight&mdash;a tall person will weigh more than a short person, assuming
+	everything else is equal. This relationship is not perfect (there are tall skinny people and there are short fat people) but at least
+	there is a rough pattern. You might do an analysis and find that, when you consider height, you can account for 47% of the variation
+	in people's weights; that's an <em>R<sup>2</sup></em>. If you know height, you can make a decent guess as to how much someone weighs,
+	i.e. a person with a given height might be expected to weigh a certain amount; nevertheless, there's still some variation around that
+	guess (there are some people who have that height but who weigh more or less than what you guessed), and that variation is 53% of the
+	variation in the overall dataset. Now imagine your data also includes people's hair color. Maybe you find that people with red hair
+	tend to weigh a tiny bit more than people with brown hair. Maybe the <em>R<sup>2</sup></em> for this effect is 6%. There's still an
+	effect, but it's much smaller than the effect of height: in other words, when you know someone's hair, you can explain a tiny bit of
+	the variation in the dataset, but still 94% of the variation remains unexplained. Or, finally, imagine your dataset includes people's
+	weight in pounds and people's weight in kg. If you know their weight in pounds, you can perfectly predict their weight in kg; the
+	<em>R<sup>2</sup></em> for this effect is 100%.</p>
+<p class="centercol">Some people wrongly use the term "effect size" to only mean standardized effect sizes. e.g., people will say "I need
+	to report an effect size in my paper", I say "why not just report the effect in ms", and they say, "no, I need an <em>effect
+	size</em>, like Cohen's d." This is incorrect: keep in mind that, as mentioned above, unstandardized effect sizes are still effect
+	sizes. If you are talking about things like Cohen's <em>d</em>, <em>R<sup>2</sup></em>, etc., keep in mind that these are just
+	standardized effect sizes.</p>
+<p class="centercol">There are many other standardized effect sizes, such as partial eta squared, part and partial correlations,
+	pseudo-R-squared, and more. The above two are just the most popular ones.</p>
+<p class="centercol">Understanding effect size (particularly unstandardized effect sizes) is crucial when you want to do power analysis or
+	calculate confidence intervals.</p>
+<p class="centercol">Continue to the activities below to do some more exercises to understand effect sizes.</p>
+
+
+		<center>
+		<button class="collapsible">Find effects sizes in a paper</button>
+		<div class="content">
+			<p>Find a paper which reports a standardized effect size, and which also includes graphs or tables showing the data in raw
+				numbers (milliseconds, points, Hz, etc.). Choose any effect in the paper (some papers report many effects), and tell
+				me both the standardized and the unstandardized effect size (the understandardized effect size does not need to be
+				exact, you can just guess it by looking at a graph).</p>
+		</div>
+
+		<button class="collapsible">Brainstorm when you would use effect sizes</button>
+		<div class="content">
+			<p>Describe a situation in your own research where you would want to report an unstandardized effect size.</p>
+			<p>Describe a situation in your own research where you would want to report a standardized effect size (Cohen's
+				<em>d</em><em></em>, <em>R<sup>2</sup></em>, or any other).</p>
+		</div>
+		</center>
+
+
+
+
+		<p class="centercol">When you have finished the above activities, continue to either of
+			the remaining sections in the module: "<a href="confidence-intervals.html">Confidence intervals</a>" or
+			"<a href="power.html">Power</a>".</p>
+
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-17. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+
+

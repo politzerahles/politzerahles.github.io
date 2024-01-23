@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Choosing a test</title>
+        <link rel="stylesheet" type="text/css" href="../sjpa_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+    </head>
+
+    <body>
+
+
+
+		<h2>Choosing a test (1 hour)</h2>
+
+	<p class="centercol"><a href="index.html">&#x21B5; Back to module homepage</a></p>
+
+<p class="centercol">In this module we have discussed <em>t</em>-tests. You probably have noticed that there are other modules about other
+	kinds of tests (such as regression and analysis of variance), and you may have heard of still other kinds of tests that are not
+	addressed in this subject (such as chi-squared tests). How do you decide what test to do? Why did we use <em>t-</em>tests, instead of
+	other ones, for the examples in this module?</p>
+<p class="centercol">To understand how to choose a test, you have to understand the variables in your research design. A <strong>variable</strong>
+	is some thing that you measure or manipulate in your study. Things that you measure might be stuff like people's proficiency, test
+	scores, brain responses, reaction times, age, etc. Things that you manipulate might be things like which kind of training each person
+	gets, which kind of sentence they read in an experiment, etc. There are two important distinctions to consider with your variables:
+	whether a variable is independent or dependent, and what kind of scale the variable is measured on.</p>
+
+<h4 class="centercol">Independent vs. dependent variables</h4>
+<p class="centercol">In most research you are interested in causes and effects: e.g., you might predict that giving people a different
+	kind of training will cause them to learn grammar better, or showing people a different kind of sentence will cause their brain to
+	react a certain way, or having higher motivation will cause people to learn tone better, or whatever. (Note that statistical methods
+	usually cannot prove cause and effect in observational studies&mdash;see the "Types of research designs" module. Here I'm
+	oversimplifying.) Generally, the independent variable (&#x81ea;&#x8b8a;&#x91cf;) is the thing that you think causes something, and
+	the dependent variable (&#x56e0;&#x8b8a;&#x91cf;) is the effect that you want to measure. Another way of looking at it is that, in
+	experiments, the independent variable is the thing you manipulate (either directly, by, e.g., assigning people to different training
+	groups; or indirectly, by, e.g., making sure that your student sample has a good mix of high-proficiency, low-proficiency, and
+	medium-proficiency students), whereas the dependent variable is the thing that you measure. The independent variable is "independent"
+	because you choose it (you decide what kinds of groups you will look at, what kinds of words you will put in the experiment, etc.),
+	and the dependent variable is "dependent" because it is determined by the other variables (e.g., in a reaction time experiment, you
+	don't choose how fast a word will be responded to; it gets responded to faster or slower based on whether it's a noun or a verb,
+	whether it's preceded by a related or an unrelated prime, or whatever other independent variable you have been messing with). In the
+	example we discussed previously about comparing the age of PolyU students and UST students, "school" is the independent variable and
+	"age" is the dependent variable&mdash;we "manipulated" the school variable by intentionally measuring people from two different
+	schools, whereas we just passively observe what their ages are.</p>
+
+<h4 class="centercol">Measurement scales</h4>
+<p class="centercol">Variables roughly fall into three types of measurement scale. Some variables are lumped into categories, with no
+	inherent order. For example, in a study that compares "experimental group" vs "control group", or a study that compares "French
+	speakers" vs. "Korean speakers", there is no inherent order; there's no particular reason to call French speakers "Group 1" and
+	Korean speakers "Group 2" or vice versa. These are <em>nominal</em> variables. (Sometimes they are also called <em>categorical</em>
+	variables; in R, they are called <em>factors</em>.)</p>
+<p class="centercol">Some variables do have an inherent order, but the distances between each level are not the same. For example, imagine
+	you have people take a survey (such as a evaluation you all take at the end of every class) and rate how satisfied they were, with
+	choices such as "Very dissatisfied", "Somewhat dissatisfied", "Neutral", "Somewhat satisfied", and "Very satisfied". Or imagine you
+	give participants a language background questionnaire and ask how often they use English, with choices like "Never", "Sometimes",
+	"Often", and "Always". These have a clear order ("never" is less than "sometimes", "sometimes" is less than "often", etc.). But the
+	distance between levels may not be the same: maybe "often" is a lot more than "sometimes", but "always" is only a little bit more
+	than "often". Or imagine people run a race, and you record who was first place, who was second place, who was third place, etc. There
+	is an inherent order there, but the distances between each person may be very different; maybe the first-place runner just barely
+	beat the second-place runner in an exciting last-minute sprint to the finish, but the third-place runner was very far behind both of
+	them. This kind of variable is called an <em>ordinal</em> variable.</p>
+<p class="centercol">Finally, some variables work like true numbers. They have an order, and the distances between each number are
+	consistent. For example, if you measure how tall someone is, or if you measure how quickly someone can finish reading a sentence, the
+	results you get are actual meaningful numbers. This is called an <em>interval</em> variable (sometimes called a <em>numeric</em> or
+	<em>continuous</em> variable). (As you learn more about statistics you may also sometimes hear about a distinction between
+	<em>interval</em> and <em>ratio</em> variables: interval variables are numeric but don't have a natural zero [this would be things
+	like TOEFL scores] whereas ratio variables do have a natural zero [things like length or reaction time]. In practice, this
+	this distinction rarely has any practical consequences on what I need to do for a statistical analysis, so I usually just ignore
+	it.)</p>
+
+<h4 class="centercol">Putting it all together</h4>
+<p class="centercol">The reason this stuff is important is because it determines what kinds of test you use. Different tests are suited
+	for different kinds of variables. For example, a <em>t</em>-test works great when you have a nominal independent variable (with only
+	two levels) and a numeric dependent variable; you can review the examples from throughout this module and see that they all fit this
+	criteria. If you have a continuous independent variable and a continuous dependent variable (e.g., if you want to see if people
+	with higher language proficiency have faster reaction times&mdash;proficiency and reaction times are both usually measured as
+	continuous/numeric/interval variables), a <em>t</em>-test will be no good.
+	Likewise if you have a nominal independent variable and a nominal dependent variable. Likewise if you have a continuous dependent
+	variable and a nominal independent variable with more than two levels (e.g., if your research project has three groups instead of
+	two). For situations like that, you'll need different tests. As you've seen in previous tasks, the nature of the relationships
+	between groups (e.g., paired vs. independent) will also influence what kind of test you need.
+	<a href="https://stats.idre.ucla.edu/other/mult-pkg/whatstat/">https://stats.idre.ucla.edu/other/mult-pkg/whatstat/</a> is a great
+	resource for seeing what kind of test you need in any situation.</p>
+<p class="centercol">You can find further reading on variables types, in any intro statistics textbook or online tutorial, but what was
+	presented here should be enough to at least give you the foundation you'll need to do the remaining data analysis modules in this
+	class.</p>
+
+	<center>
+	<button class="collapsible">Brainstorm situations for different tests</button>
+	<div class="content">
+		<p>Describe one kind of research situation that an independent samples t-test would be appropriate for, one kind of research
+			situation that a paired samples (or one-sample) t-test would be appropriate for, and one kind of research situation that
+			would need some other test instead of a t-test.</p>
+	</div>
+	</center>
+
+	<p class="centercol">When you finish this activity, you are done with the module (assuming all your work on this and the
+			previous tasks has been satisfactory). However, you may still continue on to the <a href="advanced-level.html">advanced-level
+			task for this module</a> if you wish to complete this module at the advanced level (if you're aiming for a higher
+			grade or if you are just particularly interested in this topic). Otherwise, you can <a href="index.html">return to the
+			module homepage</a> to review this module, or <a href="..">return to the class homepage</a> to select a different module
+			or assignment to do now.</p>
+
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+
+
+	<hr>
+	<p class="mini">by <a href="https://people.ku.edu/~sjpa">Stephen Politzer-Ahles</a>. Last modified on 2021-05-14. CC-BY-4.0.</p>
+
+
+
+    </body>
+</html>
+
+ 
+

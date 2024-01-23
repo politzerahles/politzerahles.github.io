@@ -1,0 +1,26 @@
+random_cat <- function(nrow=1, ncol=1, ncat=NA){
+	if( !( "jpeg" %in% installed.packages()[,"Package"] ) ){ install.packages("jpeg") }
+	library(jpeg)
+	if( !is.na(ncat) ){
+		nrow = ceiling(sqrt(ncat))
+		ncol = ceiling(sqrt(ncat))
+	} else {
+		ncat <- nrow*ncol
+	}
+	par(mfrow=c(nrow,ncol), mar=c(1,1,1,1))
+	e <- NA
+	for( i in 1:ncat ){
+		jpgURL <- "http://thecatapi.com/api/images/get?format=src"
+		z <- tempfile()
+		download.file(jpgURL, z, mode = "wb")
+		e <- try( localJPG <- readJPEG(z) )
+		while( class(e)=="try-error" ){
+			download.file(jpgURL, z, mode = "wb")
+			e <- try( localJPG <- readJPEG(z) )	
+		}
+		file.remove(z)
+		plot(1, xlim=c(0,10), ylim=c(0,10), yaxs="i", xaxs="i", xaxt="n", yaxt="n", ylab=NA, xlab=NA, bty="n", type="n")
+		rasterImage(localJPG, 0, 0, 10, 10)
+	}
+}
+

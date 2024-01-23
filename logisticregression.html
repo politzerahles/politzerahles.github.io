@@ -1,0 +1,758 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .bigsource, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+	width:65%;
+	margin-left:auto; margin-right:auto;
+	border:1px solid #ccc;
+	overflow:auto;
+	background-color: #FFFFFF;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Interpreting logistic regression coefficients</title>
+        <link rel="stylesheet" type="text/css" href="stevetools_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body>
+
+		<center><img src="figure/yourlogitisflawed.jpg" width=25%/></center>
+		<h1>Interpretation of coefficients in logistic regression</h1>
+
+		<p class="centercol">So you just did a logistic regression or a nice <a href="http://www.inside-r.org/node/212463"><code>glmer</code></a>, and
+			you got a significant effect! Hooray! And that effect is 5. But now you're wondering... 5 whats? Is the difference between your conditions
+			5%, or 5 of something else? Now you're stuck staring at your model summary asking, <a href="https://youtu.be/OQSNhk5ICTI?t=1m16s">"What does this mean?"</a>
+			This post will describe what logistic regression coefficients mean, and review some quick-and-dirty (and some not-so-quick-but-still-dirty)
+			ways to interpret them.</p>
+
+		<h3 class="center">Odds, log odds, and proportions</h3>
+		<p class="centercol">While we often think of binary outcomes in terms of proportions (e.g., "92% correct responses in this condition"), logistic
+			regression is actually based on [log] odds (which can be calculated from a proportion using the logit function). Odds can be understood as the
+			proportion of some target outcome (e.g., correct responses) expressed in terms of how many non-target outcomes there are per target
+			outcome. For example, a proportion of 50% (e.g., 50% accuracy) corresponds to an odds ratio of 1/1, because 50% accuracy means
+			there is 1 incorrect response for each correct response. A proportion of 33%, on the other hand, corresponds to an odds ratio of
+			1/2 (2 incorrect responses for every 1 correct response), a proportion of 75% corresponds to an odds ratio of 3/1, etc. More generally,
+			for any probability <em>p</em> [between 0 and 1], the odds are \(\frac{p}{1-p}\). In turn,
+			logistic regression uses the log of the odds ratio (i.e., the logit), rather than the odds ratio itself; therefore, 50% accuracy
+			corresponds to \(log(\frac{.5}{1-.5})=log(1/1)=0\), 33% accuracy to \(log(\frac{.33}{1-.33})=log(1/2)=-0.69\),  75% to \(log(\frac{.75}{1-.75})=log(3/1)=1.09\), etc.</p>
+
+		<p class="centercol">Likewise, a log odds value \(\hat Y\) can be converted back into proportions using the inverse logit formula,
+			<big>\(\frac{e^\hat Y}{1+e^\hat Y}\)</big>. Thus, a log odds value of 0 corresponds to 50% probability (\(\frac{e^0}{1+e^0}=\frac{1}{1+1}=1/2\)), a 
+			log odds value of 2 corresponds to 88% probability (\(\frac{e^2}{1+e^2}\)), etc.</p>
+
+		<p class="centercol">Why is this useful? Because logistic regression coefficients (e.g., in the confusing model summary from your logistic regression
+			analysis) are reported as log odds. Log odds are difficult to interpret on their own, but they can be translated using the formulae
+			described above. Log odds could be converted to normal odds using the exponential function, e.g., a logistic regression intercept
+			of 2 corresponds to odds of \(e^2=7.39\), meaning that the target outcome (e.g., a correct response) was about 7 times more likely than
+			the non-target outcome (e.g., an incorrect response). While logistic regression coefficients are sometimes reported this way,
+			especially in the news or pop science coverage (e.g., those headlines like "bacon eaters 3.5 times more likely to comment on Youtube videos!"), I find this difficult to interpret and I prefer to think about the results in
+			terms of proportions. Fortunately, the log odds can be turned into a proportion using the inverse logit function, as shown above.</p>
+
+		<h3 class="center">The interpretation of coefficients other than the intercept</h3>
+		<p class="centercol">The coefficient for an intercept is relative to 0 and thus can be straightforwardly interpreted through the inverse logit
+			function. For example, in a design with several categorical conditions that are dummy-coded, the intercept corresponds to the predicted
+			outcome for the reference (baseline) condition, and inverse-logit-transforming the coefficient will show the response proportion (e.g.,
+			percent accuracy) for that condition, as shown in the example below (using R code). Note that the inverse logit of the intercept is exactly the same
+			as the raw percent of admissions from the data, and that the significant p-value for the intercept tells us that the log odds of admission
+			are significantly less than 0, i.e., the percentage chance of admission is significantly less than 50%:</p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Load some sample data</span>
+<span class="hl std">admission</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">read.csv</span><span class="hl std">(</span><span class="hl str">&quot;https://stats.idre.ucla.edu/stat/data/binary.csv&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># Make sure 'admit' is a factor. Reference level is 'no', target level is 'yes'</span>
+<span class="hl std">admission</span><span class="hl opt">$</span><span class="hl std">admit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">factor</span><span class="hl std">(</span> <span class="hl kwd">ifelse</span><span class="hl std">( admission</span><span class="hl opt">$</span><span class="hl std">admit</span><span class="hl opt">==</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl str">&quot;yes&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;no&quot;</span> <span class="hl std">) )</span>
+
+<span class="hl com"># Turn 'rank' into an unordered factor. This isn't realistic (it should be ordered) but</span>
+<span class="hl com">#	I just want an example for dummy coding</span>
+<span class="hl std">admission</span><span class="hl opt">$</span><span class="hl std">rank</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">factor</span><span class="hl std">( admission</span><span class="hl opt">$</span><span class="hl std">rank,</span> <span class="hl kwc">levels</span><span class="hl std">=</span><span class="hl num">4</span><span class="hl opt">:</span><span class="hl num">1</span> <span class="hl std">)</span>
+
+<span class="hl com"># Show the proportions admitted for each rank</span>
+<span class="hl kwd">xtabs</span><span class="hl std">(</span><span class="hl opt">~</span><span class="hl std">rank</span><span class="hl opt">+</span><span class="hl std">admit, admission)[,</span><span class="hl num">2</span><span class="hl std">]</span> <span class="hl opt">/</span> <span class="hl kwd">xtabs</span><span class="hl std">(</span><span class="hl opt">~</span><span class="hl std">rank, admission)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## rank
+##         4         3         2         1 
+## 0.1791045 0.2314050 0.3576159 0.5409836
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Make a model</span>
+<span class="hl kwd">summary</span><span class="hl std">( model1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">glm</span><span class="hl std">( admit</span> <span class="hl opt">~</span> <span class="hl std">rank, admission,</span> <span class="hl kwc">family</span><span class="hl std">=</span><span class="hl str">&quot;binomial&quot;</span> <span class="hl std">) )</span><span class="hl opt">$</span><span class="hl std">coefficients</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##               Estimate Std. Error    z value     Pr(&gt;|z|)
+## (Intercept) -1.5224265  0.3186144 -4.7782726 1.768076e-06
+## rank3        0.3220316  0.3846844  0.8371319 4.025184e-01
+## rank2        0.9366996  0.3610304  2.5945174 9.472383e-03
+## rank1        1.6867296  0.4093073  4.1209370 3.773346e-05
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Inverse logit transform the model coefficients into proportions, to show that the</span>
+<span class="hl com">#	log odds of the intercept corresponds to its proportion but none of the other</span>
+<span class="hl com">#	model coefficients do</span>
+<span class="hl kwd">exp</span><span class="hl std">(</span> <span class="hl kwd">coef</span><span class="hl std">(model1) )</span> <span class="hl opt">/</span>  <span class="hl std">(</span> <span class="hl num">1</span> <span class="hl opt">+</span> <span class="hl kwd">exp</span><span class="hl std">(</span> <span class="hl kwd">coef</span><span class="hl std">(model1) ) )</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## (Intercept)       rank3       rank2       rank1 
+##   0.1791045   0.5798193   0.7184325   0.8437936
+</pre></div>
+</div></div>
+
+		<p class="centercol">However, interpreting other model coefficients is not as straightforward. Look at the example above: the admission rate
+			for rank "3" was 23.1%, which is 5.2 percentage points greater than the baseline admission rate of 17.9% for rank "4". In the model, this is represented
+			by a coefficient of 0.3220316, indicating this much greater log odds of acceptance in this condition, compared to the intercept (rank
+			"4"). However, simply transforming that coefficient with the inverse logit function yields a value that corresponds neither to the
+			actual percent admission in that condition, nor the difference in percent admission between that and the baseline. This is because the
+			inverse function assumes the log odds are relative to 0, whereas the regression coefficient for this condition is relative to the
+			intercept (-1.5). To get a meaningful proportion, we have to instead run the logit function on the predicted value for this condition
+			(i.e., plugging the coefficients into the regression equation), as shown below:</p>
+
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># The predicted value for this condition: the intercept, plus the dummy coefficient for this condition</span>
+<span class="hl std">Yhat_rank3</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">coef</span><span class="hl std">(model1)[</span><span class="hl str">&quot;(Intercept)&quot;</span><span class="hl std">]</span> <span class="hl opt">+</span> <span class="hl kwd">coef</span><span class="hl std">(model1)[</span><span class="hl str">&quot;rank3&quot;</span><span class="hl std">]</span>
+
+<span class="hl com"># Converting the predicted value from log odds into percentage</span>
+<span class="hl kwd">exp</span><span class="hl std">( Yhat_rank3 )</span> <span class="hl opt">/</span> <span class="hl std">(</span> <span class="hl num">1</span> <span class="hl opt">+</span> <span class="hl kwd">exp</span><span class="hl std">( Yhat_rank3 ) )</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## (Intercept) 
+##    0.231405
+</pre></div>
+</div></div>
+
+		<p class="centercol">Notice that now we get a value which corresponds exactly to the percentage admittance for that condition. This is pretty
+			uninteresting, since it tells us what we already saw in the data, but it is a nice demonstration of the relationship between log
+			odds and proportions. (Plus, the non-significant coefficient for "rank3" in the model tells us that this proportion of 23.1% is not
+			significantly higher than the 17.9% acceptance rate for rank 4, i.e., the intercept.)
+			These estimates can, however, give more insight in cases where the data are noisier: for example, if you have
+			repeated measures for subjects and items and thus used a mixed model (in which case model predictions won't exactly match the data, and
+			thus the model predictions converted into percentages are useful for illustrating the data pattern once subject and item variance
+			has been accounted for) or if the predictor (independent variable) is not categorical but continuous (in which case the predicted
+			proportion won't correspond to the percent admittance for any one condition, but to the slope of the regression line). Let's look at an example
+			with a continuous predictor.</p>
+
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># A logistic model: probability of being admitted, as a function of GPA (grade point average)</span>
+<span class="hl kwd">summary</span><span class="hl std">( model2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">glm</span><span class="hl std">( admit</span> <span class="hl opt">~</span> <span class="hl std">gpa, admission,</span> <span class="hl kwc">family</span><span class="hl std">=</span><span class="hl str">&quot;binomial&quot;</span> <span class="hl std">) )</span><span class="hl opt">$</span><span class="hl std">coefficients</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##              Estimate Std. Error  z value     Pr(&gt;|z|)
+## (Intercept) -4.357587  1.0353170 -4.20894 2.565715e-05
+## gpa          1.051109  0.2988694  3.51695 4.365354e-04
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com">### Plot the data and model</span>
+<span class="hl com"># Plot the actual datapoints, with a little bit of jitter</span>
+<span class="hl kwd">plot</span><span class="hl std">( admission</span><span class="hl opt">$</span><span class="hl std">gpa,</span> <span class="hl kwd">jitter</span><span class="hl std">(</span><span class="hl kwd">ifelse</span><span class="hl std">( admission</span><span class="hl opt">$</span><span class="hl std">admit</span><span class="hl opt">==</span><span class="hl str">&quot;yes&quot;</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">0</span> <span class="hl std">),</span><span class="hl num">.1</span><span class="hl std">),</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">20</span><span class="hl std">,</span> <span class="hl kwc">xlab</span><span class="hl std">=</span><span class="hl str">&quot;GPA&quot;</span><span class="hl std">,</span> <span class="hl kwc">ylab</span><span class="hl std">=</span><span class="hl str">&quot;Likelihood of admittance&quot;</span> <span class="hl std">)</span>
+
+<span class="hl com"># Inverse logit function</span>
+<span class="hl std">inverselogit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){</span> <span class="hl kwd">exp</span><span class="hl std">(x)</span> <span class="hl opt">/</span> <span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">+</span><span class="hl kwd">exp</span><span class="hl std">(x) ) }</span>
+
+<span class="hl com"># Get the unique gpas</span>
+<span class="hl std">gpas</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sort</span><span class="hl std">(</span> <span class="hl kwd">unique</span><span class="hl std">( admission</span><span class="hl opt">$</span><span class="hl std">gpa ) )</span>
+
+<span class="hl com"># Plot the model prediction for each GPA, with a line through them</span>
+<span class="hl kwd">lines</span><span class="hl std">( gpas,</span> <span class="hl kwd">inverselogit</span><span class="hl std">(</span> <span class="hl kwd">coef</span><span class="hl std">(model2)[</span><span class="hl str">&quot;(Intercept)&quot;</span><span class="hl std">]</span> <span class="hl opt">+</span> <span class="hl std">gpas</span><span class="hl opt">*</span><span class="hl kwd">coef</span><span class="hl std">(model2)[</span><span class="hl str">&quot;gpa&quot;</span><span class="hl std">] ),</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;o&quot;</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">22</span><span class="hl std">,</span> <span class="hl kwc">bg</span><span class="hl std">=</span><span class="hl str">&quot;blue&quot;</span><span class="hl std">,</span> <span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">2</span> <span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><center><img src="figure/logit1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" class="plot" /></center></div></div>
+
+		<p class="centercol">Notice here that converting the model predictions into proportions, using the inverse logit function, helps us interpret the
+			result: we know that the positive model coefficient for "gpa" should indicate that likelihood of being admitted increases as GPA increases, and
+			the regression line with blue squares in the figure indeed illustrates this pattern.</p>
+		
+		<p class="centercol">However, there is a new challenge now. With linear OLS regression, model coefficients have a straightforward interpretation:
+			a model coefficient <em>b</em> means that for every one-unit increase in \(x\), the model predicts a <em>b</em>-unit increase in \(\hat Y\)
+			(the predicted value of the outcome variable). E.g., if we were using GPA to predict test scores, a coefficient of 10 for GPA would mean
+			that for every one-point increase in GPA we expect a 10-point increase on the test. 
+			Technically, the logistic regression coefficient means the same thing: as GPA goes up
+			by 1, the log odds of being accepted go up by 1.051109. However, log odds are difficult to interpret, especially relative log odds: 
+			while we can straighforwardly calculate that a log odds of 1 on its own means a 73.1% chance of acceptance, an <em>increase</em> of 1 in log
+			odds means something different depending on what the log odds increased from&mdash;as we can see by the fact that the line above is not
+			quite straight. What we (or at least I) would really like to know
+			is how much the <em>percentage</em> likelihood of being accepted goes up, on average, for each one-unit increase in GPA. To do this, we need
+			to calculate the <em>marginal effects</em>.
+
+		<h3 class="center">"Marginal effects" in logistic regression</h3>
+		<p class="centercol">When you say how much of an increase there is in  \(\hat Y\) for every one-unit increase in \(x\), you are describing the
+			<em>marginal effect</em>. (This is not to be confused with the other sense in which we might use the phrase "marginal effect", to describe
+			an effect that is not quite statistically significant. Rather, this term is like the "marginal means" we might look at in an ANOVA design.)
+			As we noted above, linear regression coefficients directly correspond to marginal effects: if we regress test score on GPA and find a coefficient
+			of 10, that means that a 1-point increase in GPA corresponds to a predicted 10-point increase in test score. Logistic regression coefficients
+			also correspond to marginal effects, but the unit of measurement is not test points or whatever; instead, the unit of measurement is log odds, and
+			and a 1-point increase in log odds is difficult to put in context. We know how to transform log odds into proportions using the inverse logit
+			function described above, but since this is a non-linear transform, expressing the marginal effect in terms of <em>proportions</em> rather than log odds is not
+			straightforward. This is because the logistic regression line is not straight, and thus the marginal effect expressed as a proportion is not stable across the range of data.
+			We can illustrate this with the plot below, illustrating a fake logistic regression with an intercept of 0 and a coefficient of 2: notice
+			that stepping from \(x=0\) to \(x=1\) brings along a large increase in the predicted proportion (about a 40% increase), whereas stepping
+			from \(x=4\) to \(x=5\) brings along almost no increase, as the predicted probability was already near ceiling.</p>
+
+<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(</span> <span class="hl opt">-</span><span class="hl num">5</span><span class="hl opt">:</span><span class="hl num">5</span><span class="hl std">,</span> <span class="hl kwd">inverselogit</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl opt">*</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl num">5</span><span class="hl opt">:</span><span class="hl num">5</span><span class="hl std">)),</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;o&quot;</span><span class="hl std">,</span> <span class="hl kwc">xlab</span><span class="hl std">=</span><span class="hl str">&quot;x&quot;</span><span class="hl std">,</span> <span class="hl kwc">ylab</span><span class="hl std">=</span><span class="hl kwd">expression</span><span class="hl std">(</span> <span class="hl kwd">hat</span><span class="hl std">(Y)</span><span class="hl opt">~</span><span class="hl std">(proportion) ) )</span>
+</pre></div>
+</div><div class="rimage default"><center><img src="figure/logit2.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" class="plot" /></center></div><div class="rcode">
+</div></div>
+
+		<p class="centercol">Several solutions have been proposed for this problem:</p>
+		<ul class="center">
+			<li>The divide-by-4 rule</li>
+			<li>The marginal effect at the mean value of \(x\)</li>
+			<li>The average of the marginal effects</li>
+		</ul>
+
+		<p class="centercol">The divide-by-4 rule (see, e.g., <a href="http://www.gettinggeneticsdone.com/2010/12/using-divide-by-4-rule-to-interpret.html">here</a>
+			and <a href="http://econometricsense.blogspot.co.uk/2016/05/divide-by-4-rule-for-marginal-effects.html">here</a>), apparently based
+			on Gelman & Hill (2007), is the simplest to apply: it just amounts to dividing the logistic regression coefficient by 4 to get a
+			quick-and-dirty estimate of its marginal effect. This is, of course, an oversimplification, and it has limitations (e.g., per Ben Bolker's
+			comment at the linked blog post, it is mainly just reasonable for coefficients with a small absolute value, and apparently Gelman & Hill (2007) discuss its
+			limitations in more detail).</p>
+		<p class="centercol">The marginal-effect-at-mean method, based on Kleiber & Zeileis (2008), is described <a href="http://www.ucd.ie/t4cms/WP11_22.pdf">here</a>.
+			Getting the marginal effect for the mean value of \(x\) amounts to calculating the predicted proportion when all the predictor variables
+			are held to their mean, and then also calculating the predicted proportion when all the other predictor variables are at their mean and
+			the variable of interest (i.e., the one for whose coefficient we are trying to find the marginal effect) is at mean+1, and then taking the
+			difference of these two predicted proportions. (A variation of this method is to calculate the derivative of the regression line at this
+			particular spot [see <a href="http://www.stata.com/support/faqs/statistics/marginal-effects-methods/">here</a>]; recall from intro calculus
+			that the derivative is the slope of a curvy line at one particular infinitesimal point along the line.)
+		<p class="centercol">The average-of-marginal-effects method, also from Kleiber & Zeileis (2008) and described <a href="http://www.ucd.ie/t4cms/WP11_22.pdf">here</a>,
+			amounts to taking the mean of all predicted values (technically these are not the predicted proportions, but the probability density
+			function of all the predicted log-odds values) and multiplying by the logistic regression coefficient.</p>
+
+		<h3 class="center">A comparison of methods for calculating marginal effects</h3>
+		<p class="centercol">Because I am not particularly familiar with any of these and don't know mathematically what the pros and cons of each are, let's
+			try calculating all three and seeing how they line up with the actual predicted values from our data. The chunk of code below first calculates
+			the three kinds of marginal effects, and then plots the data in several ways so we can compare the marginal effects against what we see.</p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Grab the model coefficients</span>
+<span class="hl std">intercept</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">coef</span><span class="hl std">( model2 )[</span><span class="hl str">&quot;(Intercept)&quot;</span><span class="hl std">]</span>
+<span class="hl std">gpacoef</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">coef</span><span class="hl std">( model2 )[</span><span class="hl str">&quot;gpa&quot;</span><span class="hl std">]</span>
+
+<span class="hl com">### Marginal effect using the divide-by-4 rule</span>
+        <span class="hl std">div4marginal</span> <span class="hl kwb">&lt;-</span> <span class="hl std">gpacoef</span><span class="hl opt">/</span><span class="hl num">4</span>
+<span class="hl com">### Done getting divide-by-4 marginal effect</span>
+
+<span class="hl com">### Marginal effect at the mean value of GPA</span>
+        <span class="hl com"># First get the mean value of GPA. Note that here I'm taking the mean of all the gpa values, not</span>
+        <span class="hl com"># the mean of the unique values [i.e., not the exact middle of the range of gpa values, which would</span>
+        <span class="hl com"># be given by mean( range( admission$gpa ) )]. I'm not sure, however, which would be better. </span>
+        <span class="hl std">meangpa</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">mean</span><span class="hl std">( admission</span><span class="hl opt">$</span><span class="hl std">gpa )</span>
+
+        <span class="hl com"># The predicted value at this spot + 1, minus the predicted value at this spot</span>
+        <span class="hl std">marginal_effect_at_mean</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">inverselogit</span><span class="hl std">( intercept</span> <span class="hl opt">+</span> <span class="hl std">gpacoef</span><span class="hl opt">*</span><span class="hl std">(meangpa</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">) )</span> <span class="hl opt">-</span> <span class="hl kwd">inverselogit</span><span class="hl std">( intercept</span> <span class="hl opt">+</span> <span class="hl std">gpacoef</span><span class="hl opt">*</span><span class="hl std">meangpa )</span>
+<span class="hl com">### Done getting marginal effect at mean</span>
+
+<span class="hl com">### Mean of marginal effects</span>
+        <span class="hl com"># The mean of the PDF of the predicted values [in log odds], times the coefficient.</span>
+        <span class="hl com"># www.ucd.ie/t4cms/WP11_22.pdf#page=5 has a function that does this easily, and can also</span>
+        <span class="hl com">#	give standard errors of the marginal effects</span>
+        <span class="hl std">mean_of_sample_marginal_effects</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">mean</span><span class="hl std">(</span> <span class="hl kwd">dlogis</span><span class="hl std">( intercept</span><span class="hl opt">+</span><span class="hl std">gpacoef</span><span class="hl opt">*</span><span class="hl std">admission</span><span class="hl opt">$</span><span class="hl std">gpa ) )</span><span class="hl opt">*</span><span class="hl std">gpacoef</span>
+<span class="hl com">###</span>
+
+<span class="hl com"># Show the different marginal effects on the screen</span>
+<span class="hl std">( marginal</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">lapply</span><span class="hl std">(</span> <span class="hl kwd">list</span><span class="hl std">(</span> <span class="hl kwc">div_by_4</span><span class="hl std">=div4marginal,</span> <span class="hl kwc">at_mean</span><span class="hl std">=marginal_effect_at_mean,</span> <span class="hl kwc">mean_of_marginal</span><span class="hl std">=mean_of_sample_marginal_effects ), as.numeric ) )</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## $div_by_4
+## [1] 0.2627772
+## 
+## $at_mean
+## [1] 0.2526013
+## 
+## $mean_of_marginal
+## [1] 0.2204751
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com">### Create plots showing the marginal effects over the range of the data</span>
+
+<span class="hl kwd">par</span><span class="hl std">(</span> <span class="hl kwc">mfrow</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">3</span><span class="hl std">),</span> <span class="hl kwc">mar</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">5.6</span><span class="hl std">,</span> <span class="hl num">4.1</span><span class="hl std">,</span> <span class="hl num">4.1</span><span class="hl std">,</span> <span class="hl num">2.1</span><span class="hl std">) )</span>
+
+<span class="hl com"># The range of GPAs in the data</span>
+<span class="hl std">gpas</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">seq</span><span class="hl std">(</span> <span class="hl kwd">min</span><span class="hl std">(admission</span><span class="hl opt">$</span><span class="hl std">gpa),</span> <span class="hl kwd">max</span><span class="hl std">(admission</span><span class="hl opt">$</span><span class="hl std">gpa),</span> <span class="hl kwc">by</span><span class="hl std">=</span><span class="hl num">.1</span> <span class="hl std">)</span>
+
+<span class="hl com"># The predicted likelihood of acceptance for each GPA</span>
+<span class="hl std">proportion_accepted</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">inverselogit</span><span class="hl std">( intercept</span> <span class="hl opt">+</span> <span class="hl std">gpacoef</span><span class="hl opt">*</span><span class="hl std">gpas )</span>
+
+<span class="hl com"># Plot the predicted proportion accepted over the whole range of data; i.e., the</span>
+<span class="hl com">#	same regression line we saw above</span>
+<span class="hl kwd">plot</span><span class="hl std">( gpas, proportion_accepted,</span> <span class="hl kwc">xlab</span><span class="hl std">=</span><span class="hl str">&quot;GPA&quot;</span><span class="hl std">,</span> <span class="hl kwc">ylab</span><span class="hl std">=</span><span class="hl str">&quot;Proportion accepted&quot;</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">main</span><span class="hl std">=</span><span class="hl str">&quot;Predicted outcome&quot;</span><span class="hl std">,</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;o&quot;</span> <span class="hl std">)</span>
+
+<span class="hl com"># Next we'll plot the change in likelihood of acceptance, at each level of GPA. We'll do</span>
+<span class="hl com">#	this by comparingthe likelihood of at acceptance between GPAs of 2.96 and 2.96 (for</span>
+<span class="hl com">#	example), 2.5 and 3.5, etc. etc.</span>
+
+<span class="hl com"># Here we calculate the differences. Since the GPAs are in steps of .1 (in the sequence we made</span>
+<span class="hl com">#	above), we know that 3.5 is 10 above 2.5 (for example), so we make two vectors which are</span>
+<span class="hl com">#	offset by 10</span>
+<span class="hl std">highergpas</span> <span class="hl kwb">&lt;-</span> <span class="hl num">11</span><span class="hl opt">:</span><span class="hl kwd">length</span><span class="hl std">(proportion_accepted)</span>
+<span class="hl std">lowergpas</span> <span class="hl kwb">&lt;-</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">length</span><span class="hl std">( proportion_accepted[</span><span class="hl opt">-</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">)] )</span>
+
+<span class="hl com"># Then we subtract the lower ones from the higher ones</span>
+<span class="hl std">changes</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span> <span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl num">NA</span><span class="hl std">,</span><span class="hl num">10</span><span class="hl std">), proportion_accepted[highergpas]</span> <span class="hl opt">-</span> <span class="hl std">proportion_accepted[lowergpas] )</span>
+
+<span class="hl com"># Those same changes, but now instead of representing them as raw percentages (i.e., going from 15% up to</span>
+<span class="hl com">#	32% would be called a 17-percentage-point increase), we now represent them as a change relative to</span>
+<span class="hl com"># the starting point (i.e., going from 15% up to 32% is a 17/15 = 113% increase)</span>
+<span class="hl std">changes_as_proportion</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span> <span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl num">NA</span><span class="hl std">,</span><span class="hl num">10</span><span class="hl std">), (proportion_accepted[highergpas]</span> <span class="hl opt">-</span> <span class="hl std">proportion_accepted[lowergpas])</span><span class="hl opt">/</span><span class="hl std">proportion_accepted[lowergpas] )</span>
+
+<span class="hl com"># Plot the raw changes</span>
+<span class="hl kwd">plot</span><span class="hl std">( gpas, changes,</span> <span class="hl kwc">xlab</span><span class="hl std">=</span><span class="hl str">&quot;GPA&quot;</span><span class="hl std">,</span> <span class="hl kwc">ylab</span><span class="hl std">=</span><span class="hl str">&quot;Change in proportion accepted for a one-unit increase in frequency&quot;</span><span class="hl std">,</span> <span class="hl kwc">xaxt</span><span class="hl std">=</span><span class="hl str">&quot;n&quot;</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">main</span><span class="hl std">=</span><span class="hl str">&quot;Marginal changes&quot;</span> <span class="hl std">);</span> <span class="hl kwd">axis</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">at</span><span class="hl std">=gpas[highergpas],</span> <span class="hl kwc">labels</span><span class="hl std">=</span><span class="hl kwd">paste</span><span class="hl std">( gpas[lowergpas],</span> <span class="hl str">&quot;to&quot;</span><span class="hl std">, gpas[highergpas]),</span> <span class="hl kwc">las</span><span class="hl std">=</span><span class="hl num">2</span> <span class="hl std">)</span>
+
+<span class="hl com"># Plot the proportional changes</span>
+<span class="hl kwd">plot</span><span class="hl std">( gpas, changes_as_proportion,</span> <span class="hl kwc">xlab</span><span class="hl std">=</span><span class="hl str">&quot;GPA&quot;</span><span class="hl std">,</span> <span class="hl kwc">ylab</span><span class="hl std">=</span><span class="hl str">&quot;Change in proportion accepted, as proportion&quot;</span><span class="hl std">,</span> <span class="hl kwc">xaxt</span><span class="hl std">=</span><span class="hl str">&quot;n&quot;</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">main</span><span class="hl std">=</span><span class="hl str">&quot;Relative marginal changes&quot;</span> <span class="hl std">);</span> <span class="hl kwd">axis</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">at</span><span class="hl std">=gpas[highergpas],</span> <span class="hl kwc">labels</span><span class="hl std">=</span><span class="hl kwd">paste</span><span class="hl std">( gpas[lowergpas],</span> <span class="hl str">&quot;to&quot;</span><span class="hl std">, gpas[highergpas]),</span> <span class="hl kwc">las</span><span class="hl std">=</span><span class="hl num">2</span> <span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><center><img src="figure/marginal.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" width=75% /></center></div></div>
+
+	<p class="centercol">We see that the divide-by-4 rule estimated a marginal effect of 26%, the marginal-effect-at-mean-x rule estimated a marginal effect of 25%, and the mean-of-marginal-effects
+		rule estimated a marginal effect of 22%. How do these measure up to the actual predictions? From the left-hand portion of the plot, we can see (as we saw above) that
+		the effect of GPA is not only positive, but increasing. Over the range of GPAs tested, stepping from a low GPA to a slightly higher, but still low, GPA, confers a
+		slightly smaller increase in acceptance likelihood than stepping from an already-high GPA to an even higher one. We can see this even more directly
+		in the middle portion of the plot, which shows that stepping from 2.26 to 3.26 GPA is associated with a 16 percentage-point increase in likelihood
+		of acceptance, whereas stepping from a 2.36 to a 3.36 is associated with a 17 percentage-point increase, etc. (This effect is, of course, limited
+		to the rather narrow range of GPAs shown here; since proportions are bounded between 0% and 100%, eventually the predictions would level out.
+		Technically speaking, this means that while the first derivative of the regression line [the marginal effect] will remain positive, the second
+		derivative [whether the marginal effect is getting bigger and bigger or smaller and smaller] will become negative as the line asymptotes. In this dataset we just do
+		not observe that since GPA is never greater than 4.)</p>
+	<p class="centercol">To me, all of the marginal estimates look like slight overestimates of the pattern we see in the middle portion of the figure,
+		but the mean-of-marginal-effects method gives the least serious overestimate. Of course, in a way, every marginal estimate will be "wrong",
+		in that a single number will not capture the marginal effect at every point along the range of x-values (as discussed above); in
+		this case, the mean-of-marginal-effects method just happened to look least wrong for this particular spot in the range of x-values. I
+		suspect that the other two measures may have been more influenced by higher potential values of GPA: for example, a change in GPA
+		from 3.5 to 4.5 would indeed be associated with a 26 percentage-point increase, we just do not see this
+		since the maximum value of GPA is 4 (in the United States educational system). Therefore, it would also be worthwhile to try this out
+		with an example that has a wider range of x-values.</p>
+	<p class="centercol">Let's try another such example. This one uses a different dataset, with a slightly wider range of values for the predictor.
+		Furthermore, this will use a mixed-effects logistic model (<code>glmer()</code>) rather than a standard logistic regression. This raises
+		some extra interesting questions, which we'll discuss below. First, let's run the code to see the model coefficients, the marginal
+		estimates, and the plots:</p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Load libraries</span>
+<span class="hl kwd">library</span><span class="hl std">(lme4)</span>
+<span class="hl kwd">library</span><span class="hl std">(languageR)</span>
+
+<span class="hl com"># A model regressing the likelihood of error (the baseline level of Correct is &quot;incorrect&quot;)</span>
+<span class="hl com">#	on word frequency</span>
+<span class="hl kwd">summary</span><span class="hl std">( model3</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">glmer</span><span class="hl std">( Correct</span> <span class="hl opt">~</span> <span class="hl std">Frequency</span> <span class="hl opt">+</span> <span class="hl std">(Frequency</span><span class="hl opt">|</span><span class="hl std">Subject)</span> <span class="hl opt">+</span> <span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">|</span><span class="hl std">Word), lexdec,</span> <span class="hl kwc">family</span><span class="hl std">=</span><span class="hl str">&quot;binomial&quot;</span> <span class="hl std">) )</span><span class="hl opt">$</span><span class="hl std">coefficients</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##               Estimate Std. Error   z value   Pr(&gt;|z|)
+## (Intercept) -1.7885391  0.9586225 -1.865739 0.06207794
+## Frequency   -0.5173847  0.2069102 -2.500528 0.01240084
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Grab the model coefficients</span>
+<span class="hl std">intercept</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">fixef</span><span class="hl std">( model3 )[</span><span class="hl str">&quot;(Intercept)&quot;</span><span class="hl std">]</span>
+<span class="hl std">freqcoef</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">fixef</span><span class="hl std">( model3 )[</span><span class="hl str">&quot;Frequency&quot;</span><span class="hl std">]</span>
+
+<span class="hl com">### Marginal effect using the divide-by-4 rule</span>
+        <span class="hl std">div4marginal</span> <span class="hl kwb">&lt;-</span> <span class="hl std">freqcoef</span><span class="hl opt">/</span><span class="hl num">4</span>
+<span class="hl com">### Done getting divide-by-4 marginal effect</span>
+
+<span class="hl com">### Marginal effect at the mean value of Frequency</span>
+        <span class="hl com"># First get the mean value of Frequency</span>
+        <span class="hl std">meanfreq</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">mean</span><span class="hl std">( lexdec</span><span class="hl opt">$</span><span class="hl std">Frequency )</span>
+
+        <span class="hl com"># The predicted value at this spot + 1, minus the predicted value at this spot</span>
+        <span class="hl std">marginal_effect_at_mean</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">inverselogit</span><span class="hl std">( intercept</span> <span class="hl opt">+</span> <span class="hl std">freqcoef</span><span class="hl opt">*</span><span class="hl std">(meanfreq</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">) )</span> <span class="hl opt">-</span> <span class="hl kwd">inverselogit</span><span class="hl std">( intercept</span> <span class="hl opt">+</span> <span class="hl std">freqcoef</span><span class="hl opt">*</span><span class="hl std">meanfreq )</span>
+<span class="hl com">### Done getting marginal effect at mean</span>
+
+<span class="hl com">### Mean of marginal effects</span>
+        <span class="hl com"># The mean of the PDF of the predicted values [in log odds] based only on fixed effects, times the coefficient.</span>
+        <span class="hl std">mean_of_sample_marginal_effects</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">mean</span><span class="hl std">(</span> <span class="hl kwd">dlogis</span><span class="hl std">( intercept</span><span class="hl opt">+</span><span class="hl std">freqcoef</span><span class="hl opt">*</span><span class="hl std">lexdec</span><span class="hl opt">$</span><span class="hl std">Frequency ) )</span><span class="hl opt">*</span><span class="hl std">freqcoef</span>
+<span class="hl com">###</span>
+
+<span class="hl com">### Mean of marginal effects</span>
+        <span class="hl com"># The mean of the PDF of the predicted values [in log odds] based on both fixed and randome ffects, times the coefficient.</span>
+        <span class="hl com"># www.ucd.ie/t4cms/WP11_22.pdf#page=7 has a function that does this easily, and can also</span>
+        <span class="hl com">#	give standard errors of the marginal effects</span>
+        <span class="hl std">mean_of_sample_marginal_effects_fitted</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">mean</span><span class="hl std">(</span> <span class="hl kwd">dlogis</span><span class="hl std">(</span> <span class="hl kwd">log</span><span class="hl std">(</span> <span class="hl kwd">fitted</span><span class="hl std">(model3)</span><span class="hl opt">/</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">-</span><span class="hl kwd">fitted</span><span class="hl std">(model3)) ) ) )</span><span class="hl opt">*</span><span class="hl std">freqcoef</span>
+<span class="hl com">###</span>
+
+<span class="hl com"># Show the different marginal effects on the screen</span>
+<span class="hl std">( marginal</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">lapply</span><span class="hl std">(</span> <span class="hl kwd">list</span><span class="hl std">(</span> <span class="hl kwc">div_by_4</span><span class="hl std">=div4marginal,</span> <span class="hl kwc">at_mean</span><span class="hl std">=marginal_effect_at_mean,</span> <span class="hl kwc">mean_of_marginal</span><span class="hl std">=mean_of_sample_marginal_effects,</span> <span class="hl kwc">mean_of_marginal_fitted</span><span class="hl std">=mean_of_sample_marginal_effects_fitted ), as.numeric ) )</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## $div_by_4
+## [1] -0.1293462
+## 
+## $at_mean
+## [1] -0.005650974
+## 
+## $mean_of_marginal
+## [1] -0.008729906
+## 
+## $mean_of_marginal_fitted
+## [1] -0.01583169
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com">### Create plots showing the marginal effects over the range of the data</span>
+
+<span class="hl kwd">par</span><span class="hl std">(</span> <span class="hl kwc">mfrow</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">3</span><span class="hl std">),</span> <span class="hl kwc">mar</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">5.6</span><span class="hl std">,</span> <span class="hl num">4.1</span><span class="hl std">,</span> <span class="hl num">4.1</span><span class="hl std">,</span> <span class="hl num">2.1</span><span class="hl std">) )</span>
+
+<span class="hl com"># The range of frequenciess in the data</span>
+<span class="hl std">freqs</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">seq</span><span class="hl std">(</span> <span class="hl kwd">min</span><span class="hl std">(lexdec</span><span class="hl opt">$</span><span class="hl std">Frequency),</span> <span class="hl kwd">max</span><span class="hl std">(lexdec</span><span class="hl opt">$</span><span class="hl std">Frequency),</span> <span class="hl kwc">by</span><span class="hl std">=</span><span class="hl num">.1</span> <span class="hl std">)</span>
+
+<span class="hl com"># The predicted likelihood of acceptance for each frequency</span>
+<span class="hl std">proportion_error</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">inverselogit</span><span class="hl std">( intercept</span> <span class="hl opt">+</span> <span class="hl std">freqcoef</span><span class="hl opt">*</span><span class="hl std">freqs )</span>
+
+<span class="hl com"># Plot the predicted proportion accepted over the whole range of data; i.e., the</span>
+<span class="hl com">#	same regression line we saw above</span>
+<span class="hl kwd">plot</span><span class="hl std">( freqs, proportion_error,</span> <span class="hl kwc">xlab</span><span class="hl std">=</span><span class="hl str">&quot;Freq&quot;</span><span class="hl std">,</span> <span class="hl kwc">ylab</span><span class="hl std">=</span><span class="hl str">&quot;Predicted roportion of errors&quot;</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">main</span><span class="hl std">=</span><span class="hl str">&quot;Predicted outcome&quot;</span><span class="hl std">,</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;o&quot;</span> <span class="hl std">)</span>
+
+<span class="hl com"># Next we'll plot the change in likelihood of acceptance, at each level of frequency. We'll do</span>
+<span class="hl com">#	this by comparing the likelihood of at acceptance between freqss of 2.96 and 2.96 (for</span>
+<span class="hl com">#	example), 2.5 and 3.5, etc. etc.</span>
+
+<span class="hl com"># Here we calculate the differences. Since the frequenciess are in steps of .1 (in the sequence we made</span>
+<span class="hl com">#	above), we know that 3.5 is 10 above 2.5 (for example), so we make two vectors which are</span>
+<span class="hl com">#	offset by 10</span>
+<span class="hl std">higherfreqs</span> <span class="hl kwb">&lt;-</span> <span class="hl num">11</span><span class="hl opt">:</span><span class="hl kwd">length</span><span class="hl std">(proportion_error)</span>
+<span class="hl std">lowerfreqs</span> <span class="hl kwb">&lt;-</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">length</span><span class="hl std">( proportion_error[</span><span class="hl opt">-</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">)] )</span>
+
+<span class="hl com"># Then we subtract the lower ones from the higher ones</span>
+<span class="hl std">changes</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span> <span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl num">NA</span><span class="hl std">,</span><span class="hl num">10</span><span class="hl std">), proportion_error[higherfreqs]</span> <span class="hl opt">-</span> <span class="hl std">proportion_error[lowerfreqs] )</span>
+
+<span class="hl com"># Those same changes, but now instead of representing them as raw percentages (i.e., going from 15% up to</span>
+<span class="hl com">#	32% would be called a 17-percentage-point increase), we now represent them as a change relative to</span>
+<span class="hl com"># the starting point (i.e., going from 15% up to 32% is a 17/15 = 113% increase)</span>
+<span class="hl std">changes_as_proportion</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span> <span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl num">NA</span><span class="hl std">,</span><span class="hl num">10</span><span class="hl std">), (proportion_error[higherfreqs]</span> <span class="hl opt">-</span> <span class="hl std">proportion_error[lowerfreqs])</span><span class="hl opt">/</span><span class="hl std">proportion_error[lowerfreqs] )</span>
+
+<span class="hl com"># Plot the raw changes</span>
+<span class="hl kwd">plot</span><span class="hl std">( freqs, changes,</span> <span class="hl kwc">xlab</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl std">,</span> <span class="hl kwc">ylab</span><span class="hl std">=</span><span class="hl str">&quot;Change in proportion error for a one-unit increase in frequency&quot;</span><span class="hl std">,</span> <span class="hl kwc">xaxt</span><span class="hl std">=</span><span class="hl str">&quot;n&quot;</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">main</span><span class="hl std">=</span><span class="hl str">&quot;Marginal changes&quot;</span> <span class="hl std">)</span>
+<span class="hl std">axisfreqs</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">round</span><span class="hl std">(</span> <span class="hl kwd">seq</span><span class="hl std">(</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwd">length</span><span class="hl std">(higherfreqs),</span> <span class="hl kwc">length.out</span><span class="hl std">=</span><span class="hl kwd">length</span><span class="hl std">(higherfreqs)</span><span class="hl opt">/</span><span class="hl num">3</span> <span class="hl std">) )</span>
+<span class="hl kwd">axis</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">at</span><span class="hl std">=freqs[higherfreqs[axisfreqs]],</span> <span class="hl kwc">labels</span><span class="hl std">=</span><span class="hl kwd">paste</span><span class="hl std">(</span> <span class="hl kwd">round</span><span class="hl std">( freqs[lowerfreqs[axisfreqs]],</span> <span class="hl num">1</span><span class="hl std">),</span> <span class="hl str">&quot;to&quot;</span><span class="hl std">,</span> <span class="hl kwd">round</span><span class="hl std">( freqs[higherfreqs[axisfreqs]],</span> <span class="hl num">1</span><span class="hl std">) ),</span> <span class="hl kwc">las</span><span class="hl std">=</span><span class="hl num">2</span> <span class="hl std">)</span>
+
+<span class="hl com"># Plot the proportional changes</span>
+<span class="hl kwd">plot</span><span class="hl std">( freqs, changes_as_proportion,</span> <span class="hl kwc">xlab</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl std">,</span> <span class="hl kwc">ylab</span><span class="hl std">=</span><span class="hl str">&quot;Change in proportion error, as proportion&quot;</span><span class="hl std">,</span> <span class="hl kwc">xaxt</span><span class="hl std">=</span><span class="hl str">&quot;n&quot;</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">main</span><span class="hl std">=</span><span class="hl str">&quot;Relative marginal changes&quot;</span> <span class="hl std">)</span>
+<span class="hl kwd">axis</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">at</span><span class="hl std">=freqs[higherfreqs[axisfreqs]],</span> <span class="hl kwc">labels</span><span class="hl std">=</span><span class="hl kwd">paste</span><span class="hl std">(</span> <span class="hl kwd">round</span><span class="hl std">( freqs[lowerfreqs[axisfreqs]],</span> <span class="hl num">1</span><span class="hl std">),</span> <span class="hl str">&quot;to&quot;</span><span class="hl std">,</span> <span class="hl kwd">round</span><span class="hl std">( freqs[higherfreqs[axisfreqs]],</span> <span class="hl num">1</span><span class="hl std">) ),</span> <span class="hl kwc">las</span><span class="hl std">=</span><span class="hl num">2</span> <span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><center><img src="figure/freq.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" width=75% /></center></div></div>
+
+
+	<p class="centercol">On the left-hand portion of the figure we see that, while the likelihood of making an incorrect response is always low even at low frequencies (participants were
+		very accurate), it gets even lower as frequency increases. The center portion shows us that the magnitude of the marginal effect decreases as frequency increases. How did our
+		marginal effect estimates measure up against this plot?</p>
+	<p class="centercol">The marginal effect estimated with the divide-by-4 rule is clearly way off: it estimates a much
+		lower marginal effect (i.e., much bigger decrease in the probability of an incorrect response) than we ever actually observe. I suspect this
+		is because the model is already at such extreme negative log odds (i.e., it's already making predictions that are all close to 0%
+		probability); if we had much lower x-values (such as negative frequencies, which are of course linguistically impossible, but
+		which the model still fits) then the divide-by-4 estimate of the marginal effect would be more accurate in that range. In other
+		words, as warned in one of the blog posts linked above, this estimate is probably only meaningful when the actual outcomes are
+		in more middling probability ranges, and not so meaningful when we're dealing with very high or very low target response
+		proportions.</p>
+	<p class="centercol">The marginal effect at the mean frequency, on the other hand, appears reasonable, as does the mean of the
+		marginal effects. Both correspond to effects near the middle of the frequency distribution, as expected. You will also note
+		that I calculated the mean-of-marginal-effects in two different ways. The first used the predicted values based only on
+		the fixed effects, whereas the second used the fitted values, i.e., the predicted values based on both the fixed effects
+		and the random effects. The latter is what is implemented in <a href="http://www.ucd.ie/t4cms/WP11_22.pdf">Alan Fernihough's function</a>.
+		In this case, however, the former gave what looks to me like a more reasonable estimate, and conceptually speaking it also
+		seems more relevant, for me, since I usually only care about the fixed effects. Nonetheless, probably either one could be
+		appropriate.</p>
+	<p class="centercol">Keep in mind that there is actually no single  "right" estimate of the marginal effect, when we're expressing it
+		as a proportion/percentage. This is because, as noted several times above, the regression line is not straight: the marginal
+		effect can be quite different depending on where along the x-axis you look. Therefore, I cannot claim that any one of these
+		measures is unequivocally the best. Probably each one has its biases, and I haven't done enough simulations or math to fully
+		understand what they all are&mdash;although, as we observed above, it seems like the divide-by-4 method only gives a good estimate
+		of the marginal effect near whatever x-values are yielding middling predicted proportions, and not in the ranges where the
+		predicted proportions are very extreme. From the datasets I have tried this on, such as the ones we see above, the mean of
+		the marginal effects based on fixed-effect predictors seems like an ideal estimate. Nevertheless, as we have seen above,
+		none of these estimates is perfect, and none is a substitute for plotting the predictions. (Also note that marginal effect
+		estimates like these are unnecessary in models with only categorical predictors, where the exact marginal effects can be
+		calculated by simply comparing two conditions or combinations of conditions.)</p>
+
+	<hr>
+	<p class="mini">by <a href=".">Stephen Politzer-Ahles</a>. Last modified on 2016-05-30.</p>
+
+
+
+    </body>
+</html>

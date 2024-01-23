@@ -1,0 +1,51 @@
+\documentclass[letterpaper,12pt]{article}
+\pagestyle{empty}
+\usepackage{gb4e}
+
+\begin{document}
+This document demonstrates how to use the \texttt{gb4e} to create interlinear glosses. Simply use the \texttt{$\backslash$gll} command, and \LaTeX{} will
+line up the glosses perfectly for you:
+\begin{exe}
+\ex
+\gll La guerre est finie.\\ %the sequence \\ is a newline character, starts a new line of text. Like \n in Perl/C++/Python, <br /> in HTML
+     the war   is  finished\\
+\glt ``The war is over.''
+\end{exe}
+(The free translation at the bottom is not lined up, and is done using the \texttt{$\backslash$glt} command.)
+
+To make the example italic, just use \texttt{$\backslash$let$\backslash$eachwordone=\ldots} inside the \texttt{$\backslash$begin\{exe\}} environment (or in the preamble of the whole document); replace \ldots with an appropriate style, such as \texttt{$\backslash$sl}(for \textsl{slanted text}):
+\begin{exe}
+\let\eachwordone=\sl
+\ex
+\gll La guerre est finie.\\
+     the war   is  finished\\
+\glt ``The war is over.''
+\end{exe}
+
+To put more words in the language line than in the gloss line, or vice versa, you can group them using curly brackets \{ and \}. You can also use \{\} alone in the gloss  line to save an empty space:
+\begin{exe}
+\let\eachwordone=\sl
+
+\ex 
+	\begin{xlist}
+	\ex
+	\gll Quiero {lo que} quieres.\\
+		want.1s what want.2s\\
+	\glt ``I want what you want.''
+
+	\ex
+	\gll Haohaor xuexi, tiantian xiang shang!\\
+		{very well} study {every day} towards up\\
+	\glt ``Study hard, improve every day!''\footnote{Note, though, that this example would probably be easier to read if the multiple-word translations ``very well'' and ``every day'' were joined with periods (or whatever the convention is in your glossing system) as in ``very.well'' and ``every.day''. This is just an example to demonstrate the use of brackets.}
+	\end{xlist}
+
+\ex
+	\begin{xlist}
+	\ex
+	\gll Il aime \textup{[} le fromage et le chocolat \textup{]}\\
+     		he like {} the cheese and the chocolate {}\\
+	\glt ``He likes cheese and chocolate.''
+	\end{xlist}
+\end{exe}
+
+\end{document}
