@@ -171,11 +171,11 @@
 			the "identical" condition's interval; this tells us that the "identical" condition is probably significantly different from
 			each of those conditions.</p>
 		<p class="centercol">For convenience, here's the code for getting the intervals and making the graph, compiled in one place:</p>
-<pre>URISdata <- read.csv( file=file.choose(), header=T )
-( MoEs <- LMEMinterval( RT ~ Prime + (1|Participant) + (1|Item), URISdata ) )
-( means <- tapply( URISdata$RT, URISdata[,"Prime"], mean ) )
-xvals <- barplot( means, ylim=c(1000,1100), xpd=F )
-arrows( xvals, means - (MoEs*sqrt(2)), xvals, means + (MoEs*sqrt(2)), code=3, angle=90, length=.1 )</pre>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>URISdata <- read.csv( file=file.choose(), header=T )<br />
+( MoEs <- LMEMinterval( RT ~ Prime + (1|Participant) + (1|Item), URISdata ) )<br />
+( means <- tapply( URISdata$RT, URISdata[,"Prime"], mean ) )<br />
+xvals <- barplot( means, ylim=c(1000,1100), xpd=F )<br />
+arrows( xvals, means - (MoEs*sqrt(2)), xvals, means + (MoEs*sqrt(2)), code=3, angle=90, length=.1 )</code></p>
 		<hr />
 
 <h3>LMEMinterval()</h3>
