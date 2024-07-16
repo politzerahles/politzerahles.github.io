@@ -172,6 +172,7 @@
 			each of those conditions.</p>
 		<p class="centercol">For convenience, here's the code for getting the intervals and making the graph, compiled in one place:</p>
 <p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>URISdata <- read.csv( file=file.choose(), header=T )<br />
+# paste in the LMEMinterval() function<br />
 ( MoEs <- LMEMinterval( RT ~ Prime + (1|Participant) + (1|Item), URISdata ) )<br />
 ( means <- tapply( URISdata$RT, URISdata[,"Prime"], mean ) )<br />
 xvals <- barplot( means, ylim=c(1000,1100), xpd=F )<br />
