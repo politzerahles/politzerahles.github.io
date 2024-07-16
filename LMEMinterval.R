@@ -3,7 +3,7 @@ LMEMinterval <- function(
 	data,
 	conf=.95){
 
-formula	# This convenience function calculates LMEM-based "confidence" intervals for
+	# This convenience function calculates LMEM-based "confidence" intervals for
 	#	a given design and dataset. 
 	# Parameters:
 	#	formula: a usual model formula, with one DV and one or more IVs. Currently
