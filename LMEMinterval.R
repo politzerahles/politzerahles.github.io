@@ -1,8 +1,7 @@
 LMEMinterval <- function(
 	formula,
 	data,
-	conf=.95,
-	diff.adj=T){
+	conf=.95){
 
 formula	# This convenience function calculates LMEM-based "confidence" intervals for
 	#	a given design and dataset. 
@@ -17,8 +16,6 @@ formula	# This convenience function calculates LMEM-based "confidence" intervals
 	#		collapse it into a single-factor (e.g. 1x4) design.
 	#	data: a data frame with repeated measures data
 	#	conf: The confidence level (between 0 and 1) for the CI. Defaults .95.
-	#	diff.adj: Whether to calculate a difference-adjusted interval (T, the default)
-	#		or a regular interval (F).
 
 	# Load the lme4 and boot packages
 	require( lme4 )
@@ -111,13 +108,8 @@ formula	# This convenience function calculates LMEM-based "confidence" intervals
 	dfs <- summary(model)$coefficients[,"df"]
 	MoEs <- SEs * qt( two_tailed_conf, dfs )
 
-	if (diff.adj) { MoEs <- MoEs * sqrt(2) }
-
-	CIs <- cbind( fixef(model) - MoEs, fixef(model), fixef(model) + MoEs )
-	colnames(CIs) <- c("Lower","mean","Upper")
 
 
-
-	# Returns the CIs
-	return(CIs)
+	# Returns the MoEs
+	return(MoEs)
 }
