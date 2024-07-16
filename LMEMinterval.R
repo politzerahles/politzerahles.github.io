@@ -2,7 +2,7 @@ LMEMinterval <- function(
 	formula,
 	data,
 	conf=.95,
-	diff.adj=F){
+	diff.adj=T){
 
 formula	# This convenience function calculates LMEM-based "confidence" intervals for
 	#	a given design and dataset. 
@@ -17,13 +17,8 @@ formula	# This convenience function calculates LMEM-based "confidence" intervals
 	#		collapse it into a single-factor (e.g. 1x4) design.
 	#	data: a data frame with repeated measures data
 	#	conf: The confidence level (between 0 and 1) for the CI. Defaults .95.
-	#	boot.type: which type of bootstrap to use. Defaults to "percentile". If set 
-	#		to anything else, it will instead use normal bootstrap. 
-	#		Percentile bootstrap is more accurate but slower, as it requires more  
-	#     iterations to get accurate.
-	#	nsim: Number of bootstrap replicates to use. By default this will be 2000 if
-	#		boot.type=="percentile" and 200 otherwise, but you can set `nsim` to 
-	#		override that.
+	#	diff.adj: Whether to calculate a difference-adjusted interval (T, the default)
+	#		or a regular interval (F).
 
 	# Load the lme4 and boot packages
 	require( lme4 )
