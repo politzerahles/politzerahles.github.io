@@ -112,11 +112,11 @@
 			a priming experiment. For each participant, each word ("Item") was presented in one of three conditions ("Prime"): it was
 			either preceded by an identical prime, preceded by a morphological prime, or unprimed.</a>
 		<p class="centercol">After downloading the file to your computer, read it into R:</p>
-<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>URISdata <- read.csv( file=file.choose(), header=T )</code></p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Read in the data<br />URISdata <- read.csv( file=file.choose(), header=T )</code></p>
 		<p class="centercol">Before calculating the LMEM-based intervals, we can take a look at the pattern of participant means.
 			We see that the identical condition elicited numerically faster reaction times than the other two conditions. On the other,
 			hand, there was little difference between the morphological and the unprimed conditions.</p>
-<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>( means <- tapply( URISdata$RT, URISdata[,"Prime"], mean ) )</code></p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Look at the condition means<br />( means <- tapply( URISdata$RT, URISdata[,"Prime"], mean ) )</code></p>
 		<p class="centercol">Now we are ready to calculate the LMEM-based interval.</p>
 		<p class="centercol">First, copy and paste the function (from the end of this page, or from LMEMinterval.R) into R.</p>
 		<p class="centercol">Next we'll need to call the function. We'll need to put in several parameters when we call it:</p>
@@ -132,7 +132,7 @@
 
 		</ul>
 		<p class="centercol">With all that decided, let's run the function and get the intervals:</p>
-<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>( MoEs <- LMEMinterval( RT ~ Prime + (1|Participant) + (1|Item), URISdata ) )</code></p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Calculate the margins of error for the intervals<br />( MoEs <- LMEMinterval( RT ~ Prime + (1|Participant) + (1|Item), URISdata ) )</code></p>
 		<p class="centercol">What you see here is the margin of error (i.e., how far the interval goes up and down from the mean) for each
 			condition. I prefer to instead use the difference-adjusted margin of error, which is the margin of error times &#8730;2:</p>
 <p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>MoEs * sqrt(2)</code></p>
@@ -154,13 +154,13 @@
 			differences are. As long as you have informative error bars, your graphs don't need to always go to 0.) We'll also use the
 			<code>xpd=F</code> parameter to not show the part of the bar that goes beyond the bottom of our graph (this just makes the
 			graph look prettier.</p>
-<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>xvals <- barplot( means, ylim=c(1000,1100), xpd=F )</code></p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Create a barplot<br />xvals <- barplot( means, ylim=c(1000,1100), xpd=F )</code></p>
 		<p class="centercol">Now it's time to add the error bars. I use the <code>arrows()</code> function for this. This makes a series of arrows
 			(which we can stretch to turn into bars) at the places we specify. We need to give the x- and y- coordinates of the beginning
 			of each arrow, and the x- and y- coordinates of the end. The x-coordinates are the middles of each bar, which we saved in the
 			object <code>xvals</code>. The y-coordinates are the upper and lower bounds of each interval, which you will recall is
 			mean &#177; difference-adjusted MoE. So the code to make the error bars is as follows:</p>
-<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>arrows( xvals, means - (MoEs*sqrt(2)), xvals, means + (MoEs*sqrt(2)), code=3, angle=90, length=.1 )</code></p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Add error bars to barplot<br />arrows( xvals, means - (MoEs*sqrt(2)), xvals, means + (MoEs*sqrt(2)), code=3, angle=90, length=.1 )</code></p>
 		<p class="centercol">(<code>code=3</code> tells the <code>arrows()</code> function to put arrowheads at both the beginning and end of
 			each arrow. <code>angle=90</code> stretches the arrowheads to be at a perpendicular 90-degree angle to the line, so they look
 			like error bars. And <code>length=.1</code>specifies how long the horizontal "caps" on the error bars are; this one may take
