@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html lang="en">
+    <head>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .bigsource, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+	width:65%;
+	margin-left:auto; margin-right:auto;
+	border:1px solid #ccc;
+	overflow:auto;
+	background-color: #FFFFFF;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>LMEM-based intervals</title>
+        <link rel="stylesheet" type="text/css" href="stevetools_stylesheet.css" />
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    <head>
+
+    <body>
+
+
+		<h2>LMEM-based intervals for error bars in graphs</h2>
+
+		<p class="centercol">In <a href="https://www.tqmp.org/RegularArticles/vol13-1/p075/index.html">Politzer-Ahles (2017)</a> I proposed
+			(translation: pulled out of my behind) a new way for calculating "confidence intervals" for displaying error bars in
+			graphs of data from mixed-effect designs. The goal of these was to make it easy to look at a graph with means and error
+			bars, and easily tell whether any pair of conditions is likely to be significantly different from each other. (Traditional
+			confidence intervals do now license this sort of interpretation, for reasons explained in the paper.) I refer to these
+			intervals as "LMEM-based intervals".</p>
+		<p class="centercol">That paper also included code for calculating those kinds of intervals, but it could be very slow. At the
+			time I wrote the paper, I believed that bootstrapping was the most accurate way to estimate p-values (and hence confidence
+			intervals) from a mixed-effects model. And bootstrapping a complex model can take hours&mdash;as you may have discovered
+			if you ever tried running that code.</p>
+		<p class="centercol">Since then, however, <a href="https://link.springer.com/article/10.3758/s13428-016-0809-y">Luke (2017)</a>
+			has demonstrated that the best method is in fact not confidence intervals, but is instead the approximations provided
+			by methods implemented in the <code>lmerTest</code> package. This is good news for the whole mixed-effects world because
+			it gives us permission to use this easy method and not have to bother with the complicated and slow process of bootstrapping
+			mixed-effects models. It's also good for my particular LMEM-based interval method, because it means we can calculate the
+			intervals based on degree-of-freedom approximations from <code>lmerTest</code>, rather than waiting hours for bootstrap
+			samples to run.</p>
+		<p class="centercol">Here I present updated code for calculating LMEM-based intervals, as well as a very brief toy example to
+			demonstrate how to use the code.</p>
+
+		<h3>The code</h3>
+		<p class="centercol">You can find the code in <a href="LMEMinterval.R">LMEMinterval.R</a>; it's also copied at the end of this
+			page. It is written as a function. The way I use this is by just copying and pasting the whole code there into my R session
+			(usually after I've done whatever other processing I want to do with my data), and then calling the function.</p>
+
+
+		<h3>A worked example</h3>
+		<p class="centercol">We will use the dataset <a href="URIS_priming_data.csv">URIS_priming_data.csv</a>. These are data from
+			a priming experiment. For each participant, each word ("Item") was presented in one of three conditions ("Prime"): it was
+			either preceded by an identical prime, preceded by a morphological prime, or unprimed.</a>
+		<p class="centercol">After downloading the file to your computer, read it into R:</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Read in the data<br />URISdata <- read.csv( file=file.choose(), header=T )</code></p>
+		<p class="centercol">Before calculating the LMEM-based intervals, we can take a look at the pattern of participant means.
+			We see that the identical condition elicited numerically faster reaction times than the other two conditions. On the other,
+			hand, there was little difference between the morphological and the unprimed conditions.</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Look at the condition means<br />( means <- tapply( URISdata$RT, URISdata[,"Prime"], mean ) )</code></p>
+		<p class="centercol">Now we are ready to calculate the LMEM-based interval.</p>
+		<p class="centercol">First, copy and paste the function (from the end of this page, or from LMEMinterval.R) into R.</p>
+		<p class="centercol">Next we'll need to call the function. We'll need to put in several parameters when we call it:</p>
+		<ul class="center">
+			<li>The <code>formula</code> parameter takes an lme4-style model formula, specifying the dependent variable, the independent
+				variables, and grouping variables (random effects). For this, we will use <code>RT ~ Prime + (1|Participant) + (1|Item)</code>.
+				(Note that, unlike in a real mixed-effects model, the specific structure of each random effect doesn't matter here.
+				We are only specifying that there are participants and there are items; we don't need to specify exactly what random
+				effects [slopes and intercepts] there are for Participant and what random effects there are for Item. Even if you
+				put that information in, this function will not use it.)</p>
+			<li><code>data</code> is the data object. In this case, "URISdata".</li>
+			<li><code>conf</code> is .95 by default (for a 95% interval). That is fine for our purposes, so we don't need to change it.</li>
+
+		</ul>
+		<p class="centercol">With all that decided, let's run the function and get the intervals:</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Calculate the margins of error for the intervals<br />( MoEs <- LMEMinterval( RT ~ Prime + (1|Participant) + (1|Item), URISdata ) )</code></p>
+		<p class="centercol">What you see here is the margin of error (i.e., how far the interval goes up and down from the mean) for each
+			condition. I prefer to instead use the difference-adjusted margin of error, which is the margin of error times &#8730;2:</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>MoEs * sqrt(2)</code></p>
+		<p class="centercol">What can you do with this information? Well, you can interpret it as follows: <strong><em><span style="color:red;">For
+			a pair of conditions, when one condition's difference-adjusted interval does not include the other condition's mean (and vice versa),
+			these two conditions are likely to be significantly different.</span></em></strong></p>
+		<p class="centercol">You can make those comparisons if you make a table of each condition's mean and its interval's lower and upper bounds
+			(i.e., mean &#177; difference-adjusted MoE). It's easier to see that information in a graph, so let's quickly review how to make a
+			simple barplot with error bars.</p>
+		<p class="centercol">We already calculated the condition means above. We can make them into a barplot; I'm saving some information about
+			the barplot in the object "xvals" because we're going to use that later to know where to put the error bars.</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>xvals <- barplot( means )</code></p>
+		<p class="centercol">This works, but the scale is so big that the bars look about the same. To see things more clearly, we need to
+			zoom in to where the actual differences between conditions are. To do that, we'll restrict the y-axis. I happen to know that the
+			lowest LMEM-based interval in this set of data doesn't go below 1000, and the highest doesn't go above 1100, so we'll set the
+			y-axis limits to [1000, 1100]; when you do this with your own data you may need some trial and error to find what looks right.
+			(This isn't dishonest. Some people claim that zooming in on the graph like this makes differences
+			look bigger than they really are. But we're about to put error bars here, which will make it easy to see how big or small the
+			differences are. As long as you have informative error bars, your graphs don't need to always go to 0.) We'll also use the
+			<code>xpd=F</code> parameter to not show the part of the bar that goes beyond the bottom of our graph (this just makes the
+			graph look prettier.</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Create a barplot<br />xvals <- barplot( means, ylim=c(1000,1100), xpd=F )</code></p>
+		<p class="centercol">Now it's time to add the error bars. I use the <code>arrows()</code> function for this. This makes a series of arrows
+			(which we can stretch to turn into bars) at the places we specify. We need to give the x- and y- coordinates of the beginning
+			of each arrow, and the x- and y- coordinates of the end. The x-coordinates are the middles of each bar, which we saved in the
+			object <code>xvals</code>. The y-coordinates are the upper and lower bounds of each interval, which you will recall is
+			mean &#177; difference-adjusted MoE. So the code to make the error bars is as follows:</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Add error bars to barplot<br />arrows( xvals, means - (MoEs*sqrt(2)), xvals, means + (MoEs*sqrt(2)), code=3, angle=90, length=.1 )</code></p>
+		<p class="centercol">(<code>code=3</code> tells the <code>arrows()</code> function to put arrowheads at both the beginning and end of
+			each arrow. <code>angle=90</code> stretches the arrowheads to be at a perpendicular 90-degree angle to the line, so they look
+			like error bars. And <code>length=.1</code>specifies how long the horizontal "caps" on the error bars are; this one may take
+			some trial and error to get looking right in your own data.</p>
+		<p class="centercol">What do we see from this? The "morphological" and "unprimed" conditions' means are each within the other condition's
+			interval, which tells us these conditions are probably not significantly different from one another. On the other hand, the
+			"identical" condition's mean is outside of the other conditions' intervals, and likewise those conditions' means are outside
+			the "identical" condition's interval; this tells us that the "identical" condition is probably significantly different from
+			each of those conditions.</p>
+		<p class="centercol">For convenience, here's the code for getting the intervals and making the graph, compiled in one place:</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>URISdata <- read.csv( file=file.choose(), header=T )<br />
+# paste in the LMEMinterval() function<br />
+( MoEs <- LMEMinterval( RT ~ Prime + (1|Participant) + (1|Item), URISdata ) )<br />
+( means <- tapply( URISdata$RT, URISdata[,"Prime"], mean ) )<br />
+xvals <- barplot( means, ylim=c(1000,1100), xpd=F )<br />
+arrows( xvals, means - (MoEs*sqrt(2)), xvals, means + (MoEs*sqrt(2)), code=3, angle=90, length=.1 )</code></p>
+		<hr />
+
+<h3>LMEMinterval()</h3>
+
+<pre>LMEMinterval <- function(
+	formula,
+	data,
+	conf=.95){
+
+	# This convenience function calculates LMEM-based "confidence" intervals for
+	#	a given design and dataset. 
+	# Parameters:
+	#	formula: a usual model formula, with one DV and one or more IVs. Currently
+	#		this function is able to handle functions in DVs (e.g., using log(RT)
+	#		rather than RT as a DV), but not in IVs. And I haven't done much testing
+	#		of DVs with functions so there may be bugs; I prefer just creating a 
+	#		new column in the data frame (e.g., creating a logRT column).
+	#		Also note that this is currently only implemented for single-factor
+	#		designs. If you have a factorial (e.g. 2x2) design, this function will
+	#		collapse it into a single-factor (e.g. 1x4) design.
+	#	data: a data frame with repeated measures data
+	#	conf: The confidence level (between 0 and 1) for the CI. Defaults .95.
+
+
+	# Load the lme4 and boot packages
+	require( lme4 )
+	require( lmerTest )
+
+	# Figure out the DV and the IVs.
+	# This doesn't use all.var() because that strips away functions,
+	#	whereas sometimes your formula might be like log(DV) ~ rather than just DV.
+	vars <- rownames(attr(terms(formula),"factors"))
+
+	# Figure out the DV
+	DV <- vars[1]
+
+	# Figure out what the random effects are. The first line finds which
+	#	IVs look like random effects terms (which ones have pipes), and 
+	#	the next line grabs the stuff after the pipe
+	ranef_idx <- which( unlist( lapply( vars, function(x){ length( grep("|", x, fixed=T ) ) } ) )>0 )
+	grouping.vars <- unlist( lapply( vars[ranef_idx],
+	  function(x){ strsplit( x, " | ", fixed=T )[[1]][2] } ) )
+
+	# Figure out the fixed IVs
+	IVs <- vars[-c(1,ranef_idx)]
+
+	# handles cases where the DV has a function around it (e.g. when the DV
+	#	is `log(RT)` rather than just `RT`
+	realDV <- all.vars(formula)[1] 
+	if( DV != realDV ){
+		func <- gsub( paste0("(",realDV,")"), "", DV, fixed=T )
+		DV <- realDV
+		data[,DV] <- unlist(lapply( data[,DV], func ) )
+	}
+
+	### A function to do the scaling. It first fits an intercept-only model to the 
+	### data, then subtracts the residuals and adds the intercept (the grand mean)
+	LMEscale <- function( formula, data ){
+		model <- lmer( formula, data )
+		data$LMEscale <- as.numeric( resid(model) + fixef(model)["(Intercept)"] )
+		return(data)
+	}
+
+	# Scale the data, using a model with only a fixed intercept
+	# and random intercepts
+	lmerformula <- paste( DV, " ~ 1 + ", paste( "(1|", grouping.vars, ")", collapse=" + " ) ) 
+	data <- LMEscale( lmerformula, data )
+
+	### The rest of the code handles making  CIs of the scaled data. The 
+	###	general procedure is as follows: to get the  CIs we have to fit 
+	###	an lmer	model to the scaled data. To make the models more likely to 
+	###	converge, we want to fit the models without random correlation 
+	###	parameters; to do this use a hack from https://rpubs.com/Reinhold/22193,
+	###	which requires first calculating a temporary model [which may not 
+	###	converge] and then extracting dummy coefficients directly from
+	###	its model matrix to construct the good model.
+	###	Finally, we get lmerTest dfs to calculate the CI
+
+	# Collapse design into one factor (just treating each condition as its 
+	#	own condition, without considering main effects, interactions, etc.)
+	data$Condition <- factor( do.call( paste0, lapply( IVs, function(IV){ data[,IV] } ) ) )
+
+	# Create the temporary model, which may not converge, it doesn't matter
+	lmerformula <- paste( "LMEscale ~ 0 + Condition + ", paste( "(1|", grouping.vars, ")", collapse=" + " ) )
+	junkmodel <- lmer( lmerformula, data )
+
+	# Pull out dummy variables from model matrix https://rpubs.com/Reinhold/22193
+	mydummies <- list()
+	for ( i in 1:dim( model.matrix(junkmodel) )[2] ) {
+		data[,paste0("c",i)] <- model.matrix(junkmodel)[,i]	
+	}
+
+	# Make random effect terms using the dummy variables rather than the big 
+	#	'Condition' variable. Per https://rpubs.com/Reinhold/22193, this ensures 
+	#	that random correlations between the random effects will not 
+	#  be used.
+	#	We also specify no random intercepts; because the data are scaled, every
+	#	subject/item/whatever should already have a mean of 0, so the random
+	#	intercept is meaningless and in fact often cannot be fit anyway.
+	ran <- paste( "0 +", paste( "c", 1:dim( model.matrix(junkmodel) )[2],
+	   collapse="+", sep="" ) )
+
+	# Now fit the good model. Because there is no fixed-effect intercept, it will 
+	#	estimate a coefficient for each condition, rather than estimating 
+	#	comparisons between conditions.
+	lmerformula <- paste( "LMEscale ~ 0 + Condition + ", paste( "(", ran, "||", grouping.vars, ")", collapse=" + " ) )
+	model <- lmer( lmerformula, data )
+
+
+	# CI
+	two_tailed_conf <- (conf+1)/2
+	SEs <- summary(model)$coefficients[,"Std. Error"]
+	dfs <- summary(model)$coefficients[,"df"]
+	MoEs <- SEs * qt( two_tailed_conf, dfs )
+
+	# Returns the MoEs
+	return(MoEs)
+}</pre>
+	<hr>
+	<p class="mini">by <a href="./">Stephen Politzer-Ahles</a>. Last modified on 2024-07-16.</p>
+
+
+
+    </body>
+</html>
