@@ -153,7 +153,7 @@
 			look bigger than they really are. But we're about to put error bars here, which will make it easy to see how big or small the
 			differences are. As long as you have informative error bars, your graphs don't need to always go to 0.) We'll also use the
 			<code>xpd=F</code> parameter to not show the part of the bar that goes beyond the bottom of our graph (this just makes the
-			graph look prettier.</p>
+			graph look prettier).</p>
 <p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Create a barplot<br />xvals <- barplot( means, ylim=c(1000,1100), xpd=F )</code></p>
 		<p class="centercol">Now it's time to add the error bars. I use the <code>arrows()</code> function for this. This makes a series of arrows
 			(which we can stretch to turn into bars) at the places we specify. We need to give the x- and y- coordinates of the beginning
