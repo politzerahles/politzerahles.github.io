@@ -85,14 +85,14 @@
 			(translation: pulled out of my behind) a new way for calculating "confidence intervals" for displaying error bars in
 			graphs of data from mixed-effect designs. The goal of these was to make it easy to look at a graph with means and error
 			bars, and easily tell whether any pair of conditions is likely to be significantly different from each other. (Traditional
-			confidence intervals do now license this sort of interpretation, for reasons explained in the paper.) I refer to these
+			confidence intervals do not license this sort of interpretation, for reasons explained in the paper.) I refer to these
 			intervals as "LMEM-based intervals".</p>
 		<p class="centercol">That paper also included code for calculating those kinds of intervals, but it could be very slow. At the
 			time I wrote the paper, I believed that bootstrapping was the most accurate way to estimate p-values (and hence confidence
 			intervals) from a mixed-effects model. And bootstrapping a complex model can take hours&mdash;as you may have discovered
 			if you ever tried running that code.</p>
 		<p class="centercol">Since then, however, <a href="https://link.springer.com/article/10.3758/s13428-016-0809-y">Luke (2017)</a>
-			has demonstrated that the best method is in fact not confidence intervals, but is instead the approximations provided
+			has demonstrated that the best method is in fact not bootstrapping, but is instead the approximations provided
 			by methods implemented in the <code>lmerTest</code> package. This is good news for the whole mixed-effects world because
 			it gives us permission to use this easy method and not have to bother with the complicated and slow process of bootstrapping
 			mixed-effects models. It's also good for my particular LMEM-based interval method, because it means we can calculate the
@@ -153,7 +153,7 @@
 			look bigger than they really are. But we're about to put error bars here, which will make it easy to see how big or small the
 			differences are. As long as you have informative error bars, your graphs don't need to always go to 0.) We'll also use the
 			<code>xpd=F</code> parameter to not show the part of the bar that goes beyond the bottom of our graph (this just makes the
-			graph look prettier.</p>
+			graph look prettier).</p>
 <p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Create a barplot<br />xvals <- barplot( means, ylim=c(1000,1100), xpd=F )</code></p>
 		<p class="centercol">Now it's time to add the error bars. I use the <code>arrows()</code> function for this. This makes a series of arrows
 			(which we can stretch to turn into bars) at the places we specify. We need to give the x- and y- coordinates of the beginning
@@ -163,7 +163,7 @@
 <p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Add error bars to barplot<br />arrows( xvals, means - (MoEs*sqrt(2)), xvals, means + (MoEs*sqrt(2)), code=3, angle=90, length=.1 )</code></p>
 		<p class="centercol">(<code>code=3</code> tells the <code>arrows()</code> function to put arrowheads at both the beginning and end of
 			each arrow. <code>angle=90</code> stretches the arrowheads to be at a perpendicular 90-degree angle to the line, so they look
-			like error bars. And <code>length=.1</code>specifies how long the horizontal "caps" on the error bars are; this one may take
+			like error bars. And <code>length=.1</code> specifies how long the horizontal "caps" on the error bars are; this one may take
 			some trial and error to get looking right in your own data.</p>
 		<p class="centercol">What do we see from this? The "morphological" and "unprimed" conditions' means are each within the other condition's
 			interval, which tells us these conditions are probably not significantly different from one another. On the other hand, the
