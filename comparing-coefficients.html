@@ -93,17 +93,10 @@
 <p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>t <- compare_coefs( m, "Wind", "Ozone" )<br />df <- m$df.residual # summary(m) shows that this is 113<br />pt( -abs(t), df ) *2 # I use -abs() to force t to be negative, and *2 to get a two-tailed p-value )</code></p>
 
  		<h3>Mixed-effects models</h3>
-		<p class="centercol">First, copy and paste the function (from the end of this page, or from LMEMinterval.R) into R.</p>
-		<p class="centercol">Next we'll need to call the function. We'll need to put in several parameters when we call it:</p>
-		<ul class="center">
-			<li>The <code>formula</code> parameter takes an lme4-style model formula, specifying the dependent variable, the independent
-				variables, and grouping variables (random effects). For this, we will use <code>RT ~ Prime + (1|Participant) + (1|Item)</code>.
-				(Note that, unlike in a real mixed-effects model, the specific structure of each random effect doesn't matter here.
-				We are only specifying that there are participants and there are items; we don't need to specify exactly what random
-				effects [slopes and intercepts] there are for Participant and what random effects there are for Item. Even if you
-				put that information in, this function will not use it.)</p>
-			<li><code>data</code> is the data object. In this case, "URISdata".</li>
-			<li><code>conf</code> is .95 by default (for a 95% interval). That is fine for our purposes, so we don't need to change it.</li>
+		<p class="centercol">If you want to do this to compare coefficients in a mixed-effects model, you'll have to make a few adjustments. In all the following, I am assuming you are using the <code>{lme4}</code> package to make your models. Use this at your own risk; it will give you numbers, and I <em>think</em> those numbers are accurate and actually mean something, but that's really a question for a statistician.</p>
+		<p class="centercol">First, in the code, replace the <code>coef()</code> function with <code>fixef()</code> This is just necessary because lme4 models store the coefficients we want [in the format that I have lazily hard-coded the function to expect] in a structure that is accessed by <code>fixef()</code> rather than <code>coef()</code>.</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>compare_coefs <- function( model, coef1, coef2 ){<br /><br />diff <- (fixef(model)[coef1] - fixef(model)[coef2])<br />pooledvar <- sqrt( vcov(model)[coef1,coef1] + vcov(model)[coef2,coef2] - 2*vcov(model)[coef1,coef2] )<br />t <- diff / pooledvar<br />names(t) <- NULL # this is just for cosmetic purposes, it doesn't actually matter<br />return(t)<br /><br />}</code></p>
+
 	<hr>
 	<p class="mini">by <a href="./">Stephen Politzer-Ahles</a>. Last modified on 2025-02-13.</p>
 
