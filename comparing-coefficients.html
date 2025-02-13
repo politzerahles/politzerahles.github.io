@@ -82,37 +82,17 @@
 		<h2>Comparing linear model coefficients to one another</h2>
 
 		<p class="centercol">[Explanation of why you'd want to do this</p>
-		<p class="centercol">That paper also included code for calculating those kinds of intervals, but it could be very slow. At the
-			time I wrote the paper, I believed that bootstrapping was the most accurate way to estimate p-values (and hence confidence
-			intervals) from a mixed-effects model. And bootstrapping a complex model can take hours&mdash;as you may have discovered
-			if you ever tried running that code.</p>
-		<p class="centercol">Since then, however, <a href="https://link.springer.com/article/10.3758/s13428-016-0809-y">Luke (2017)</a>
-			has demonstrated that the best method is in fact not bootstrapping, but is instead the approximations provided
-			by methods implemented in the <code>lmerTest</code> package. This is good news for the whole mixed-effects world because
-			it gives us permission to use this easy method and not have to bother with the complicated and slow process of bootstrapping
-			mixed-effects models. It's also good for my particular LMEM-based interval method, because it means we can calculate the
-			intervals based on degree-of-freedom approximations from <code>lmerTest</code>, rather than waiting hours for bootstrap
-			samples to run.</p>
-		<p class="centercol">Here I present updated code for calculating LMEM-based intervals, as well as a very brief toy example to
-			demonstrate how to use the code.</p>
+
 
 		<h3>The code</h3>
-		<p class="centercol">You can find the code in <a href="LMEMinterval.R">LMEMinterval.R</a>; it's also copied at the end of this
-			page. It is written as a function. The way I use this is by just copying and pasting the whole code there into my R session
-			(usually after I've done whatever other processing I want to do with my data), and then calling the function.</p>
+		<p class="centercol">The following function will calculate the t-statistic for a comparison between two coefficients in a linear model (such as the kind you get from the <code>lm()</code> function):</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>compare_coefs <- function( model, coef1, coef2 ){<br /><br />diff <- (coef(model)[coef1] - coef(model)[coef2])<br />pooledvar <- sqrt( vcov(model)[coef1,coef1] + vcov(model)[coef2,coef2] - 2*vcov(model)[coef1,coef2] )<br />t <- diff / pooledvar<br />names(t) <- NULL # this is just for cosmetic purposes, it doesn't actually matter<br />return(t)<br /><br />}</code></p>
+		<p class="centercol">To use it, just give it your model, plus the names or indices of the coefficients you want to compare. For example:</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>m <- lm( Temp ~ Wind + Ozone, airquality )<br />compare_coefs( m, 2, 3) # Compare the 2nd and 3rd coefficient<br />compare_coefs( m, "Wind", "Ozone" ) # Compare the "Wind" and "Ozone" coefficients; should get the same value</code></p>
+		<p class="centercol">This will give you a <em>t</em>-statistic for the difference between those two coefficients. From there, you can just calculate the p-value of this statistic based on the degrees of freedom (which you can normally steal from the model summary):</p>
+<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>t <- compare_coefs( m, "Wind", "Ozone" )<br />df <- m$df.residual # summary(m) shows that this is 113<br />pt( -abs(t), df ) *2 # I use -abs() to force t to be negative, and *2 to get a two-tailed p-value )</code></p>
 
-
-		<h3>A worked example</h3>
-		<p class="centercol">We will use the dataset <a href="URIS_priming_data.csv">URIS_priming_data.csv</a>. These are data from
-			a priming experiment. For each participant, each word ("Item") was presented in one of three conditions ("Prime"): it was
-			either preceded by an identical prime, preceded by a morphological prime, or unprimed.</a>
-		<p class="centercol">After downloading the file to your computer, read it into R:</p>
-<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code>compare_coefs <- function( model, coef1, coef2 ){<br />	diff <- (fixef(model)[coef1] - fixef(model)[coef2])<br />	pooledvar <- sqrt( vcov(model)[coef1,coef2] + vcov(model)[coef2,coef2] - 2*vcov(model)[coef1,coef2] )<br />	t <- diff / pooledvar<br />	return(t)<br />}</code></p>
-		<p class="centercol">Before calculating the LMEM-based intervals, we can take a look at the pattern of participant means.
-			We see that the identical condition elicited numerically faster reaction times than the other two conditions. On the other,
-			hand, there was little difference between the morphological and the unprimed conditions.</p>
-<p class="centercol" style="border:1px solid #000; border-style: dotted; padding:10px; background-color: white;"><code># Look at the condition means<br />( means <- tapply( URISdata$RT, URISdata[,"Prime"], mean ) )</code></p>
-		<p class="centercol">Now we are ready to calculate the LMEM-based interval.</p>
+ 		<h3>Mixed-effects models</h3>
 		<p class="centercol">First, copy and paste the function (from the end of this page, or from LMEMinterval.R) into R.</p>
 		<p class="centercol">Next we'll need to call the function. We'll need to put in several parameters when we call it:</p>
 		<ul class="center">
