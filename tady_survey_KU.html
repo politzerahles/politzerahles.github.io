@@ -16,9 +16,9 @@
 // the used links
 
 var links = [
-"2n4zqmWrbPs5vRsb9",
-"WVub2FTZCih6nPBFA",
-"Ac4VJAaxDgT44kNN8"
+"https://research.sc/participant/login/dynamic/5CB729A5-5E9B-4069-9586-2C4CC14DB116",
+"https://research.sc/participant/login/dynamic/A43DBB06-D69F-445F-8AA8-3DB21B4C449E",
+"https://research.sc/participant/login/dynamic/645E3E78-B7E7-4398-ADF9-332CE87BCD58"
 ];
 
 openStuff = function () {
@@ -27,7 +27,7 @@ openStuff = function () {
     // round it, so it can be used as array index
     randIdx = parseInt(randIdx, 10);
     // construct the link to be opened
-    var link = 'https://forms.gle/' + links[randIdx];
+    var link = links[randIdx];
     // open it in a new window / tab (depends on browser setting)
     window.open(link);
 };
