@@ -9,6 +9,7 @@
     <body style="background:#DCDCDC">
 
 	<center><button onclick="openStuff();">Click here to open the experiment.</button></center>
+	<p class="centercol">(If it opens a window saying "Experiment full", come back here and click the button again until it doesn't say that -- apologies in advance for any inconvenience)</p>
 
 
 <script type="text/javascript">
@@ -29,7 +30,7 @@ openStuff = function () {
     // construct the link to be opened
     var link = links[randIdx];
     // open it in a new window / tab (depends on browser setting)
-    open(link, "_self");
+    open(link, "_blank");
 };
 
 
